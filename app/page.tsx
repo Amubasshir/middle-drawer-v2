@@ -21,6 +21,7 @@ import {
   LucideShield as FileShield,
   Receipt,
   Compass,
+  Bell,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { AlertNowButton } from "@/components/alert-now-button"
@@ -33,6 +34,7 @@ import { TaxSection } from "@/components/tax-section"
 import { CollapsibleSection } from "@/components/collapsible-section"
 import { WhichPointInfo } from "@/components/whichpoint-info"
 import { GuidedSetup } from "@/components/guided-setup"
+import { NotificationSettings } from "@/components/notification-settings"
 
 export default function AccountCredentialsDashboard() {
   const { user, logout, isLoading } = useAuth()
@@ -216,18 +218,24 @@ export default function AccountCredentialsDashboard() {
                 Add Account
               </Button>
             </div>
+          </div>
+        </div>
+      </header>
 
+      <div className="border-b border-border bg-card/50">
+        <div className="container mx-auto px-4 py-6">
+          <div className="flex justify-center">
             <Button
               size="lg"
               onClick={() => setShowGuidedSetup(true)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
             >
-              <Compass className="h-5 w-5 mr-2" />
+              <Compass className="h-6 w-6 mr-3" />
               Walk me through it
             </Button>
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -304,6 +312,10 @@ export default function AccountCredentialsDashboard() {
                 <a href="/settings">Manage Contact Settings</a>
               </Button>
             </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Notification Settings" icon={Bell}>
+            <NotificationSettings />
           </CollapsibleSection>
 
           <CollapsibleSection title="Encryption Settings" icon={Shield}>

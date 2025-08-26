@@ -90,7 +90,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-4">Let's Set Up Your WhichPoint</DialogTitle>
         </DialogHeader>
@@ -122,7 +122,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
                   placeholder={currentCategory.placeholder}
                   value={responses[currentCategory.id] || ""}
                   onChange={(e) => handleInputChange(currentCategory.id, e.target.value)}
-                  className="mt-2 min-h-[120px]"
+                  className="mt-2 min-h-[150px]"
                 />
               </div>
 
