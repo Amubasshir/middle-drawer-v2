@@ -4,77 +4,84 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0); /* White background */
-  --foreground: oklch(0.35 0 0); /* Dark gray text (#475569) */
-  --card: oklch(0.97 0 0); /* Light gray card background (#f1f5f9) */
-  --card-foreground: oklch(0.35 0 0); /* Dark gray card text */
+  /* Updated to modern orange color palette with calming warm tones */
+  --background: oklch(1 0 0); /* Pure white background */
+  --foreground: oklch(0.35 0.02 260); /* Dark gray text (#4b5563) */
+  --card: oklch(0.98 0.02 70); /* Light beige card background (#fffbeb) */
+  --card-foreground: oklch(0.35 0.02 260); /* Dark gray card text */
   --popover: oklch(1 0 0); /* White popover background */
-  --popover-foreground: oklch(0.35 0 0); /* Dark gray popover text */
-  --primary: oklch(0.45 0.15 160); /* Emerald-600 (#059669) */
+  --popover-foreground: oklch(0.35 0.02 260); /* Dark gray popover text */
+  --primary: oklch(0.55 0.18 45); /* Orange-600 primary (#ea580c) */
   --primary-foreground: oklch(1 0 0); /* White text on primary */
-  --secondary: oklch(0.55 0.15 160); /* Emerald-500 (#10b981) */
+  --secondary: oklch(0.62 0.16 45); /* Orange-400 secondary (#f97316) */
   --secondary-foreground: oklch(1 0 0); /* White text on secondary */
-  --muted: oklch(0.97 0 0); /* Light gray muted background */
-  --muted-foreground: oklch(0.4 0 0); /* Medium gray muted text */
-  --accent: oklch(0.55 0.15 160); /* Emerald-500 accent */
+  --muted: oklch(0.96 0.01 260); /* Light gray muted background (#f1f5f9) */
+  --muted-foreground: oklch(0.45 0.02 260); /* Medium gray muted text (#6b7280) */
+  --accent: oklch(0.62 0.16 45); /* Orange-400 accent (#f97316) */
   --accent-foreground: oklch(1 0 0); /* White text on accent */
-  --destructive: oklch(0.55 0.2 35); /* Orange destructive (#ea580c) */
+  --destructive: oklch(0.45 0.22 15); /* Rose destructive (#be123c) */
   --destructive-foreground: oklch(1 0 0); /* White text on destructive */
-  --border: oklch(0.9 0 0); /* Light border (#e5e7eb) */
+  --border: oklch(0.9 0.01 260); /* Light border (#e5e7eb) */
   --input: oklch(1 0 0); /* White input background */
-  --ring: oklch(0.45 0.15 160); /* Emerald focus ring */
-  --chart-1: oklch(0.45 0.15 160); /* Primary chart color */
-  --chart-2: oklch(0.55 0.15 160); /* Secondary chart color */
-  --chart-3: oklch(0.55 0.2 35); /* Tertiary chart color */
-  --chart-4: oklch(0.4 0 0); /* Additional chart color */
-  --chart-5: oklch(0.6 0.2 40); /* Highlight chart color */
-  --radius: 0.5rem; /* 8px border radius */
-  --sidebar: oklch(0.97 0 0); /* Light gray sidebar */
-  --sidebar-foreground: oklch(0.35 0 0); /* Dark gray sidebar text */
-  --sidebar-primary: oklch(0.55 0.15 160); /* Emerald sidebar primary */
+  --ring: oklch(0.55 0.18 45 / 0.5); /* Orange focus ring with transparency */
+  --chart-1: oklch(0.55 0.18 45); /* Primary orange chart color */
+  --chart-2: oklch(0.62 0.16 45); /* Secondary orange chart color */
+  --chart-3: oklch(0.35 0.02 260); /* Dark gray chart color */
+  --chart-4: oklch(0.98 0.02 70); /* Light beige chart color */
+  --chart-5: oklch(1 0 0); /* White chart color */
+  --radius: 0.75rem; /* Increased border radius for modern feel */
+  --sidebar: oklch(1 0 0); /* White sidebar */
+  --sidebar-foreground: oklch(0.35 0.02 260); /* Dark gray sidebar text */
+  --sidebar-primary: oklch(0.55 0.18 45); /* Orange sidebar primary */
   --sidebar-primary-foreground: oklch(1 0 0); /* White sidebar primary text */
-  --sidebar-accent: oklch(0.45 0.15 160); /* Emerald sidebar accent */
+  --sidebar-accent: oklch(0.62 0.16 45); /* Orange sidebar accent */
   --sidebar-accent-foreground: oklch(1 0 0); /* White sidebar accent text */
-  --sidebar-border: oklch(0.9 0 0); /* Light sidebar border */
-  --sidebar-ring: oklch(0.45 0.15 160); /* Emerald sidebar focus ring */
+  --sidebar-border: oklch(0.9 0.01 260); /* Light sidebar border */
+  --sidebar-ring: oklch(0.55 0.18 45 / 0.5); /* Orange sidebar focus ring */
 }
 
 .dark {
-  --background: oklch(0.1 0 0); /* Dark background */
-  --foreground: oklch(0.95 0 0); /* Light text */
-  --card: oklch(0.15 0 0); /* Dark card background */
-  --card-foreground: oklch(0.95 0 0); /* Light card text */
-  --popover: oklch(0.1 0 0); /* Dark popover background */
-  --popover-foreground: oklch(0.95 0 0); /* Light popover text */
-  --primary: oklch(0.55 0.15 160); /* Brighter emerald in dark mode */
-  --primary-foreground: oklch(0.1 0 0); /* Dark text on primary */
-  --secondary: oklch(0.25 0 0); /* Dark secondary */
-  --secondary-foreground: oklch(0.95 0 0); /* Light secondary text */
-  --muted: oklch(0.25 0 0); /* Dark muted background */
-  --muted-foreground: oklch(0.7 0 0); /* Medium light muted text */
-  --accent: oklch(0.25 0 0); /* Dark accent background */
-  --accent-foreground: oklch(0.95 0 0); /* Light accent text */
-  --destructive: oklch(0.4 0.15 25); /* Darker destructive */
-  --destructive-foreground: oklch(0.65 0.25 25); /* Light destructive text */
-  --border: oklch(0.25 0 0); /* Dark border */
-  --input: oklch(0.25 0 0); /* Dark input background */
-  --ring: oklch(0.45 0 0); /* Dark focus ring */
-  --chart-1: oklch(0.5 0.25 265); /* Dark mode chart colors */
-  --chart-2: oklch(0.7 0.17 162);
-  --chart-3: oklch(0.77 0.19 70);
-  --chart-4: oklch(0.63 0.27 304);
-  --chart-5: oklch(0.65 0.25 16);
-  --sidebar: oklch(0.2 0 0); /* Dark sidebar */
-  --sidebar-foreground: oklch(0.95 0 0); /* Light sidebar text */
-  --sidebar-primary: oklch(0.5 0.25 265); /* Dark sidebar primary */
-  --sidebar-primary-foreground: oklch(0.95 0 0); /* Light sidebar primary text */
-  --sidebar-accent: oklch(0.25 0 0); /* Dark sidebar accent */
-  --sidebar-accent-foreground: oklch(0.95 0 0); /* Light sidebar accent text */
-  --sidebar-border: oklch(0.25 0 0); /* Dark sidebar border */
-  --sidebar-ring: oklch(0.45 0 0); /* Dark sidebar focus ring */
+  /* Updated dark mode with warmer orange tones */
+  --background: oklch(0.08 0.01 260); /* Very dark background */
+  --foreground: oklch(0.95 0.01 70); /* Light warm text */
+  --card: oklch(0.12 0.01 260); /* Dark card background */
+  --card-foreground: oklch(0.95 0.01 70); /* Light card text */
+  --popover: oklch(0.08 0.01 260); /* Dark popover background */
+  --popover-foreground: oklch(0.95 0.01 70); /* Light popover text */
+  --primary: oklch(0.65 0.16 45); /* Brighter orange in dark mode */
+  --primary-foreground: oklch(0.08 0.01 260); /* Dark text on primary */
+  --secondary: oklch(0.25 0.02 260); /* Dark secondary */
+  --secondary-foreground: oklch(0.95 0.01 70); /* Light secondary text */
+  --muted: oklch(0.2 0.01 260); /* Dark muted background */
+  --muted-foreground: oklch(0.7 0.01 70); /* Medium light muted text */
+  --accent: oklch(0.25 0.02 260); /* Dark accent background */
+  --accent-foreground: oklch(0.95 0.01 70); /* Light accent text */
+  --destructive: oklch(0.4 0.18 15); /* Darker destructive */
+  --destructive-foreground: oklch(0.65 0.22 15); /* Light destructive text */
+  --border: oklch(0.2 0.01 260); /* Dark border */
+  --input: oklch(0.2 0.01 260); /* Dark input background */
+  --ring: oklch(0.65 0.16 45 / 0.5); /* Orange focus ring in dark mode */
+  --chart-1: oklch(0.65 0.16 45); /* Bright orange chart in dark */
+  --chart-2: oklch(0.7 0.14 45); /* Lighter orange chart */
+  --chart-3: oklch(0.75 0.12 70); /* Warm accent chart */
+  --chart-4: oklch(0.6 0.18 15); /* Rose chart color */
+  --chart-5: oklch(0.8 0.1 45); /* Light orange chart */
+  --sidebar: oklch(0.15 0.01 260); /* Dark sidebar */
+  --sidebar-foreground: oklch(0.95 0.01 70); /* Light sidebar text */
+  --sidebar-primary: oklch(0.65 0.16 45); /* Orange sidebar primary */
+  --sidebar-primary-foreground: oklch(0.08 0.01 260); /* Dark sidebar primary text */
+  --sidebar-accent: oklch(0.25 0.02 260); /* Dark sidebar accent */
+  --sidebar-accent-foreground: oklch(0.95 0.01 70); /* Light sidebar accent text */
+  --sidebar-border: oklch(0.2 0.01 260); /* Dark sidebar border */
+  --sidebar-ring: oklch(0.65 0.16 45 / 0.5); /* Orange sidebar focus ring */
 }
 
 @theme inline {
+  /* Updated font configuration for modern typography */
+  --font-sans: var(--font-source-sans);
+  --font-serif: var(--font-playfair);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -118,6 +125,31 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+  /* Added typography hierarchy with new fonts */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-semibold;
+  }
+  h1 {
+    @apply text-3xl lg:text-4xl;
+  }
+  h2 {
+    @apply text-2xl lg:text-3xl;
+  }
+  h3 {
+    @apply text-xl lg:text-2xl;
+  }
+  /* Enhanced spacing and modern styling */
+  .card {
+    @apply shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200;
   }
 }

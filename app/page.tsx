@@ -1,9 +1,50 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Plus, CreditCard, Home, Car, AlertCircle, CheckCircle, Clock, User, Calendar, FileText } from "lucide-react"
+import { useState, useEffect } from "react"
+import {
+  Plus,
+  CreditCard,
+  Home,
+  Car,
+  AlertCircle,
+  CheckCircle,
+  Clock,
+  User,
+  Calendar,
+  FileText,
+  Shield,
+  Users,
+  Share2,
+  LucideShield as FileShield,
+  Receipt,
+  Compass,
+} from "lucide-react"
+import { useAuth } from "@/contexts/auth-context"
+import { AlertNowButton } from "@/components/alert-now-button"
+import { EncryptionSettings } from "@/components/encryption-settings"
+import { DelegatesSection } from "@/components/delegates-section"
+import { EmailSyncButton } from "@/components/email-sync-button"
+import { SocialMediaSection } from "@/components/social-media-section"
+import { InsuranceSection } from "@/components/insurance-section"
+import { TaxSection } from "@/components/tax-section"
+import { CollapsibleSection } from "@/components/collapsible-section"
+import { WhichPointInfo } from "@/components/whichpoint-info"
+import { GuidedSetup } from "@/components/guided-setup"
 
 export default function AccountCredentialsDashboard() {
+  const { user, logout, isLoading } = useAuth()
+  const [showGuidedSetup, setShowGuidedSetup] = useState(false)
+
+  useEffect(() => {
+    const savedMode = localStorage.getItem("whichpoint-mode")
+    if (savedMode) {
+      // setShowAdvancedMode(savedMode === "advanced")
+    }
+  }, [])
+
   const criticalAccounts = [
     {
       id: 1,
@@ -67,6 +108,17 @@ export default function AccountCredentialsDashboard() {
     },
   ]
 
+  const contactSettings = {
+    reminderFrequency: "weekly",
+    reminderMethod: "both",
+    userEmail: "john@email.com",
+    userPhone: "(555) 123-4567",
+    emergencyContacts: [
+      { name: "Sarah Doe", relationship: "spouse", daysToContact: 3 },
+      { name: "Mike Johnson", relationship: "family", daysToContact: 14 },
+    ],
+  }
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case "active":
@@ -95,16 +147,49 @@ export default function AccountCredentialsDashboard() {
     }
   }
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Please log in to continue.</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <User className="h-8 w-8 text-primary" />
               <h1 className="text-2xl font-bold text-foreground">WhichPoint</h1>
+              <WhichPointInfo />
             </div>
+            <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-lg">
+              <User className="h-4 w-4 text-primary" />
+              <span className="text-sm font-medium text-foreground">{user?.name || "User"}</span>
+              <Button variant="ghost" size="sm" onClick={logout} className="ml-2 h-6 px-2">
+                Logout
+              </Button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
+              <EmailSyncButton />
               <Button variant="outline" size="sm" asChild>
                 <a href="/accounts">
                   <User className="h-4 w-4 mr-2" />
@@ -131,6 +216,15 @@ export default function AccountCredentialsDashboard() {
                 Add Account
               </Button>
             </div>
+
+            <Button
+              size="lg"
+              onClick={() => setShowGuidedSetup(true)}
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold px-6"
+            >
+              <Compass className="h-5 w-5 mr-2" />
+              Walk me through it
+            </Button>
           </div>
         </div>
       </header>
@@ -166,6 +260,71 @@ export default function AccountCredentialsDashboard() {
               <p className="text-xs text-muted-foreground">Essential for daily life</p>
             </CardContent>
           </Card>
+        </div>
+
+        <div className="mb-8 flex justify-center">
+          <AlertNowButton />
+        </div>
+
+        <div className="space-y-4 mb-8">
+          <CollapsibleSection title="Contact Settings" icon={User}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <p className="text-muted-foreground">Reminders</p>
+                  <p className="font-medium capitalize">{contactSettings.reminderFrequency}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Method</p>
+                  <p className="font-medium capitalize">{contactSettings.reminderMethod}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Email</p>
+                  <p className="font-medium">{contactSettings.userEmail}</p>
+                </div>
+                <div>
+                  <p className="text-muted-foreground">Phone</p>
+                  <p className="font-medium">{contactSettings.userPhone}</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-sm font-medium">Emergency Contacts</p>
+                {contactSettings.emergencyContacts.map((contact, index) => (
+                  <div key={index} className="flex justify-between items-center text-sm p-2 bg-muted/50 rounded">
+                    <span>
+                      {contact.name} ({contact.relationship})
+                    </span>
+                    <Badge variant="outline">{contact.daysToContact} days</Badge>
+                  </div>
+                ))}
+              </div>
+
+              <Button variant="outline" className="w-full bg-transparent" asChild>
+                <a href="/settings">Manage Contact Settings</a>
+              </Button>
+            </div>
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Encryption Settings" icon={Shield}>
+            <EncryptionSettings />
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Delegates" icon={Users}>
+            <DelegatesSection />
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Social Media Accounts" icon={Share2}>
+            <SocialMediaSection />
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Insurance Policies" icon={FileShield}>
+            <InsuranceSection />
+          </CollapsibleSection>
+
+          <CollapsibleSection title="Tax Information" icon={Receipt}>
+            <TaxSection />
+          </CollapsibleSection>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -261,6 +420,8 @@ export default function AccountCredentialsDashboard() {
           </div>
         </div>
       </main>
+
+      <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
     </div>
   )
 }
