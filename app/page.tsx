@@ -35,10 +35,12 @@ import { CollapsibleSection } from "@/components/collapsible-section"
 import { WhichPointInfo } from "@/components/whichpoint-info"
 import { GuidedSetup } from "@/components/guided-setup"
 import { NotificationSettings } from "@/components/notification-settings"
+import { SampleReport } from "@/components/sample-report"
 
 export default function AccountCredentialsDashboard() {
   const { user, logout, isLoading } = useAuth()
   const [showGuidedSetup, setShowGuidedSetup] = useState(false)
+  const [showSampleReport, setShowSampleReport] = useState(false)
 
   useEffect(() => {
     const savedMode = localStorage.getItem("whichpoint-mode")
@@ -270,7 +272,16 @@ export default function AccountCredentialsDashboard() {
           </Card>
         </div>
 
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex justify-center space-x-4">
+          <Button
+            variant="outline"
+            size="lg"
+            className="font-semibold py-4 px-8 shadow-md bg-transparent"
+            onClick={() => setShowSampleReport(true)}
+          >
+            <FileText className="h-5 w-5 mr-2" />
+            Preview Sample Report
+          </Button>
           <AlertNowButton />
         </div>
 
@@ -434,6 +445,7 @@ export default function AccountCredentialsDashboard() {
       </main>
 
       <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
+      <SampleReport isOpen={showSampleReport} onClose={() => setShowSampleReport(false)} />
     </div>
   )
 }

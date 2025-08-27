@@ -51,9 +51,9 @@ export function AlertNowButton() {
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-4 px-8 shadow-md relative"
           >
             <div className="flex items-center">
-              <div className="h-0.5 w-3 bg-white mr-2 animate-pulse"></div>
+              <span className="text-white mr-2 text-lg">(((</span>
               <Bell className="h-6 w-6" />
-              <div className="h-0.5 w-3 bg-white ml-2 animate-pulse"></div>
+              <span className="text-white ml-2 text-lg">)))</span>
             </div>
             <span className="ml-3">Alert Contacts</span>
           </Button>

@@ -1,7 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Info, Shield, Users, Zap, X, ChevronLeft, ChevronRight } from "lucide-react"
+import { Info, Shield, Users, Zap, ChevronLeft, ChevronRight } from "lucide-react"
 import { useState, useEffect } from "react"
 
 export function WhichPointInfo() {
@@ -183,12 +183,7 @@ export function WhichPointInfo() {
       </DialogTrigger>
       <DialogContent className="max-w-lg max-h-[70vh]">
         <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold text-primary">{screens[currentScreen].title}</DialogTitle>
-            <Button variant="ghost" size="sm" onClick={handleClose}>
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
+          <DialogTitle className="text-xl font-bold text-primary">{screens[currentScreen].title}</DialogTitle>
         </DialogHeader>
 
         <div className="flex justify-center space-x-2 mb-4">
