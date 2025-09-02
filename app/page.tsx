@@ -36,11 +36,13 @@ import { WhichPointInfo } from "@/components/whichpoint-info"
 import { GuidedSetup } from "@/components/guided-setup"
 import { NotificationSettings } from "@/components/notification-settings"
 import { SampleReport } from "@/components/sample-report"
+import { AuthForms } from "@/components/auth-forms"
 
 export default function AccountCredentialsDashboard() {
   const { user, logout, isLoading } = useAuth()
   const [showGuidedSetup, setShowGuidedSetup] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
+  const [showAuthForms, setShowAuthForms] = useState(false)
 
   useEffect(() => {
     const savedMode = localStorage.getItem("whichpoint-mode")
@@ -163,10 +165,55 @@ export default function AccountCredentialsDashboard() {
   }
 
   if (!user) {
+    if (showAuthForms) {
+      return <AuthForms />
+    }
+
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-muted-foreground">Please log in to continue.</p>
+        <div className="max-w-md w-full mx-auto p-6">
+          <div className="text-center mb-8">
+            <User className="h-12 w-12 text-primary mx-auto mb-4" />
+            <h1 className="text-2xl font-bold text-foreground mb-2">Welcome to WhichPoint</h1>
+            <p className="text-muted-foreground">Manage your accounts and payment schedules</p>
+          </div>
+
+          <div className="space-y-4">
+            <Button
+              className="w-full"
+              size="lg"
+              onClick={() => {
+                // Set a temporary guest user to bypass authentication
+                const guestUser = { name: "Guest User", email: "guest@whichpoint.com" }
+                localStorage.setItem("whichpoint-guest", "true")
+                window.location.reload()
+              }}
+            >
+              Continue as Guest
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">Or</span>
+              </div>
+            </div>
+
+            <Button
+              variant="outline"
+              className="w-full bg-transparent"
+              size="lg"
+              onClick={() => setShowAuthForms(true)}
+            >
+              Sign In / Sign Up
+            </Button>
+          </div>
+
+          <p className="text-xs text-muted-foreground text-center mt-6">
+            Guest mode lets you try WhichPoint without creating an account. Your data won't be saved.
+          </p>
         </div>
       </div>
     )

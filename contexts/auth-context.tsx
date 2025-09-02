@@ -24,6 +24,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    const isGuest = localStorage.getItem("whichpoint-guest")
+    if (isGuest === "true") {
+      setUser({
+        id: "guest",
+        name: "Guest User",
+        email: "guest@whichpoint.com",
+      })
+      setIsLoading(false)
+      return
+    }
+
     // Check for stored user session on mount
     const storedUser = localStorage.getItem("whichpoint-user")
     if (storedUser) {
@@ -46,6 +57,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userData = { id: existingUser.id, name: existingUser.name, email: existingUser.email }
       setUser(userData)
       localStorage.setItem("whichpoint-user", JSON.stringify(userData))
+      localStorage.removeItem("whichpoint-guest")
       setIsLoading(false)
       return true
     }
@@ -83,6 +95,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const userData = { id: newUser.id, name: newUser.name, email: newUser.email }
     setUser(userData)
     localStorage.setItem("whichpoint-user", JSON.stringify(userData))
+    localStorage.removeItem("whichpoint-guest")
 
     setIsLoading(false)
     return true
@@ -91,6 +104,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = () => {
     setUser(null)
     localStorage.removeItem("whichpoint-user")
+    localStorage.removeItem("whichpoint-guest")
   }
 
   return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>

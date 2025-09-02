@@ -89,32 +89,32 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
 
   const renderExplanationScreen = () => (
     <Card className="border-primary/20 flex-1 flex flex-col">
-      <CardHeader className="text-center pb-4">
-        <div className="mx-auto w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-3">
-          <MessageCircle className="h-6 w-6 text-primary" />
+      <CardHeader className="text-center pb-2">
+        <div className="mx-auto w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+          <MessageCircle className="h-5 w-5 text-primary" />
         </div>
-        <CardTitle className="text-xl">Welcome to WhichPoint Setup</CardTitle>
-        <p className="text-sm text-muted-foreground">Let's get you organized in just a few minutes</p>
+        <CardTitle className="text-lg">Welcome to WhichPoint Setup</CardTitle>
+        <p className="text-xs text-muted-foreground">Let's get you organized in just a few minutes</p>
       </CardHeader>
-      <CardContent className="space-y-4 flex-1 flex flex-col justify-center">
-        <div className="space-y-3 text-center">
-          <div className="bg-primary/5 p-4 rounded-lg">
-            <h3 className="font-semibold text-base mb-2">Here's how this works:</h3>
-            <div className="space-y-2 text-left text-sm">
+      <CardContent className="space-y-3 flex-1 flex flex-col justify-center">
+        <div className="space-y-2 text-center">
+          <div className="bg-primary/5 p-3 rounded-lg">
+            <h3 className="font-semibold text-sm mb-2">Here's how this works:</h3>
+            <div className="space-y-1.5 text-left text-xs">
               <div className="flex items-start space-x-2">
-                <div className="w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
+                <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                   1
                 </div>
                 <p>We'll ask about your most important accounts across 6 categories</p>
               </div>
               <div className="flex items-start space-x-2">
-                <div className="w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
+                <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                   2
                 </div>
                 <p>Talk to us naturally - like you're explaining to a friend</p>
               </div>
               <div className="flex items-start space-x-2">
-                <div className="w-5 h-5 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
+                <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                   3
                 </div>
                 <p>We'll parse your information and organize it for you</p>
@@ -122,7 +122,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
             </div>
           </div>
 
-          <div className="bg-muted/50 p-3 rounded-lg">
+          <div className="bg-muted/50 p-2 rounded-lg">
             <p className="text-xs text-muted-foreground">
               <strong>Remember:</strong> You don't need to share sensitive information like passwords or account
               numbers. Just tell us what accounts you have and we'll help you keep track of them.
