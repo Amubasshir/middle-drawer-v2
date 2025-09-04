@@ -30,7 +30,7 @@ export function WhichPointInfo() {
   }
 
   const nextScreen = () => {
-    if (currentScreen < 3) setCurrentScreen(currentScreen + 1)
+    if (currentScreen < 4) setCurrentScreen(currentScreen + 1)
   }
 
   const prevScreen = () => {
@@ -96,6 +96,43 @@ export function WhichPointInfo() {
                 <h4 className="font-semibold text-sm">Automated Text Message</h4>
                 <p className="text-xs text-muted-foreground">
                   Most secure - respond 'Yes' to automated SMS verification
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Optional Cognitive Tracking",
+      content: (
+        <div className="space-y-4">
+          <p className="font-semibold mb-3">WhichPoint can optionally include non-invasive cognitive tracking:</p>
+          <div className="space-y-3">
+            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+              <div>
+                <h4 className="font-semibold text-sm">Simple Puzzles & Games</h4>
+                <p className="text-xs text-muted-foreground">
+                  Optional activities to track vision, reaction timing, and memory changes
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+              <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+              <div>
+                <h4 className="font-semibold text-sm">Delegate Awareness</h4>
+                <p className="text-xs text-muted-foreground">
+                  Your delegates can be made aware of any significant changes in cognitive patterns
+                </p>
+              </div>
+            </div>
+            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
+              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+              <div>
+                <h4 className="font-semibold text-sm">Completely Optional</h4>
+                <p className="text-xs text-muted-foreground">
+                  This is not a clinical or diagnostic tool - only opt-in if you find it helpful
                 </p>
               </div>
             </div>
@@ -203,7 +240,7 @@ export function WhichPointInfo() {
               <ChevronLeft className="h-4 w-4 mr-1" />
               Back
             </Button>
-            {currentScreen < 3 ? (
+            {currentScreen < 4 ? (
               <Button size="sm" onClick={nextScreen}>
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -212,12 +249,12 @@ export function WhichPointInfo() {
           </div>
 
           <div className="flex space-x-2">
-            {currentScreen === 3 && (
+            {currentScreen === 4 && (
               <Button variant="outline" onClick={handleDontShowAgain}>
                 Don't show again
               </Button>
             )}
-            <Button onClick={handleClose}>{currentScreen === 3 ? "Got it!" : "Skip"}</Button>
+            <Button onClick={handleClose}>{currentScreen === 4 ? "Got it!" : "Skip"}</Button>
           </div>
         </div>
       </DialogContent>

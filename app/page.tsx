@@ -274,6 +274,34 @@ export default function AccountCredentialsDashboard() {
 
       <div className="border-b border-border bg-card/50">
         <div className="container mx-auto px-4 py-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-center mb-4 text-foreground">Why use WhichPoint?</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+              <div className="text-center p-4 bg-muted/30 rounded-lg">
+                <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+                <h3 className="font-semibold mb-2">For Families</h3>
+                <p className="text-sm text-muted-foreground">
+                  Keep all accounts accessible when life changes occur - buying a car, starting school, or major
+                  transitions
+                </p>
+              </div>
+              <div className="text-center p-4 bg-muted/30 rounded-lg">
+                <Compass className="h-8 w-8 text-primary mx-auto mb-2" />
+                <h3 className="font-semibold mb-2">For Travelers</h3>
+                <p className="text-sm text-muted-foreground">
+                  Stay protected when you might be unavailable or lose phone/internet access during trips
+                </p>
+              </div>
+              <div className="text-center p-4 bg-muted/30 rounded-lg">
+                <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                <h3 className="font-semibold mb-2">For Retirement</h3>
+                <p className="text-sm text-muted-foreground">
+                  Manage accounts and passwords safely while ensuring protection from scams and fraud as you age
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="text-center mb-4">
             <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
               <CheckCircle className="h-4 w-4" />
