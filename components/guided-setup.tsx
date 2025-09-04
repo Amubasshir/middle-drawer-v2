@@ -128,6 +128,14 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
               numbers. Just tell us what accounts you have and we'll help you keep track of them.
             </p>
           </div>
+
+          <div className="bg-secondary/20 p-2 rounded-lg border border-secondary/30">
+            <p className="text-xs text-muted-foreground">
+              <strong>Optional:</strong> You can also add a section to briefly check how your brain is doing with a
+              simple game. Although it is in no way a diagnostic or clinical tool, you can have a very simple game be
+              incorporated in your "check-ins" with WhichPoint to help track your cognitive wellness over time.
+            </p>
+          </div>
         </div>
       </CardContent>
     </Card>

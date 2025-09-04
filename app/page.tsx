@@ -24,7 +24,6 @@ import {
   Bell,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
-import { AlertNowButton } from "@/components/alert-now-button"
 import { EncryptionSettings } from "@/components/encryption-settings"
 import { DelegatesSection } from "@/components/delegates-section"
 import { EmailSyncButton } from "@/components/email-sync-button"
@@ -43,6 +42,8 @@ export default function AccountCredentialsDashboard() {
   const [showGuidedSetup, setShowGuidedSetup] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
   const [showAuthForms, setShowAuthForms] = useState(false)
+
+  const presetDays = 14 // This would come from user settings
 
   useEffect(() => {
     const savedMode = localStorage.getItem("whichpoint-mode")
@@ -273,7 +274,17 @@ export default function AccountCredentialsDashboard() {
 
       <div className="border-b border-border bg-card/50">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex justify-center">
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
+              <CheckCircle className="h-4 w-4" />
+              <span>
+                Everything looks complete! If WhichPoint doesn't hear from you in {presetDays} days, your delegates will
+                be contacted.
+              </span>
+            </div>
+          </div>
+
+          <div className="flex justify-center space-x-4">
             <Button
               size="lg"
               onClick={() => setShowGuidedSetup(true)}
@@ -281,6 +292,19 @@ export default function AccountCredentialsDashboard() {
             >
               <Compass className="h-6 w-6 mr-3" />
               Walk me through it
+            </Button>
+
+            <Button
+              size="lg"
+              variant="outline"
+              className="font-bold px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent"
+            >
+              <div className="flex items-center">
+                <span className="text-primary animate-pulse mr-2">((( </span>
+                <Bell className="h-5 w-5 text-primary" />
+                <span className="text-primary animate-pulse ml-2"> )))</span>
+                <span className="ml-3">Inform Delegates Now</span>
+              </div>
             </Button>
           </div>
         </div>
@@ -317,19 +341,6 @@ export default function AccountCredentialsDashboard() {
               <p className="text-xs text-muted-foreground">Essential for daily life</p>
             </CardContent>
           </Card>
-        </div>
-
-        <div className="mb-8 flex justify-center space-x-4">
-          <Button
-            variant="outline"
-            size="lg"
-            className="font-semibold py-4 px-8 shadow-md bg-transparent"
-            onClick={() => setShowSampleReport(true)}
-          >
-            <FileText className="h-5 w-5 mr-2" />
-            Preview Sample Report
-          </Button>
-          <AlertNowButton />
         </div>
 
         <div className="space-y-4 mb-8">
@@ -490,6 +501,20 @@ export default function AccountCredentialsDashboard() {
           </div>
         </div>
       </main>
+
+      <div className="mt-12 pt-8 border-t border-border">
+        <div className="flex justify-center">
+          <Button
+            variant="outline"
+            size="lg"
+            className="font-semibold py-4 px-8 shadow-md bg-transparent"
+            onClick={() => setShowSampleReport(true)}
+          >
+            <FileText className="h-5 w-5 mr-2" />
+            Preview Sample Report
+          </Button>
+        </div>
+      </div>
 
       <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
       <SampleReport isOpen={showSampleReport} onClose={() => setShowSampleReport(false)} />
