@@ -184,8 +184,6 @@ export default function AccountCredentialsDashboard() {
               className="w-full"
               size="lg"
               onClick={() => {
-                // Set a temporary guest user to bypass authentication
-                const guestUser = { name: "Guest User", email: "guest@whichpoint.com" }
                 localStorage.setItem("whichpoint-guest", "true")
                 window.location.reload()
               }}
@@ -224,11 +222,13 @@ export default function AccountCredentialsDashboard() {
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-4">
             <div className="flex items-center space-x-2">
               <User className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold text-foreground">WhichPoint</h1>
-              <WhichPointInfo />
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">WhichPoint</h1>
+                <p className="text-lg font-medium text-primary/80 -mt-1">Your reliable digital neighbor</p>
+              </div>
             </div>
             <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-lg">
               <User className="h-4 w-4 text-primary" />
@@ -239,43 +239,63 @@ export default function AccountCredentialsDashboard() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <EmailSyncButton />
-              <Button variant="outline" size="sm" asChild>
-                <a href="/accounts">
-                  <User className="h-4 w-4 mr-2" />
-                  Manage Accounts
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <a href="/schedules">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Payment Schedules
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <a href="/notes">
-                  <FileText className="h-4 w-4 mr-2" />
-                  Personal Notes
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" asChild>
-                <a href="/settings">Settings</a>
-              </Button>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Account
-              </Button>
-            </div>
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+            <EmailSyncButton />
+            <Button variant="outline" size="sm" className="justify-start bg-transparent" asChild>
+              <a href="/accounts">
+                <User className="h-4 w-4 mr-2" />
+                Manage Accounts
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent" asChild>
+              <a href="/schedules">
+                <Calendar className="h-4 w-4 mr-2" />
+                Payment Schedules
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent" asChild>
+              <a href="/notes">
+                <FileText className="h-4 w-4 mr-2" />
+                Personal Notes
+              </a>
+            </Button>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent" asChild>
+              <a href="/settings">Settings</a>
+            </Button>
+            <Button size="sm" className="justify-start">
+              <Plus className="h-4 w-4 mr-2" />
+              Add Account
+            </Button>
           </div>
         </div>
       </header>
 
+      <div className="border-b border-border bg-green-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="text-center">
+            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-medium">
+              <CheckCircle className="h-4 w-4" />
+              <span>
+                Everything looks complete! If WhichPoint doesn't hear from you in {presetDays} days, your delegates will
+                be contacted.
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="border-b border-border bg-card/50">
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
-            <h2 className="text-xl font-semibold text-center mb-4 text-foreground">Why use WhichPoint?</h2>
+            <div className="flex items-center justify-center space-x-2 mb-4">
+              <h2 className="text-xl font-semibold text-center text-foreground">Why use WhichPoint?</h2>
+              <WhichPointInfo />
+            </div>
+            <p className="text-center text-muted-foreground mb-6 max-w-3xl mx-auto">
+              WhichPoint acts as your independent safety net, ensuring your accounts and digital footprint remain secure
+              and accessible. It organizes your credentials, tracks payment schedules, and connects trusted delegates
+              who can help when you need it most.
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
               <div className="text-center p-4 bg-muted/30 rounded-lg">
                 <Users className="h-8 w-8 text-primary mx-auto mb-2" />
@@ -302,38 +322,30 @@ export default function AccountCredentialsDashboard() {
             </div>
           </div>
 
-          <div className="text-center mb-4">
-            <div className="inline-flex items-center space-x-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium">
-              <CheckCircle className="h-4 w-4" />
-              <span>
-                Everything looks complete! If WhichPoint doesn't hear from you in {presetDays} days, your delegates will
-                be contacted.
-              </span>
+          <div className="bg-card border border-border rounded-lg p-6 max-w-md mx-auto">
+            <div className="flex flex-col space-y-4">
+              <Button
+                size="lg"
+                onClick={() => setShowGuidedSetup(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200 w-full"
+              >
+                <Compass className="h-6 w-6 mr-3" />
+                Walk me through it
+              </Button>
+
+              <Button
+                size="lg"
+                variant="outline"
+                className="font-bold px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent w-full"
+              >
+                <div className="flex items-center justify-center">
+                  <span className="text-primary animate-pulse mr-2">((( </span>
+                  <Bell className="h-5 w-5 text-primary" />
+                  <span className="text-primary animate-pulse ml-2"> )))</span>
+                  <span className="ml-3">Inform Delegates Now</span>
+                </div>
+              </Button>
             </div>
-          </div>
-
-          <div className="flex justify-center space-x-4">
-            <Button
-              size="lg"
-              onClick={() => setShowGuidedSetup(true)}
-              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              <Compass className="h-6 w-6 mr-3" />
-              Walk me through it
-            </Button>
-
-            <Button
-              size="lg"
-              variant="outline"
-              className="font-bold px-8 py-4 text-lg shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent"
-            >
-              <div className="flex items-center">
-                <span className="text-primary animate-pulse mr-2">((( </span>
-                <Bell className="h-5 w-5 text-primary" />
-                <span className="text-primary animate-pulse ml-2"> )))</span>
-                <span className="ml-3">Inform Delegates Now</span>
-              </div>
-            </Button>
           </div>
         </div>
       </div>

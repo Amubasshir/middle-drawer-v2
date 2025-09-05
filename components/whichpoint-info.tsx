@@ -30,7 +30,7 @@ export function WhichPointInfo() {
   }
 
   const nextScreen = () => {
-    if (currentScreen < 4) setCurrentScreen(currentScreen + 1)
+    if (currentScreen < 2) setCurrentScreen(currentScreen + 1)
   }
 
   const prevScreen = () => {
@@ -41,16 +41,16 @@ export function WhichPointInfo() {
     {
       title: "Welcome to WhichPoint",
       content: (
-        <div className="space-y-4">
-          <p>
+        <div className="space-y-3">
+          <p className="text-sm">
             <strong>WhichPoint</strong> is designed for individuals who manage a complex digital footprint and need a
             reliable system to remember what matters most.
           </p>
-          <p>
+          <p className="text-sm">
             If you've ever forgotten a password, missed a payment, or lost track of an important account, WhichPoint is
             for you.
           </p>
-          <p>
+          <p className="text-sm">
             In today's digital world, keeping track of accounts, credentials, payment schedules, and responsibilities
             requires a new platform and framework.
           </p>
@@ -58,150 +58,65 @@ export function WhichPointInfo() {
       ),
     },
     {
-      title: "Activity Verification Methods",
+      title: "Activity Verification & Cognitive Tracking",
       content: (
-        <div className="space-y-4">
-          <p className="font-semibold mb-3">
-            WhichPoint offers multiple ways to verify you're actively using your account:
+        <div className="space-y-3">
+          <div>
+            <p className="font-semibold text-sm mb-2">Verification Methods:</p>
+            <div className="space-y-2">
+              <div className="flex items-start space-x-2 p-2 bg-muted/30 rounded text-xs">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-1.5"></div>
+                <div>
+                  <span className="font-medium">Email Passphrase</span> - Least secure
+                </div>
+              </div>
+              <div className="flex items-start space-x-2 p-2 bg-muted/30 rounded text-xs">
+                <div className="w-1.5 h-1.5 bg-green-500 rounded-full mt-1.5"></div>
+                <div>
+                  <span className="font-medium">SMS Verification</span> - Most secure
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p className="font-semibold text-sm mb-2">Optional Cognitive Tracking:</p>
+            <p className="text-xs text-muted-foreground">
+              Non-invasive puzzles to track vision, reaction timing, and memory changes. Completely optional and not a
+              clinical tool.
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: "Your Digital Safety Net",
+      content: (
+        <div className="space-y-3">
+          <p className="font-semibold text-sm mb-2">
+            WhichPoint acts as an independent safety net to ensure your accounts and digital footprint remain secure:
           </p>
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-red-500 rounded-full mt-2"></div>
+          <div className="space-y-2">
+            <div className="flex items-start space-x-2 p-2 bg-muted/30 rounded">
+              <Shield className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold text-sm">Email with Secure Passphrase</h4>
+                <h4 className="font-semibold text-sm">Privacy First</h4>
                 <p className="text-xs text-muted-foreground">
-                  Least secure - respond to email with your unique passphrase
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Application Notification</h4>
-                <p className="text-xs text-muted-foreground">
-                  Click 'Yes' on push notifications from the WhichPoint app
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Email Reminder Confirmation</h4>
-                <p className="text-xs text-muted-foreground">Click 'Yes' link in scheduled email reminders</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Automated Text Message</h4>
-                <p className="text-xs text-muted-foreground">
-                  Most secure - respond 'Yes' to automated SMS verification
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Optional Cognitive Tracking",
-      content: (
-        <div className="space-y-4">
-          <p className="font-semibold mb-3">WhichPoint can optionally include non-invasive cognitive tracking:</p>
-          <div className="space-y-3">
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Simple Puzzles & Games</h4>
-                <p className="text-xs text-muted-foreground">
-                  Optional activities to track vision, reaction timing, and memory changes
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Delegate Awareness</h4>
-                <p className="text-xs text-muted-foreground">
-                  Your delegates can be made aware of any significant changes in cognitive patterns
-                </p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <div className="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
-              <div>
-                <h4 className="font-semibold text-sm">Completely Optional</h4>
-                <p className="text-xs text-muted-foreground">
-                  This is not a clinical or diagnostic tool - only opt-in if you find it helpful
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Key Features",
-      content: (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Shield className="h-6 w-6 text-primary mt-1" />
-              <div>
-                <h4 className="font-semibold mb-1">Privacy First</h4>
-                <p className="text-sm text-muted-foreground">
                   You control what information to share. No sensitive data required.
                 </p>
               </div>
             </div>
-
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Users className="h-6 w-6 text-primary mt-1" />
+            <div className="flex items-start space-x-2 p-2 bg-muted/30 rounded">
+              <Users className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold mb-1">Fully Customizable</h4>
-                <p className="text-sm text-muted-foreground">Choose who to contact, how often, and how aggressively.</p>
+                <h4 className="font-semibold text-sm">Fully Customizable</h4>
+                <p className="text-xs text-muted-foreground">Choose who to contact, how often, and how aggressively.</p>
               </div>
             </div>
-
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Zap className="h-6 w-6 text-primary mt-1" />
+            <div className="flex items-start space-x-2 p-2 bg-muted/30 rounded">
+              <Zap className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <h4 className="font-semibold mb-1">You're in Control</h4>
-                <p className="text-sm text-muted-foreground">You decide when and how your contacts are notified.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Your Privacy & Control",
-      content: (
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Shield className="h-6 w-6 text-primary mt-1" />
-              <div>
-                <h4 className="font-semibold mb-1">Privacy First</h4>
-                <p className="text-sm text-muted-foreground">
-                  You control what information to share. No sensitive data required.
-                </p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Users className="h-6 w-6 text-primary mt-1" />
-              <div>
-                <h4 className="font-semibold mb-1">Fully Customizable</h4>
-                <p className="text-sm text-muted-foreground">Choose who to contact, how often, and how aggressively.</p>
-              </div>
-            </div>
-
-            <div className="flex items-start space-x-3 p-3 bg-muted/30 rounded-lg">
-              <Zap className="h-6 w-6 text-primary mt-1" />
-              <div>
-                <h4 className="font-semibold mb-1">You're in Control</h4>
-                <p className="text-sm text-muted-foreground">You decide when and how your contacts are notified.</p>
+                <h4 className="font-semibold text-sm">You're in Control</h4>
+                <p className="text-xs text-muted-foreground">You decide when and how your contacts are notified.</p>
               </div>
             </div>
           </div>
@@ -218,12 +133,12 @@ export function WhichPointInfo() {
           What is WhichPoint?
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-lg max-h-[70vh]">
+      <DialogContent className="max-w-md max-h-[85vh] mx-4">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary">{screens[currentScreen].title}</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-primary">{screens[currentScreen].title}</DialogTitle>
         </DialogHeader>
 
-        <div className="flex justify-center space-x-2 mb-4">
+        <div className="flex justify-center space-x-2 mb-3">
           {screens.map((_, index) => (
             <div
               key={index}
@@ -232,15 +147,15 @@ export function WhichPointInfo() {
           ))}
         </div>
 
-        <div className="text-base leading-relaxed">{screens[currentScreen].content}</div>
+        <div className="text-sm leading-relaxed overflow-y-auto flex-1">{screens[currentScreen].content}</div>
 
-        <div className="flex justify-between items-center pt-4 border-t">
+        <div className="flex justify-between items-center pt-3 border-t">
           <div className="flex space-x-2">
             <Button variant="outline" size="sm" onClick={prevScreen} disabled={currentScreen === 0}>
               <ChevronLeft className="h-4 w-4 mr-1" />
               Back
             </Button>
-            {currentScreen < 4 ? (
+            {currentScreen < 2 ? (
               <Button size="sm" onClick={nextScreen}>
                 Next
                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -249,12 +164,12 @@ export function WhichPointInfo() {
           </div>
 
           <div className="flex space-x-2">
-            {currentScreen === 4 && (
+            {currentScreen === 2 && (
               <Button variant="outline" onClick={handleDontShowAgain}>
                 Don't show again
               </Button>
             )}
-            <Button onClick={handleClose}>{currentScreen === 4 ? "Got it!" : "Skip"}</Button>
+            <Button onClick={handleClose}>{currentScreen === 2 ? "Got it!" : "Skip"}</Button>
           </div>
         </div>
       </DialogContent>
