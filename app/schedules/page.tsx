@@ -1,11 +1,10 @@
 "use client"
 
-import { ContactSettings } from "@/components/contact-settings"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Settings } from "lucide-react"
+import { ArrowLeft, Calendar } from "lucide-react"
 import Link from "next/link"
 
-export default function SettingsPage() {
+export default function SchedulesPage() {
   return (
     <div className="min-h-screen bg-background">
       <header className="border-b border-border bg-card">
@@ -19,8 +18,8 @@ export default function SettingsPage() {
                 </Button>
               </Link>
               <div className="flex items-center space-x-2">
-                <Settings className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-bold">Settings</h1>
+                <Calendar className="h-6 w-6 text-primary" />
+                <h1 className="text-xl font-bold">Payment Schedules</h1>
               </div>
             </div>
           </div>
@@ -30,11 +29,15 @@ export default function SettingsPage() {
       <div className="container mx-auto py-8 px-4">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground">Settings</h1>
-            <p className="text-muted-foreground mt-2">Configure your Middle Drawer preferences and contact settings</p>
+            <h1 className="text-3xl font-bold text-foreground">Payment Schedules</h1>
+            <p className="text-muted-foreground mt-2">Manage when your bills and payments are due</p>
           </div>
 
-          <ContactSettings />
+          <div className="text-center py-12">
+            <Calendar className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-foreground mb-2">Payment Schedules Coming Soon</h2>
+            <p className="text-muted-foreground">This feature is currently under development.</p>
+          </div>
         </div>
       </div>
     </div>

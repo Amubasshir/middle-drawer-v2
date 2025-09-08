@@ -24,20 +24,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
+    console.log("[v0] AuthProvider initializing...")
     const isGuest = localStorage.getItem("whichpoint-guest")
+    const storedUser = localStorage.getItem("whichpoint-user")
+
+    console.log("[v0] Guest mode flag:", isGuest)
+    console.log("[v0] Stored user:", storedUser)
+
     if (isGuest === "true") {
+      console.log("[v0] Setting guest user")
       setUser({
         id: "guest",
         name: "Guest User",
-        email: "guest@whichpoint.com",
+        email: "guest@middledrawer.com",
       })
       setIsLoading(false)
       return
     }
 
     // Check for stored user session on mount
-    const storedUser = localStorage.getItem("whichpoint-user")
     if (storedUser) {
+      console.log("[v0] Setting stored user")
       setUser(JSON.parse(storedUser))
     }
     setIsLoading(false)
@@ -102,9 +109,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const logout = () => {
+    console.log("[v0] Logging out user")
     setUser(null)
     localStorage.removeItem("whichpoint-user")
     localStorage.removeItem("whichpoint-guest")
+    window.location.href = "/"
   }
 
   return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>

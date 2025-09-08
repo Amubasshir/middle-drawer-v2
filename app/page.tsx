@@ -171,6 +171,8 @@ export default function AccountCredentialsDashboard() {
   }
 
   if (!user) {
+    console.log("[v0] No user found, showing auth screen")
+
     if (showAuthForms) {
       return <AuthForms />
     }
@@ -189,7 +191,9 @@ export default function AccountCredentialsDashboard() {
               className="w-full text-lg py-6"
               size="lg"
               onClick={() => {
+                console.log("[v0] Setting guest mode")
                 localStorage.setItem("whichpoint-guest", "true")
+                localStorage.removeItem("whichpoint-user")
                 window.location.reload()
               }}
             >
