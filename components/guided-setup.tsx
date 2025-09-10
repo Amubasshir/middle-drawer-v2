@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CreditCard, Shield, Receipt, Car, Home, Smartphone, MessageCircle } from "lucide-react"
+import { CreditCard, Shield, Receipt, Car, Home, Smartphone, MessageCircle, Users } from "lucide-react"
 
 interface GuidedSetupProps {
   isOpen: boolean
@@ -17,7 +17,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [responses, setResponses] = useState<Record<string, string>>({})
 
-  const totalSteps = 7 // 1 explanation + 6 categories
+  const totalSteps = 8 // Updated to 8 steps to include new Doctors/Lawyers/Personnel section
 
   const categories = [
     {
@@ -62,6 +62,14 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
       description: "Phone, streaming, software, memberships",
       placeholder: "e.g., Verizon phone, Netflix, Spotify, gym membership...",
     },
+    {
+      id: "professionals",
+      title: "Doctors, Lawyers & Personnel",
+      icon: Users,
+      description: "Healthcare providers, legal counsel, financial advisors, contractors",
+      placeholder:
+        "e.g., Dr. Smith (primary care), Johnson Law Firm, financial advisor at Merrill Lynch, house cleaner...",
+    },
   ]
 
   const handleInputChange = (categoryId: string, value: string) => {
@@ -93,7 +101,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
         <div className="mx-auto w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mb-2">
           <MessageCircle className="h-5 w-5 text-primary" />
         </div>
-        <CardTitle className="text-lg">Welcome to WhichPoint Setup</CardTitle>
+        <CardTitle className="text-lg">Welcome to Middle Drawer Setup</CardTitle>
         <p className="text-xs text-muted-foreground">Let's get you organized in just a few minutes</p>
       </CardHeader>
       <CardContent className="space-y-3 flex-1 flex flex-col justify-center">
@@ -105,7 +113,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
                 <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                   1
                 </div>
-                <p>We'll ask about your most important accounts across 6 categories</p>
+                <p>We'll ask about your most important accounts across 7 categories</p>
               </div>
               <div className="flex items-start space-x-2">
                 <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
@@ -133,7 +141,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
             <p className="text-xs text-muted-foreground">
               <strong>Optional:</strong> You can also add a section to briefly check how your brain is doing with a
               simple game. Although it is in no way a diagnostic or clinical tool, you can have a very simple game be
-              incorporated in your "check-ins" with WhichPoint to help track your cognitive wellness over time.
+              incorporated in your "check-ins" with Middle Drawer to help track your cognitive wellness over time.
             </p>
           </div>
         </div>
@@ -182,7 +190,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[85vh] h-[85vh] flex flex-col">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-center mb-3">Let's Set Up Your WhichPoint</DialogTitle>
+          <DialogTitle className="text-xl font-bold text-center mb-3">Let's Set Up Your Middle Drawer</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 flex-1 flex flex-col">

@@ -98,7 +98,7 @@ export function NotificationSettings() {
                 <Bell className="h-4 w-4" />
                 <Label className="font-medium">Application Notification</Label>
               </div>
-              <p className="text-sm text-muted-foreground">Click 'Yes' on push notifications from WhichPoint app</p>
+              <p className="text-sm text-muted-foreground">Click 'Yes' on push notifications from Middle Drawer app</p>
               {settings.appNotification.enabled && (
                 <Select
                   value={settings.appNotification.frequency}

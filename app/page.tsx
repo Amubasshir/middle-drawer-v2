@@ -235,44 +235,57 @@ export default function AccountCredentialsDashboard() {
             <div className="flex items-center space-x-2">
               <User className="h-8 w-8 text-primary" />
               <div>
-                <h1 className="text-4xl font-bold text-foreground">Middle Drawer</h1>
-                <p className="text-xl font-medium text-primary/80 -mt-1 italic">So They Know</p>
+                <h1 className="text-5xl font-bold text-foreground">Middle Drawer</h1>
+                <p className="text-2xl font-medium text-primary/80 -mt-1 italic">So They Know</p>
               </div>
             </div>
             <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-lg">
               <User className="h-4 w-4 text-primary" />
-              <span className="text-lg font-medium text-foreground">{user?.name || "User"}</span>
-              <Button variant="ghost" size="sm" onClick={logout} className="ml-2 h-6 px-2 text-lg">
+              <span className="text-xl font-medium text-foreground">{user?.name || "User"}</span>
+              <Button variant="ghost" size="sm" onClick={logout} className="ml-2 h-6 px-2 text-xl">
                 Logout
+              </Button>
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <div className="flex justify-center">
+              <Button
+                size="lg"
+                onClick={() => setShowGuidedSetup(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-3xl shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <Compass className="h-8 w-8 mr-3" />
+                Walk me through it
               </Button>
             </div>
           </div>
 
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-4">
             <EmailSyncButton />
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-lg py-3" asChild>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
               <a href="/accounts">
-                <User className="h-5 w-5 mr-2" />
+                <User className="h-6 w-6 mr-2" />
                 Manage Accounts
               </a>
             </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-lg py-3" asChild>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
               <a href="/schedules">
-                <Calendar className="h-5 w-5 mr-2" />
+                <Calendar className="h-6 w-6 mr-2" />
                 Payment Schedules
               </a>
             </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-lg py-3" asChild>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
               <a href="/notes">
-                <FileText className="h-5 w-5 mr-2" />
+                <FileText className="h-6 w-6 mr-2" />
                 Personal Notes
               </a>
             </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-lg py-3" asChild>
+            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
               <a href="/settings">Settings</a>
             </Button>
-            <Button size="sm" className="justify-start text-lg py-3">
-              <Plus className="h-5 w-5 mr-2" />
+            <Button size="sm" className="justify-start text-xl py-4">
+              <Plus className="h-6 w-6 mr-2" />
               Add Account
             </Button>
           </div>
@@ -297,10 +310,10 @@ export default function AccountCredentialsDashboard() {
         <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
             <div className="flex items-center justify-center space-x-2 mb-4">
-              <h2 className="text-3xl font-semibold text-center text-foreground">Why use Middle Drawer?</h2>
+              <h2 className="text-4xl font-semibold text-center text-foreground">Why use Middle Drawer?</h2>
               <WhichPointInfo />
             </div>
-            <p className="text-center text-muted-foreground mb-6 max-w-3xl mx-auto text-xl leading-relaxed">
+            <p className="text-center text-muted-foreground mb-6 max-w-3xl mx-auto text-2xl leading-relaxed">
               Middle Drawer is the first brain health-centric financial and account platform, developed with
               consideration for how everyone can benefit. It acts as your independent safety net, ensuring your accounts
               and digital footprint remain secure and accessible while monitoring cognitive wellness. It organizes your
@@ -308,24 +321,24 @@ export default function AccountCredentialsDashboard() {
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="text-center p-6 bg-muted/30 rounded-lg">
-                <Users className="h-10 w-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-xl">For Families</h3>
-                <p className="text-lg text-muted-foreground">
+                <Users className="h-12 w-12 text-primary mx-auto mb-3" />
+                <h3 className="font-semibold mb-3 text-2xl">For Families</h3>
+                <p className="text-xl text-muted-foreground">
                   Keep all accounts accessible when life changes occur - buying a car, starting school, or major
                   transitions
                 </p>
               </div>
               <div className="text-center p-6 bg-muted/30 rounded-lg">
-                <Compass className="h-10 w-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-xl">For Travelers</h3>
-                <p className="text-lg text-muted-foreground">
+                <Compass className="h-12 w-12 text-primary mx-auto mb-3" />
+                <h3 className="font-semibold mb-3 text-2xl">For Travelers</h3>
+                <p className="text-xl text-muted-foreground">
                   Stay protected when you might be unavailable or lose phone/internet access during trips
                 </p>
               </div>
               <div className="text-center p-6 bg-muted/30 rounded-lg">
-                <Shield className="h-10 w-10 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-xl">For Retirement</h3>
-                <p className="text-lg text-muted-foreground">
+                <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
+                <h3 className="font-semibold mb-3 text-2xl">For Retirement</h3>
+                <p className="text-xl text-muted-foreground">
                   Manage accounts and passwords safely while ensuring protection from scams and fraud as you age
                 </p>
               </div>
@@ -334,15 +347,6 @@ export default function AccountCredentialsDashboard() {
 
           <div className="bg-card border border-border rounded-lg p-8 max-w-md mx-auto">
             <div className="flex flex-col space-y-6">
-              <Button
-                size="lg"
-                onClick={() => setShowGuidedSetup(true)}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 w-full"
-              >
-                <Compass className="h-7 w-7 mr-3" />
-                Walk me through it
-              </Button>
-
               <Button
                 size="lg"
                 variant="outline"
@@ -396,7 +400,7 @@ export default function AccountCredentialsDashboard() {
         <div className="space-y-4 mb-8">
           <CollapsibleSection title="Contact Settings" icon={User}>
             <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-lg">
+              <div className="grid grid-cols-2 gap-4 text-xl">
                 <div>
                   <p className="text-muted-foreground">Reminders</p>
                   <p className="font-medium capitalize">{contactSettings.reminderFrequency}</p>
@@ -416,9 +420,9 @@ export default function AccountCredentialsDashboard() {
               </div>
 
               <div className="space-y-2">
-                <p className="text-lg font-medium">Emergency Contacts</p>
+                <p className="text-xl font-medium">Emergency Contacts</p>
                 {contactSettings.emergencyContacts.map((contact, index) => (
-                  <div key={index} className="flex justify-between items-center text-lg p-2 bg-muted/50 rounded">
+                  <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
                     <span>
                       {contact.name} ({contact.relationship})
                     </span>
@@ -427,7 +431,7 @@ export default function AccountCredentialsDashboard() {
                 ))}
               </div>
 
-              <Button variant="outline" className="w-full bg-transparent text-lg py-3" asChild>
+              <Button variant="outline" className="w-full bg-transparent text-xl py-4" asChild>
                 <a href="/settings">Manage Contact Settings</a>
               </Button>
             </div>
@@ -441,7 +445,7 @@ export default function AccountCredentialsDashboard() {
             <EncryptionSettings />
           </CollapsibleSection>
 
-          <CollapsibleSection title="Delegates" icon={Users}>
+          <CollapsibleSection title="Trusted Delegates" icon={Users}>
             <DelegatesSection />
           </CollapsibleSection>
 
@@ -461,8 +465,8 @@ export default function AccountCredentialsDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold text-foreground">Your Accounts & Credentials</h2>
-              <Button variant="outline" size="sm" className="text-base bg-transparent">
+              <h2 className="text-3xl font-semibold text-foreground">Your Accounts & Credentials</h2>
+              <Button variant="outline" size="sm" className="text-xl bg-transparent">
                 View All
               </Button>
             </div>
@@ -507,8 +511,8 @@ export default function AccountCredentialsDashboard() {
 
           <div>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold text-foreground">Payment Schedules</h2>
-              <Button variant="outline" size="sm" className="text-base bg-transparent">
+              <h2 className="text-3xl font-semibold text-foreground">Payment Schedules</h2>
+              <Button variant="outline" size="sm" className="text-xl bg-transparent">
                 <Plus className="h-4 w-4 mr-2" />
                 Add Schedule
               </Button>
