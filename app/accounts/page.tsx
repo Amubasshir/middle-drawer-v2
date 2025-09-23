@@ -7,6 +7,7 @@ import { AccountForm } from "@/components/account-form"
 import { AccountList } from "@/components/account-list"
 import { Plus, ArrowLeft, TrendingUp } from "lucide-react"
 import Link from "next/link"
+import { CategorySelector } from "@/components/category-selector"
 
 // Mock data for demonstration
 const mockAccounts = [
@@ -75,6 +76,7 @@ export default function AccountsPage() {
   const [showForm, setShowForm] = useState(false)
   const [editingAccount, setEditingAccount] = useState<any>(null)
   const [viewingAccount, setViewingAccount] = useState<any>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string>("")
 
   const handleAddAccount = (accountData: any) => {
     const newAccount = {
@@ -86,6 +88,7 @@ export default function AccountsPage() {
     }
     setAccounts([...accounts, newAccount])
     setShowForm(false)
+    setSelectedCategory("")
   }
 
   const handleEditAccount = (accountData: any) => {
@@ -99,6 +102,7 @@ export default function AccountsPage() {
       accounts.map((acc) => (acc.id === editingAccount.id ? { ...updatedAccount, id: editingAccount.id } : acc)),
     )
     setEditingAccount(null)
+    setSelectedCategory("")
   }
 
   const handleDeleteAccount = (accountId: string) => {
@@ -218,6 +222,7 @@ export default function AccountsPage() {
                   onClick={() => {
                     setShowForm(false)
                     setEditingAccount(null)
+                    setSelectedCategory("")
                   }}
                 >
                   <ArrowLeft className="h-4 w-4 mr-2" />
@@ -233,14 +238,29 @@ export default function AccountsPage() {
         </header>
 
         <main className="container mx-auto px-4 py-8">
-          <AccountForm
-            onSubmit={editingAccount ? handleEditAccount : handleAddAccount}
-            onCancel={() => {
-              setShowForm(false)
-              setEditingAccount(null)
-            }}
-            initialData={editingAccount}
-          />
+          {!editingAccount && !selectedCategory && (
+            <div className="max-w-4xl mx-auto">
+              <CategorySelector onCategorySelect={setSelectedCategory} selectedCategory={selectedCategory} />
+              <div className="mt-6 text-center">
+                <Button onClick={() => setSelectedCategory("general")} variant="outline" className="text-lg py-4 px-8">
+                  Skip Category Selection
+                </Button>
+              </div>
+            </div>
+          )}
+
+          {(editingAccount || selectedCategory) && (
+            <AccountForm
+              onSubmit={editingAccount ? handleEditAccount : handleAddAccount}
+              onCancel={() => {
+                setShowForm(false)
+                setEditingAccount(null)
+                setSelectedCategory("")
+              }}
+              initialData={editingAccount}
+              selectedCategory={selectedCategory}
+            />
+          )}
         </main>
       </div>
     )

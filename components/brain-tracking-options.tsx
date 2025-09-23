@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Brain, Clock, Zap, X } from "lucide-react"
 import { useState } from "react"
+import CognitiveWellnessModal from "./cognitive-wellness-modal"
 
 export function BrainTrackingOptions() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
+  const [showCognitiveModal, setShowCognitiveModal] = useState(false)
 
   const options = [
     {
@@ -36,56 +38,76 @@ export function BrainTrackingOptions() {
     },
   ]
 
-  return (
-    <Card className="border-2 border-primary/20">
-      <CardHeader className="text-center pb-4">
-        <div className="flex items-center justify-center space-x-2 mb-2">
-          <Brain className="h-6 w-6 text-primary" />
-          <CardTitle className="text-lg">Cognitive Wellness Options</CardTitle>
-        </div>
-        <p className="text-sm text-muted-foreground">
-          Optional brain health tracking to monitor cognitive wellness over time
-        </p>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          {options.map((option) => {
-            const IconComponent = option.icon
-            return (
-              <Button
-                key={option.id}
-                variant="outline"
-                className={`h-auto p-4 flex flex-col items-center space-y-2 ${option.color} ${
-                  selectedOption === option.id ? "ring-2 ring-primary" : ""
-                }`}
-                onClick={() => setSelectedOption(option.id)}
-              >
-                <IconComponent className="h-8 w-8 text-primary" />
-                <div className="text-center">
-                  <p className="font-semibold text-sm">{option.title}</p>
-                  <Badge variant="secondary" className="text-xs mt-1">
-                    <Clock className="h-3 w-3 mr-1" />
-                    {option.duration}
-                  </Badge>
-                  <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
-                </div>
-              </Button>
-            )
-          })}
-        </div>
+  const handleOptionSelect = (optionId: string) => {
+    setSelectedOption(optionId)
+    if (optionId === "quick") {
+      setShowCognitiveModal(true)
+    }
+  }
 
-        {selectedOption && (
-          <div className="mt-4 p-3 bg-muted/50 rounded-lg text-center">
-            <p className="text-sm text-muted-foreground">
-              {selectedOption === "quick" &&
-                "Quick cognitive check selected - simple puzzles to track basic cognitive function"}
-              {selectedOption === "comprehensive" &&
-                "Comprehensive test selected - detailed assessment of memory, reaction time, and visual processing"}
-              {selectedOption === "none" && "Cognitive tracking disabled - you can enable this later in settings"}
-            </p>
+  return (
+    <>
+      <Card className="border-2 border-primary/20">
+        <CardHeader className="text-center pb-4">
+          <div className="flex items-center justify-center space-x-2 mb-2">
+            <Brain className="h-6 w-6 text-primary" />
+            <CardTitle className="text-lg">Cognitive Wellness Options</CardTitle>
           </div>
-        )}
-      </CardContent>
-    </Card>
+          <p className="text-sm text-muted-foreground">
+            Optional brain health tracking to monitor cognitive wellness over time
+          </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {options.map((option) => {
+              const IconComponent = option.icon
+              return (
+                <Button
+                  key={option.id}
+                  variant="outline"
+                  className={`h-auto p-4 flex flex-col items-center space-y-2 ${option.color} ${
+                    selectedOption === option.id ? "ring-2 ring-primary" : ""
+                  }`}
+                  onClick={() => handleOptionSelect(option.id)}
+                >
+                  <IconComponent className="h-8 w-8 text-primary" />
+                  <div className="text-center">
+                    <p className="font-semibold text-sm">{option.title}</p>
+                    <Badge variant="secondary" className="text-xs mt-1">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {option.duration}
+                    </Badge>
+                    <p className="text-xs text-muted-foreground mt-1">{option.description}</p>
+                  </div>
+                </Button>
+              )
+            })}
+          </div>
+
+          {selectedOption && (
+            <div className="mt-4 p-3 bg-muted/50 rounded-lg text-center">
+              <p className="text-sm text-muted-foreground">
+                {selectedOption === "quick" &&
+                  "Quick cognitive check selected - simple puzzles to track basic cognitive function"}
+                {selectedOption === "comprehensive" &&
+                  "Comprehensive test selected - detailed assessment of memory, reaction time, and visual processing"}
+                {selectedOption === "none" && "Cognitive tracking disabled - you can enable this later in settings"}
+              </p>
+            </div>
+          )}
+
+          {selectedOption === "quick" && (
+            <div className="mt-4 text-center">
+              <Button onClick={() => setShowCognitiveModal(true)} className="w-full">
+                <Brain className="h-4 w-4 mr-2" />
+                Start Cognitive Wellness Quick Check
+              </Button>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
+      <CognitiveWellnessModal isOpen={showCognitiveModal} onClose={() => setShowCognitiveModal(false)} />
+    </>
   )
 }

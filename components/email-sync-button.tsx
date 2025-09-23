@@ -11,7 +11,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Progress } from "@/components/ui/progress"
-import { RefreshCw, Mail, CheckCircle } from "lucide-react"
+import { RefreshCw, Mail, CheckCircle, Clock } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
 interface SyncResult {
@@ -77,10 +77,15 @@ export function EmailSyncButton() {
       <Button
         onClick={() => setIsOpen(true)}
         variant="outline"
-        className="bg-blue-50 border-blue-200 hover:bg-blue-100 text-blue-700"
+        disabled
+        className="bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed relative text-xl py-4"
       >
-        <RefreshCw className="w-4 h-4 mr-2" />
+        <RefreshCw className="w-6 h-6 mr-2" />
         Sync from Email
+        <Badge variant="secondary" className="ml-2 text-xs">
+          <Clock className="w-3 h-3 mr-1" />
+          Coming Soon
+        </Badge>
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

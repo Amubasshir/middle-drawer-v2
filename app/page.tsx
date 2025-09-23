@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useState, useEffect } from "react"
+import Link from "next/link"
 import {
   Plus,
   CreditCard,
@@ -25,6 +26,7 @@ import {
   ChevronDown,
   ChevronUp,
   Brain,
+  Smartphone,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { EncryptionSettings } from "@/components/encryption-settings"
@@ -40,6 +42,7 @@ import { NotificationSettings } from "@/components/notification-settings"
 import { SampleReport } from "@/components/sample-report"
 import { AuthForms } from "@/components/auth-forms"
 import { BrainTrackingOptions } from "@/components/brain-tracking-options"
+import { WellnessCheckModal } from "@/components/wellness-check-modal"
 
 export default function AccountCredentialsDashboard() {
   const { user, logout, isLoading } = useAuth()
@@ -47,6 +50,7 @@ export default function AccountCredentialsDashboard() {
   const [showSampleReport, setShowSampleReport] = useState(false)
   const [showAuthForms, setShowAuthForms] = useState(false)
   const [showCognitiveWellness, setShowCognitiveWellness] = useState(false)
+  const [showWellnessCheck, setShowWellnessCheck] = useState(false)
 
   const presetDays = 14 // This would come from user settings
 
@@ -248,19 +252,6 @@ export default function AccountCredentialsDashboard() {
             </div>
           </div>
 
-          <div className="mb-4">
-            <div className="flex justify-center">
-              <Button
-                size="lg"
-                onClick={() => setShowGuidedSetup(true)}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-3xl shadow-lg hover:shadow-xl transition-all duration-200"
-              >
-                <Compass className="h-8 w-8 mr-3" />
-                Walk me through it
-              </Button>
-            </div>
-          </div>
-
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-4">
             <EmailSyncButton />
             <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
@@ -294,20 +285,19 @@ export default function AccountCredentialsDashboard() {
 
       <div className="border-b border-border bg-green-50">
         <div className="container mx-auto px-4 py-4">
-          <div className="text-center">
-            <div className="inline-flex items-center space-x-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-lg font-medium">
-              <CheckCircle className="h-5 w-5" />
-              <span>
-                Everything looks complete! If Middle Drawer doesn't hear from you in {presetDays} days, your delegates
-                will be contacted.
-              </span>
+          <div className="mb-8">
+            <div className="flex justify-center">
+              <Button
+                size="lg"
+                onClick={() => setShowGuidedSetup(true)}
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-3xl shadow-lg hover:shadow-xl transition-all duration-200"
+              >
+                <Compass className="h-8 w-8 mr-3" />
+                Walk me through it
+              </Button>
             </div>
           </div>
-        </div>
-      </div>
 
-      <div className="border-b border-border bg-card/50">
-        <div className="container mx-auto px-4 py-6">
           <div className="mb-6">
             <div className="flex items-center justify-center space-x-2 mb-4">
               <h2 className="text-4xl font-semibold text-center text-foreground">Why use Middle Drawer?</h2>
@@ -319,6 +309,39 @@ export default function AccountCredentialsDashboard() {
               and digital footprint remain secure and accessible while monitoring cognitive wellness. It organizes your
               credentials, tracks payment schedules, and connects trusted delegates who can help when you need it most.
             </p>
+
+            <div className="mb-8">
+              <div className="flex flex-wrap justify-center items-center gap-4 max-w-4xl mx-auto">
+                <div className="bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  💰 Money & Accounts
+                </div>
+                <div className="bg-green-100 text-green-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  📅 Appointments
+                </div>
+                <div className="bg-purple-100 text-purple-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  📝 Notes & Documents
+                </div>
+                <div className="bg-orange-100 text-orange-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  🚗 Transportation
+                </div>
+                <div className="bg-red-100 text-red-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  🏠 Housing & Utilities
+                </div>
+                <div className="bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  🛡️ Insurance
+                </div>
+                <div className="bg-indigo-100 text-indigo-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  📱 Subscriptions
+                </div>
+                <div className="bg-pink-100 text-pink-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  👥 Professional Contacts
+                </div>
+                <div className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
+                  🧠 Wellness Tracking
+                </div>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="text-center p-6 bg-muted/30 rounded-lg">
                 <Users className="h-12 w-12 text-primary mx-auto mb-3" />
@@ -345,255 +368,293 @@ export default function AccountCredentialsDashboard() {
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-lg p-8 max-w-md mx-auto">
+          <div className="bg-card border-2 border-primary/20 rounded-lg p-8 max-w-2xl mx-auto shadow-lg">
             <div className="flex flex-col space-y-6">
-              <Button
-                size="lg"
-                variant="outline"
-                className="font-bold px-8 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent w-full"
-              >
-                <div className="flex items-center justify-center">
-                  <span className="text-primary animate-pulse mr-2">((( </span>
-                  <Bell className="h-6 w-6 text-primary" />
-                  <span className="text-primary animate-pulse ml-2"> )))</span>
-                  <span className="ml-3">Inform Delegates Now</span>
-                </div>
-              </Button>
+              <div className="flex justify-center space-x-4">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="font-bold px-8 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent flex-1"
+                >
+                  <div className="flex items-center justify-center">
+                    <span className="text-primary animate-pulse mr-2">((( </span>
+                    <Bell className="h-6 w-6 text-primary" />
+                    <span className="text-primary animate-pulse ml-2"> )))</span>
+                    <span className="ml-3">Inform Delegates Now</span>
+                  </div>
+                </Button>
+
+                <Button
+                  size="lg"
+                  variant="outline"
+                  onClick={() => setShowWellnessCheck(true)}
+                  className="font-bold px-6 py-8 text-xl shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent flex-1"
+                >
+                  <Clock className="h-6 w-6 mr-2" />
+                  Preview Wellness Check
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <main className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-muted-foreground">Total Accounts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-primary">12</div>
-              <p className="text-base text-muted-foreground">Active accounts tracked</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-muted-foreground">Payments Due Soon</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-secondary">3</div>
-              <p className="text-base text-muted-foreground">Next 7 days</p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium text-muted-foreground">Critical Accounts</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-bold text-foreground">5</div>
-              <p className="text-base text-muted-foreground">Essential for daily life</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="space-y-4 mb-8">
-          <CollapsibleSection title="Contact Settings" icon={User}>
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 gap-4 text-xl">
-                <div>
-                  <p className="text-muted-foreground">Reminders</p>
-                  <p className="font-medium capitalize">{contactSettings.reminderFrequency}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Method</p>
-                  <p className="font-medium capitalize">{contactSettings.reminderMethod}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Email</p>
-                  <p className="font-medium">{contactSettings.userEmail}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Phone</p>
-                  <p className="font-medium">{contactSettings.userPhone}</p>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <p className="text-xl font-medium">Emergency Contacts</p>
-                {contactSettings.emergencyContacts.map((contact, index) => (
-                  <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
-                    <span>
-                      {contact.name} ({contact.relationship})
-                    </span>
-                    <Badge variant="outline">{contact.daysToContact} days</Badge>
+        <div className="mb-8">
+          <div className="space-y-4">
+            {/* Accounts Tab */}
+            <div className="w-full">
+              <CollapsibleSection title="Accounts" icon={CreditCard} defaultOpen>
+                <div className="space-y-4">
+                  <div className="mb-6">
+                    <h3 className="text-2xl font-semibold mb-4 text-foreground">Account Types</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      <Link href="/accounts/bank-accounts">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <CreditCard className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Bank Accounts</p>
+                          <p className="text-sm text-muted-foreground">Checking, savings, credit cards</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/insurance">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Insurance</p>
+                          <p className="text-sm text-muted-foreground">Health, auto, home, life</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/tax-related">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Receipt className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Tax-Related</p>
+                          <p className="text-sm text-muted-foreground">Tax prep, retirement, HSA</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/housing-utilities">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Home className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Housing & Utilities</p>
+                          <p className="text-sm text-muted-foreground">Mortgage, electricity, internet</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/transportation">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Car className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Transportation</p>
+                          <p className="text-sm text-muted-foreground">Car payments, gas cards</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/subscriptions">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Smartphone className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Subscriptions</p>
+                          <p className="text-sm text-muted-foreground">Phone, streaming, software</p>
+                        </div>
+                      </Link>
+                      <Link href="/accounts/professionals">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                          <Users className="h-8 w-8 text-primary mx-auto mb-2" />
+                          <p className="text-lg font-medium">Professionals</p>
+                          <p className="text-sm text-muted-foreground">Doctors, lawyers, advisors</p>
+                        </div>
+                      </Link>
+                    </div>
                   </div>
-                ))}
-              </div>
 
-              <Button variant="outline" className="w-full bg-transparent text-xl py-4" asChild>
-                <a href="/settings">Manage Contact Settings</a>
-              </Button>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg font-medium text-muted-foreground">Total Accounts</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-4xl font-bold text-primary">12</div>
+                        <p className="text-base text-muted-foreground">Active accounts tracked</p>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg font-medium text-muted-foreground">Payments Due Soon</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-4xl font-bold text-secondary">3</div>
+                        <p className="text-base text-muted-foreground">Next 7 days</p>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader className="pb-2">
+                        <CardTitle className="text-lg font-medium text-muted-foreground">Critical Accounts</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-4xl font-bold text-foreground">5</div>
+                        <p className="text-base text-muted-foreground">Essential for daily life</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {criticalAccounts.map((account) => {
+                      const IconComponent = account.icon
+                      const StatusIcon = getStatusIcon(account.status)
+
+                      return (
+                        <Card key={account.id} className="hover:shadow-md transition-shadow">
+                          <CardContent className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-3">
+                                <div className="p-2 bg-muted rounded-lg">
+                                  <IconComponent className="h-5 w-5 text-primary" />
+                                </div>
+                                <div>
+                                  <h3 className="font-medium text-foreground text-lg">{account.name}</h3>
+                                  <p className="text-base text-muted-foreground">{account.type}</p>
+                                  <p className="text-sm text-muted-foreground">@{account.username}</p>
+                                </div>
+                              </div>
+
+                              <div className="text-right">
+                                <div className="flex items-center space-x-2">
+                                  <Badge className={getStatusColor(account.status)}>
+                                    <StatusIcon className="h-3 w-3 mr-1" />
+                                    {account.status}
+                                  </Badge>
+                                </div>
+                                <p className="text-base font-medium mt-1 text-foreground">{account.institution}</p>
+                                <p className="text-sm text-muted-foreground mt-1">{account.email}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )
+                    })}
+                  </div>
+                </div>
+              </CollapsibleSection>
             </div>
-          </CollapsibleSection>
 
-          <CollapsibleSection title="Notification Settings" icon={Bell}>
-            <NotificationSettings />
-          </CollapsibleSection>
+            {/* Delegates Tab */}
+            <div className="w-full">
+              <CollapsibleSection title="Trusted Delegates" icon={Users}>
+                <div className="space-y-4">
+                  <DelegatesSection />
 
-          <CollapsibleSection title="Encryption Settings" icon={Shield}>
-            <EncryptionSettings />
-          </CollapsibleSection>
-
-          <CollapsibleSection title="Trusted Delegates" icon={Users}>
-            <DelegatesSection />
-          </CollapsibleSection>
-
-          <CollapsibleSection title="Social Media Accounts" icon={Share2}>
-            <SocialMediaSection />
-          </CollapsibleSection>
-
-          <CollapsibleSection title="Insurance Policies" icon={FileShield}>
-            <InsuranceSection />
-          </CollapsibleSection>
-
-          <CollapsibleSection title="Tax Information" icon={Receipt}>
-            <TaxSection />
-          </CollapsibleSection>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-3xl font-semibold text-foreground">Your Accounts & Credentials</h2>
-              <Button variant="outline" size="sm" className="text-xl bg-transparent">
-                View All
-              </Button>
-            </div>
-
-            <div className="space-y-4">
-              {criticalAccounts.map((account) => {
-                const IconComponent = account.icon
-                const StatusIcon = getStatusIcon(account.status)
-
-                return (
-                  <Card key={account.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-3">
-                          <div className="p-2 bg-muted rounded-lg">
-                            <IconComponent className="h-5 w-5 text-primary" />
-                          </div>
-                          <div>
-                            <h3 className="font-medium text-foreground text-lg">{account.name}</h3>
-                            <p className="text-base text-muted-foreground">{account.type}</p>
-                            <p className="text-sm text-muted-foreground">@{account.username}</p>
-                          </div>
-                        </div>
-
-                        <div className="text-right">
-                          <div className="flex items-center space-x-2">
-                            <Badge className={getStatusColor(account.status)}>
-                              <StatusIcon className="h-3 w-3 mr-1" />
-                              {account.status}
-                            </Badge>
-                          </div>
-                          <p className="text-base font-medium mt-1 text-foreground">{account.institution}</p>
-                          <p className="text-sm text-muted-foreground mt-1">{account.email}</p>
-                        </div>
+                  <div className="space-y-2">
+                    <p className="text-xl font-medium">Emergency Contacts</p>
+                    {contactSettings.emergencyContacts.map((contact, index) => (
+                      <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
+                        <span>
+                          {contact.name} ({contact.relationship})
+                        </span>
+                        <Badge variant="outline">{contact.daysToContact} days</Badge>
                       </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
+                    ))}
+                  </div>
+                </div>
+              </CollapsibleSection>
+            </div>
+
+            {/* Settings Tab */}
+            <div className="w-full">
+              <CollapsibleSection title="Settings" icon={Shield}>
+                <div className="space-y-6">
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-semibold">Contact Settings</h3>
+                    <div className="grid grid-cols-2 gap-4 text-xl">
+                      <div>
+                        <p className="text-muted-foreground">Reminders</p>
+                        <p className="font-medium capitalize">{contactSettings.reminderFrequency}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Method</p>
+                        <p className="font-medium capitalize">{contactSettings.reminderMethod}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Email</p>
+                        <p className="font-medium">{contactSettings.userEmail}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Phone</p>
+                        <p className="font-medium">{contactSettings.userPhone}</p>
+                      </div>
+                    </div>
+                    <Button variant="outline" className="w-full bg-transparent text-xl py-4" asChild>
+                      <a href="/settings">Manage Contact Settings</a>
+                    </Button>
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <h3 className="text-xl font-semibold mb-4">Notification Settings</h3>
+                    <NotificationSettings />
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <h3 className="text-xl font-semibold mb-4">Encryption Settings</h3>
+                    <EncryptionSettings />
+                  </div>
+
+                  <div className="border-t pt-4">
+                    <h3 className="text-xl font-semibold mb-4">Additional Sections</h3>
+                    <div className="space-y-4">
+                      <CollapsibleSection title="Social Media Accounts" icon={Share2}>
+                        <SocialMediaSection />
+                      </CollapsibleSection>
+
+                      <CollapsibleSection title="Insurance Policies" icon={FileShield}>
+                        <InsuranceSection />
+                      </CollapsibleSection>
+
+                      <CollapsibleSection title="Tax Information" icon={Receipt}>
+                        <TaxSection />
+                      </CollapsibleSection>
+                    </div>
+                  </div>
+                </div>
+              </CollapsibleSection>
             </div>
           </div>
+        </div>
 
-          <div>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-3xl font-semibold text-foreground">Payment Schedules</h2>
-              <Button variant="outline" size="sm" className="text-xl bg-transparent">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Schedule
-              </Button>
-            </div>
+        <div className="border-t border-border bg-card/30 mt-12">
+          <div className="container mx-auto px-4 py-6">
+            <Button
+              variant="ghost"
+              onClick={() => setShowCognitiveWellness(!showCognitiveWellness)}
+              className="w-full justify-between text-xl font-semibold py-8 hover:bg-muted/50"
+            >
+              <div className="flex items-center space-x-2">
+                <Brain className="h-6 w-6 text-primary" />
+                <span>Cognitive Wellness Options</span>
+              </div>
+              {showCognitiveWellness ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+            </Button>
 
-            <div className="space-y-4">
-              {upcomingPayments.map((payment) => {
-                const StatusIcon = getStatusIcon(payment.status)
+            {showCognitiveWellness && (
+              <div className="mt-4 pb-2">
+                <BrainTrackingOptions />
+              </div>
+            )}
+          </div>
+        </div>
 
-                return (
-                  <Card key={payment.id} className="hover:shadow-md transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="font-medium text-foreground text-lg">{payment.accountName}</h3>
-                          <p className="text-base text-muted-foreground">{payment.paymentName}</p>
-                          {payment.autoPay && (
-                            <Badge variant="outline" className="text-sm mt-1">
-                              Auto-pay
-                            </Badge>
-                          )}
-                        </div>
-
-                        <div className="text-right">
-                          <div className="flex items-center space-x-2 mb-1">
-                            <Badge className={getStatusColor(payment.status)}>
-                              <StatusIcon className="h-3 w-3 mr-1" />
-                              {payment.status}
-                            </Badge>
-                          </div>
-                          <p className="text-base font-medium text-foreground">{payment.timing}</p>
-                          <p className="text-sm text-muted-foreground">{payment.frequency}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              })}
-            </div>
+        <div className="mt-8 pt-8 border-t border-border">
+          <div className="flex justify-center">
+            <Button
+              variant="outline"
+              size="lg"
+              className="font-semibold py-8 px-10 shadow-md bg-transparent text-2xl"
+              onClick={() => setShowSampleReport(true)}
+            >
+              <FileText className="h-6 w-6 mr-2" />
+              Preview Sample Report
+            </Button>
           </div>
         </div>
       </main>
 
-      <div className="border-t border-border bg-card/30 mt-12">
-        <div className="container mx-auto px-4 py-6">
-          <Button
-            variant="ghost"
-            onClick={() => setShowCognitiveWellness(!showCognitiveWellness)}
-            className="w-full justify-between text-xl font-semibold py-8 hover:bg-muted/50"
-          >
-            <div className="flex items-center space-x-2">
-              <Brain className="h-6 w-6 text-primary" />
-              <span>Cognitive Wellness Options</span>
-            </div>
-            {showCognitiveWellness ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
-          </Button>
-
-          {showCognitiveWellness && (
-            <div className="mt-4 pb-2">
-              <BrainTrackingOptions />
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="mt-8 pt-8 border-t border-border">
-        <div className="flex justify-center">
-          <Button
-            variant="outline"
-            size="lg"
-            className="font-semibold py-8 px-10 shadow-md bg-transparent text-2xl"
-            onClick={() => setShowSampleReport(true)}
-          >
-            <FileText className="h-6 w-6 mr-2" />
-            Preview Sample Report
-          </Button>
-        </div>
-      </div>
-
       <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
       <SampleReport isOpen={showSampleReport} onClose={() => setShowSampleReport(false)} />
+      <WellnessCheckModal isOpen={showWellnessCheck} onClose={() => setShowWellnessCheck(false)} />
     </div>
   )
 }

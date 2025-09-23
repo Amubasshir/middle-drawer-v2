@@ -6,16 +6,27 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { CreditCard, Shield, Receipt, Car, Home, Smartphone, MessageCircle, Users } from "lucide-react"
+import { CreditCard, Shield, Receipt, Car, Home, Smartphone, MessageCircle, Users, Loader2 } from "lucide-react"
 
 interface GuidedSetupProps {
   isOpen: boolean
   onClose: () => void
 }
 
+interface ParsedAccountData {
+  accounts: Array<{
+    name: string
+    type: string
+    institution?: string
+    category: string
+  }>
+}
+
 export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
   const [currentStep, setCurrentStep] = useState(0)
   const [responses, setResponses] = useState<Record<string, string>>({})
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [parsedData, setParsedData] = useState<Record<string, ParsedAccountData>>({})
 
   const totalSteps = 8 // Updated to 8 steps to include new Doctors/Lawyers/Personnel section
 
@@ -79,12 +90,57 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
     }))
   }
 
-  const handleNext = () => {
+  const parseWithOpenAI = async (categoryId: string, userInput: string) => {
+    if (!userInput.trim()) return null
+
+    setIsProcessing(true)
+    try {
+      const response = await fetch("/api/parse-accounts", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          category: categoryId,
+          userInput: userInput,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to parse accounts")
+      }
+
+      const result = await response.json()
+      setParsedData((prev) => ({
+        ...prev,
+        [categoryId]: result,
+      }))
+      return result
+    } catch (error) {
+      console.error("Error parsing accounts:", error)
+      return null
+    } finally {
+      setIsProcessing(false)
+    }
+  }
+
+  const handleNext = async () => {
+    if (currentStep > 0 && currentStep < totalSteps) {
+      const categoryIndex = currentStep - 1
+      const currentCategory = categories[categoryIndex]
+      const userInput = responses[currentCategory.id]
+
+      if (userInput && userInput.trim()) {
+        await parseWithOpenAI(currentCategory.id, userInput)
+      }
+    }
+
     if (currentStep < totalSteps - 1) {
       setCurrentStep(currentStep + 1)
     } else {
-      // Process responses and close
+      // Process all responses and close
       console.log("Setup responses:", responses)
+      console.log("Parsed data:", parsedData)
       onClose()
     }
   }
@@ -125,7 +181,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
                 <div className="w-4 h-4 bg-primary text-primary-foreground rounded-full flex items-center justify-center text-xs font-bold mt-0.5">
                   3
                 </div>
-                <p>We'll parse your information and organize it for you</p>
+                <p>We'll use AI to parse your information and organize it for you</p>
               </div>
             </div>
           </div>
@@ -153,6 +209,7 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
     const categoryIndex = currentStep - 1
     const currentCategory = categories[categoryIndex]
     const IconComponent = currentCategory.icon
+    const categoryParsedData = parsedData[currentCategory.id]
 
     return (
       <Card className="border-primary/20 flex-1 flex flex-col">
@@ -177,9 +234,22 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
             />
           </div>
 
+          {categoryParsedData && categoryParsedData.accounts && categoryParsedData.accounts.length > 0 && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+              <h4 className="font-medium text-sm text-green-800 mb-2">AI Parsed Accounts:</h4>
+              <div className="space-y-1">
+                {categoryParsedData.accounts.map((account, index) => (
+                  <div key={index} className="text-xs text-green-700 bg-green-100 px-2 py-1 rounded">
+                    {account.name} ({account.type}) {account.institution && `- ${account.institution}`}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="text-xs text-muted-foreground bg-muted/50 p-3 rounded">
-            <strong>Tip:</strong> Include as much or as little detail as you want. You can always add more accounts
-            later, but this helps us get you started quickly.
+            <strong>Tip:</strong> Include as much or as little detail as you want. Our AI will automatically parse and
+            organize your accounts. You can always add more accounts later.
           </div>
         </CardContent>
       </Card>
@@ -213,8 +283,19 @@ export function GuidedSetup({ isOpen, onClose }: GuidedSetupProps) {
               Step {currentStep + 1} of {totalSteps}
             </div>
 
-            <Button onClick={handleNext}>
-              {currentStep === 0 ? "Let's Start" : currentStep === totalSteps - 1 ? "Finish Setup" : "Next"}
+            <Button onClick={handleNext} disabled={isProcessing}>
+              {isProcessing ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Processing...
+                </>
+              ) : currentStep === 0 ? (
+                "Let's Start"
+              ) : currentStep === totalSteps - 1 ? (
+                "Finish Setup"
+              ) : (
+                "Next"
+              )}
             </Button>
           </div>
         </div>
