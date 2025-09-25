@@ -5,9 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { AccountForm } from "@/components/account-form"
 import { AccountList } from "@/components/account-list"
-import { Plus, ArrowLeft, TrendingUp } from "lucide-react"
+import { Plus, ArrowLeft, TrendingUp, Menu, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { CategorySelector } from "@/components/category-selector"
+import { CreditCard, Shield, Receipt, Car, Home, Smartphone, Users } from "lucide-react"
 
 // Mock data for demonstration
 const mockAccounts = [
@@ -77,6 +78,7 @@ export default function AccountsPage() {
   const [editingAccount, setEditingAccount] = useState<any>(null)
   const [viewingAccount, setViewingAccount] = useState<any>(null)
   const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [showAccountTypes, setShowAccountTypes] = useState(false)
 
   const handleAddAccount = (accountData: any) => {
     const newAccount = {
@@ -283,11 +285,61 @@ export default function AccountsPage() {
                 <h1 className="text-xl font-bold">Account Management</h1>
               </div>
             </div>
-            <Button onClick={() => setShowForm(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Add Account
-            </Button>
+            <div className="flex items-center space-x-2">
+              <Button variant="outline" onClick={() => setShowAccountTypes(!showAccountTypes)} className="relative">
+                <Menu className="h-4 w-4 mr-2" />
+                Account Types
+                <ChevronDown className={`h-4 w-4 ml-2 transition-transform ${showAccountTypes ? "rotate-180" : ""}`} />
+              </Button>
+              <Button onClick={() => setShowForm(true)}>
+                <Plus className="h-4 w-4 mr-2" />
+                Add Account
+              </Button>
+            </div>
           </div>
+
+          {showAccountTypes && (
+            <div className="mt-4 p-4 bg-muted/30 rounded-lg">
+              <h3 className="text-lg font-semibold mb-3">Account Categories</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <CreditCard className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Banking</p>
+                  <p className="text-xs text-muted-foreground">Checking, savings, credit</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Shield className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Insurance</p>
+                  <p className="text-xs text-muted-foreground">Health, auto, home, life</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Car className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Transportation</p>
+                  <p className="text-xs text-muted-foreground">Cars, gas, transit</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Home className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Housing</p>
+                  <p className="text-xs text-muted-foreground">Mortgage, utilities</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Receipt className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Tax-Related</p>
+                  <p className="text-xs text-muted-foreground">Tax prep, retirement</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Smartphone className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Subscriptions</p>
+                  <p className="text-xs text-muted-foreground">Phone, streaming</p>
+                </div>
+                <div className="bg-card p-3 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                  <Users className="h-6 w-6 text-primary mx-auto mb-2" />
+                  <p className="text-sm font-medium">Professionals</p>
+                  <p className="text-xs text-muted-foreground">Doctors, lawyers</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </header>
 

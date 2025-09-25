@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { useState } from "react"
 import { ArrowLeft, Settings, AlertTriangle, Shield, Smartphone } from "lucide-react"
 import Link from "next/link"
+import { CognitiveWellnessSettings } from "@/components/cognitive-wellness-settings"
 
 export default function SettingsPage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false)
@@ -40,6 +41,10 @@ export default function SettingsPage() {
           </div>
 
           <ContactSettings />
+
+          <div className="mt-8">
+            <CognitiveWellnessSettings />
+          </div>
 
           <div className="mt-8">
             <Card>

@@ -14,6 +14,7 @@ interface AuthContextType {
   login: (email: string, password: string, name?: string) => Promise<boolean>
   signup: (name: string, email: string, password: string) => Promise<boolean>
   logout: () => void
+  setGuestMode: () => void // Added setGuestMode function
   isLoading: boolean
 }
 
@@ -25,30 +26,59 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     console.log("[v0] AuthProvider initializing...")
-    const isGuest = localStorage.getItem("whichpoint-guest")
-    const storedUser = localStorage.getItem("whichpoint-user")
 
-    console.log("[v0] Guest mode flag:", isGuest)
-    console.log("[v0] Stored user:", storedUser)
+    try {
+      const isGuest = localStorage.getItem("whichpoint-guest")
+      console.log("[v0] Guest mode flag:", isGuest)
 
-    if (isGuest === "true") {
-      console.log("[v0] Setting guest user")
+      if (isGuest === "true") {
+        console.log("[v0] Setting guest user")
+        setUser({
+          id: "guest",
+          name: "Guest User",
+          email: "guest@middledrawer.com",
+        })
+        setIsLoading(false)
+        return
+      }
+
+      // Check for stored user session
+      const storedUser = localStorage.getItem("whichpoint-user")
+      console.log("[v0] Stored user:", storedUser)
+
+      if (storedUser) {
+        try {
+          console.log("[v0] Setting stored user")
+          setUser(JSON.parse(storedUser))
+        } catch (error) {
+          console.log("[v0] Error parsing stored user, clearing storage")
+          localStorage.removeItem("whichpoint-user")
+        }
+      } else {
+        console.log("[v0] No user found, showing auth screen")
+      }
+    } catch (error) {
+      console.log("[v0] Error accessing localStorage:", error)
+    }
+
+    setIsLoading(false)
+  }, [])
+
+  const setGuestMode = () => {
+    console.log("[v0] Setting guest mode")
+    try {
+      localStorage.setItem("whichpoint-guest", "true")
+      localStorage.removeItem("whichpoint-user")
       setUser({
         id: "guest",
         name: "Guest User",
         email: "guest@middledrawer.com",
       })
       setIsLoading(false)
-      return
+    } catch (error) {
+      console.log("[v0] Error setting guest mode:", error)
     }
-
-    // Check for stored user session on mount
-    if (storedUser) {
-      console.log("[v0] Setting stored user")
-      setUser(JSON.parse(storedUser))
-    }
-    setIsLoading(false)
-  }, [])
+  }
 
   const login = async (email: string, password: string, name?: string): Promise<boolean> => {
     setIsLoading(true)
@@ -116,7 +146,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     window.location.href = "/"
   }
 
-  return <AuthContext.Provider value={{ user, login, signup, logout, isLoading }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ user, login, signup, logout, setGuestMode, isLoading }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export function useAuth() {

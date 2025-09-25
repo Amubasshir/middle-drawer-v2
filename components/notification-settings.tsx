@@ -12,8 +12,8 @@ import { Bell, Mail, MessageSquare } from "lucide-react"
 export function NotificationSettings() {
   const [settings, setSettings] = useState({
     emailPassphrase: { enabled: false, frequency: "daily", passphrase: "" },
-    appNotification: { enabled: true, frequency: "daily" },
     emailReminder: { enabled: true, frequency: "weekly" },
+    appNotification: { enabled: false, frequency: "daily" }, // Disabled by default since it's coming soon
     textMessage: { enabled: false, frequency: "daily", phone: "" },
   })
 
@@ -47,15 +47,15 @@ export function NotificationSettings() {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        {/* Email with Passphrase */}
+        {/* Email with Passphrase - Available */}
         <div className="flex items-start justify-between p-4 border rounded-lg">
           <div className="flex items-start space-x-3">
-            <div className="w-3 h-3 bg-red-500 rounded-full mt-2"></div>
+            <div className="w-3 h-3 bg-green-500 rounded-full mt-2"></div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 <Label className="font-medium">Email with Secure Passphrase</Label>
-                <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">Least Secure</span>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Available</span>
               </div>
               <p className="text-sm text-muted-foreground">Respond to email with your unique passphrase</p>
               {settings.emailPassphrase.enabled && (
@@ -89,47 +89,15 @@ export function NotificationSettings() {
           />
         </div>
 
-        {/* App Notification */}
+        {/* Email Reminder - Available */}
         <div className="flex items-start justify-between p-4 border rounded-lg">
           <div className="flex items-start space-x-3">
-            <div className="w-3 h-3 bg-yellow-500 rounded-full mt-2"></div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <Bell className="h-4 w-4" />
-                <Label className="font-medium">Application Notification</Label>
-              </div>
-              <p className="text-sm text-muted-foreground">Click 'Yes' on push notifications from Middle Drawer app</p>
-              {settings.appNotification.enabled && (
-                <Select
-                  value={settings.appNotification.frequency}
-                  onValueChange={(value) => handleFrequencyChange("appNotification", value)}
-                >
-                  <SelectTrigger className="max-w-xs">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Daily</SelectItem>
-                    <SelectItem value="weekly">Weekly</SelectItem>
-                    <SelectItem value="monthly">Monthly</SelectItem>
-                  </SelectContent>
-                </Select>
-              )}
-            </div>
-          </div>
-          <Switch
-            checked={settings.appNotification.enabled}
-            onCheckedChange={(checked) => handleToggle("appNotification", checked)}
-          />
-        </div>
-
-        {/* Email Reminder */}
-        <div className="flex items-start justify-between p-4 border rounded-lg">
-          <div className="flex items-start space-x-3">
-            <div className="w-3 h-3 bg-blue-500 rounded-full mt-2"></div>
+            <div className="w-3 h-3 bg-green-500 rounded-full mt-2"></div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
                 <Label className="font-medium">Email Reminder Confirmation</Label>
+                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Available</span>
               </div>
               <p className="text-sm text-muted-foreground">Click 'Yes' link in scheduled email reminders</p>
               {settings.emailReminder.enabled && (
@@ -155,46 +123,36 @@ export function NotificationSettings() {
           />
         </div>
 
-        {/* Text Message */}
-        <div className="flex items-start justify-between p-4 border rounded-lg">
+        {/* App Notification - Coming Soon */}
+        <div className="flex items-start justify-between p-4 border rounded-lg opacity-50">
           <div className="flex items-start space-x-3">
-            <div className="w-3 h-3 bg-green-500 rounded-full mt-2"></div>
+            <div className="w-3 h-3 bg-gray-400 rounded-full mt-2"></div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <Bell className="h-4 w-4" />
+                <Label className="font-medium text-muted-foreground">Application Notification</Label>
+                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Coming Soon</span>
+              </div>
+              <p className="text-sm text-muted-foreground">Click 'Yes' on push notifications from Middle Drawer app</p>
+            </div>
+          </div>
+          <Switch checked={false} disabled />
+        </div>
+
+        {/* Text Message - Coming Soon */}
+        <div className="flex items-start justify-between p-4 border rounded-lg opacity-50">
+          <div className="flex items-start space-x-3">
+            <div className="w-3 h-3 bg-gray-400 rounded-full mt-2"></div>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <MessageSquare className="h-4 w-4" />
-                <Label className="font-medium">Automated Text Message</Label>
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Most Secure</span>
+                <Label className="font-medium text-muted-foreground">Automated Text Messages</Label>
+                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">Coming Soon</span>
               </div>
               <p className="text-sm text-muted-foreground">Respond 'Yes' to automated SMS verification</p>
-              {settings.textMessage.enabled && (
-                <div className="space-y-2">
-                  <Input
-                    placeholder="Phone number"
-                    value={settings.textMessage.phone}
-                    onChange={(e) => handleInputChange("textMessage", "phone", e.target.value)}
-                    className="max-w-xs"
-                  />
-                  <Select
-                    value={settings.textMessage.frequency}
-                    onValueChange={(value) => handleFrequencyChange("textMessage", value)}
-                  >
-                    <SelectTrigger className="max-w-xs">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="daily">Daily</SelectItem>
-                      <SelectItem value="weekly">Weekly</SelectItem>
-                      <SelectItem value="monthly">Monthly</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
             </div>
           </div>
-          <Switch
-            checked={settings.textMessage.enabled}
-            onCheckedChange={(checked) => handleToggle("textMessage", checked)}
-          />
+          <Switch checked={false} disabled />
         </div>
 
         <div className="pt-4 border-t">

@@ -126,8 +126,11 @@
   }
   body {
     @apply bg-background text-foreground font-sans;
+    /* Increased base font size for better readability */
+    font-size: 1.125rem; /* 18px base instead of 16px */
+    line-height: 1.6;
   }
-  /* Added typography hierarchy with new fonts */
+  /* Enhanced typography hierarchy with larger sizes */
   h1,
   h2,
   h3,
@@ -137,13 +140,34 @@
     @apply font-serif font-semibold;
   }
   h1 {
-    @apply text-3xl lg:text-4xl;
+    @apply text-4xl lg:text-5xl;
   }
   h2 {
-    @apply text-2xl lg:text-3xl;
+    @apply text-3xl lg:text-4xl;
   }
   h3 {
+    @apply text-2xl lg:text-3xl;
+  }
+  h4 {
     @apply text-xl lg:text-2xl;
+  }
+  h5 {
+    @apply text-lg lg:text-xl;
+  }
+  h6 {
+    @apply text-base lg:text-lg;
+  }
+  /* Increased button and input sizes globally */
+  .btn,
+  button {
+    font-size: 1.125rem; /* 18px */
+    padding: 0.75rem 1.5rem;
+  }
+  input,
+  textarea,
+  select {
+    font-size: 1.125rem; /* 18px */
+    padding: 0.75rem 1rem;
   }
   /* Enhanced spacing and modern styling */
   .card {
@@ -151,5 +175,18 @@
   }
   .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200;
+  }
+  /* Increased spacing throughout the interface */
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  /* Enhanced focus states for better accessibility */
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
   }
 }

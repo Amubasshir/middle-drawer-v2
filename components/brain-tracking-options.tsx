@@ -10,13 +10,14 @@ import CognitiveWellnessModal from "./cognitive-wellness-modal"
 export function BrainTrackingOptions() {
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [showCognitiveModal, setShowCognitiveModal] = useState(false)
+  const [showSampleTest, setShowSampleTest] = useState(false)
 
   const options = [
     {
       id: "quick",
       title: "Quick Check",
       duration: "1 minute",
-      description: "Simple cognitive assessment",
+      description: "Simple cognitive assessment with word memory tasks",
       icon: Zap,
       color: "bg-green-50 border-green-200 hover:bg-green-100",
     },
@@ -24,7 +25,7 @@ export function BrainTrackingOptions() {
       id: "comprehensive",
       title: "Comprehensive Test",
       duration: "5-10 minutes",
-      description: "Detailed cognitive evaluation",
+      description: "Detailed cognitive evaluation with multiple test types",
       icon: Brain,
       color: "bg-blue-50 border-blue-200 hover:bg-blue-100",
     },
@@ -40,9 +41,7 @@ export function BrainTrackingOptions() {
 
   const handleOptionSelect = (optionId: string) => {
     setSelectedOption(optionId)
-    if (optionId === "quick") {
-      setShowCognitiveModal(true)
-    }
+    // Quick Check no longer brings up the walkthrough window
   }
 
   return (
@@ -85,29 +84,30 @@ export function BrainTrackingOptions() {
           </div>
 
           {selectedOption && (
-            <div className="mt-4 p-3 bg-muted/50 rounded-lg text-center">
-              <p className="text-sm text-muted-foreground">
-                {selectedOption === "quick" &&
-                  "Quick cognitive check selected - simple puzzles to track basic cognitive function"}
-                {selectedOption === "comprehensive" &&
-                  "Comprehensive test selected - detailed assessment of memory, reaction time, and visual processing"}
-                {selectedOption === "none" && "Cognitive tracking disabled - you can enable this later in settings"}
-              </p>
-            </div>
-          )}
+            <div className="mt-4 p-3 bg-muted/50 rounded-lg">
+              <div className="text-center space-y-3">
+                <p className="text-sm text-muted-foreground">
+                  {selectedOption === "quick" &&
+                    "Quick cognitive check selected - simple puzzles to track basic cognitive function"}
+                  {selectedOption === "comprehensive" &&
+                    "Comprehensive test selected - detailed assessment of memory, reaction time, and visual processing"}
+                  {selectedOption === "none" && "Cognitive tracking disabled - you can enable this later in settings"}
+                </p>
 
-          {selectedOption === "quick" && (
-            <div className="mt-4 text-center">
-              <Button onClick={() => setShowCognitiveModal(true)} className="w-full">
-                <Brain className="h-4 w-4 mr-2" />
-                Start Cognitive Wellness Quick Check
-              </Button>
+                {(selectedOption === "quick" || selectedOption === "comprehensive") && (
+                  <Button variant="outline" size="sm" onClick={() => setShowSampleTest(true)} className="mt-2">
+                    <Brain className="h-4 w-4 mr-2" />
+                    Try Sample Test
+                  </Button>
+                )}
+              </div>
             </div>
           )}
         </CardContent>
       </Card>
 
       <CognitiveWellnessModal isOpen={showCognitiveModal} onClose={() => setShowCognitiveModal(false)} />
+      <CognitiveWellnessModal isOpen={showSampleTest} onClose={() => setShowSampleTest(false)} />
     </>
   )
 }

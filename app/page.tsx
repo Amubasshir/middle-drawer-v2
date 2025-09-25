@@ -14,7 +14,6 @@ import {
   CheckCircle,
   Clock,
   User,
-  Calendar,
   FileText,
   Shield,
   Users,
@@ -27,6 +26,7 @@ import {
   ChevronUp,
   Brain,
   Smartphone,
+  Menu,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { EncryptionSettings } from "@/components/encryption-settings"
@@ -45,7 +45,7 @@ import { BrainTrackingOptions } from "@/components/brain-tracking-options"
 import { WellnessCheckModal } from "@/components/wellness-check-modal"
 
 export default function AccountCredentialsDashboard() {
-  const { user, logout, isLoading } = useAuth()
+  const { user, logout, setGuestMode, isLoading } = useAuth() // Added setGuestMode from useAuth
   const [showGuidedSetup, setShowGuidedSetup] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
   const [showAuthForms, setShowAuthForms] = useState(false)
@@ -194,12 +194,7 @@ export default function AccountCredentialsDashboard() {
             <Button
               className="w-full text-lg py-6"
               size="lg"
-              onClick={() => {
-                console.log("[v0] Setting guest mode")
-                localStorage.setItem("whichpoint-guest", "true")
-                localStorage.removeItem("whichpoint-user")
-                window.location.reload()
-              }}
+              onClick={setGuestMode} // Use setGuestMode function instead of manual localStorage manipulation
             >
               Continue as Guest
             </Button>
@@ -233,6 +228,26 @@ export default function AccountCredentialsDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && (
+        <div className="bg-primary/10 border-b border-primary/20">
+          <div className="container mx-auto px-4 py-2">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="font-medium">Status: Active</span>
+                </div>
+                <div className="text-muted-foreground">Last wellness check: 2 days ago</div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="text-muted-foreground">12 accounts monitored</div>
+                <div className="text-muted-foreground">3 delegates configured</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 gap-4">
@@ -253,32 +268,56 @@ export default function AccountCredentialsDashboard() {
           </div>
 
           <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-4">
-            <EmailSyncButton />
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
-              <a href="/accounts">
-                <User className="h-6 w-6 mr-2" />
-                Manage Accounts
-              </a>
-            </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
-              <a href="/schedules">
-                <Calendar className="h-6 w-6 mr-2" />
-                Payment Schedules
-              </a>
-            </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
-              <a href="/notes">
-                <FileText className="h-6 w-6 mr-2" />
-                Personal Notes
-              </a>
-            </Button>
-            <Button variant="outline" size="sm" className="justify-start bg-transparent text-xl py-4" asChild>
-              <a href="/settings">Settings</a>
-            </Button>
-            <Button size="sm" className="justify-start text-xl py-4">
-              <Plus className="h-6 w-6 mr-2" />
-              Add Account
-            </Button>
+            <div className="lg:hidden">
+              <Button
+                variant="outline"
+                size="lg"
+                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 w-full font-bold"
+              >
+                <Menu className="h-8 w-8 mr-3" />
+                Menu
+              </Button>
+            </div>
+            <div className="hidden lg:flex lg:flex-row lg:items-center lg:gap-4">
+              <EmailSyncButton />
+              <Button
+                variant="outline"
+                size="lg"
+                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                asChild
+              >
+                <a href="/accounts">
+                  <User className="h-8 w-8 mr-3" />
+                  Accounts
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                asChild
+              >
+                <a href="/delegates">
+                  <Users className="h-8 w-8 mr-3" />
+                  Trusted Delegates
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                asChild
+              >
+                <a href="/settings">
+                  <Shield className="h-8 w-8 mr-3" />
+                  Settings
+                </a>
+              </Button>
+              <Button size="lg" className="justify-start text-2xl py-6 px-8 font-bold">
+                <Plus className="h-8 w-8 mr-3" />
+                Add Account
+              </Button>
+            </div>
           </div>
         </div>
       </header>
@@ -337,7 +376,7 @@ export default function AccountCredentialsDashboard() {
                   👥 Professional Contacts
                 </div>
                 <div className="bg-teal-100 text-teal-800 px-4 py-2 rounded-full text-lg font-medium shadow-sm">
-                  🧠 Wellness Tracking
+                  🧠 Cognitive Wellness Tracking
                 </div>
               </div>
             </div>
@@ -373,8 +412,8 @@ export default function AccountCredentialsDashboard() {
               <div className="flex justify-center space-x-4">
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="font-bold px-8 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent flex-1"
+                  variant="ghost"
+                  className="font-bold px-8 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 hover:bg-muted flex-1"
                 >
                   <div className="flex items-center justify-center">
                     <span className="text-primary animate-pulse mr-2">((( </span>
@@ -386,9 +425,9 @@ export default function AccountCredentialsDashboard() {
 
                 <Button
                   size="lg"
-                  variant="outline"
+                  variant="ghost"
                   onClick={() => setShowWellnessCheck(true)}
-                  className="font-bold px-6 py-8 text-xl shadow-lg hover:shadow-xl transition-all duration-200 border-2 bg-transparent flex-1"
+                  className="font-bold px-6 py-8 text-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:bg-muted flex-1"
                 >
                   <Clock className="h-6 w-6 mr-2" />
                   Preview Wellness Check
@@ -406,6 +445,7 @@ export default function AccountCredentialsDashboard() {
             <div className="w-full">
               <CollapsibleSection title="Accounts" icon={CreditCard} defaultOpen>
                 <div className="space-y-4">
+                  {/* Added account types section at the top */}
                   <div className="mb-6">
                     <h3 className="text-2xl font-semibold mb-4 text-foreground">Account Types</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -623,10 +663,10 @@ export default function AccountCredentialsDashboard() {
               className="w-full justify-between text-xl font-semibold py-8 hover:bg-muted/50"
             >
               <div className="flex items-center space-x-2">
-                <Brain className="h-6 w-6 text-primary" />
-                <span>Cognitive Wellness Options</span>
+                <Brain className="h-8 w-8 text-primary" />
+                <span>Cognitive Wellness Tracking</span>
               </div>
-              {showCognitiveWellness ? <ChevronUp className="h-6 w-6" /> : <ChevronDown className="h-6 w-6" />}
+              {showCognitiveWellness ? <ChevronUp className="h-8 w-8" /> : <ChevronDown className="h-8 w-8" />}
             </Button>
 
             {showCognitiveWellness && (
