@@ -283,7 +283,7 @@ export default function AccountCredentialsDashboard() {
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-2xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/accounts">
@@ -294,7 +294,7 @@ export default function AccountCredentialsDashboard() {
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-2xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/delegates">
@@ -305,7 +305,7 @@ export default function AccountCredentialsDashboard() {
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-2xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/settings">
@@ -322,14 +322,14 @@ export default function AccountCredentialsDashboard() {
         </div>
       </header>
 
-      <div className="border-b border-border bg-green-50">
+      <div className="bg-green-50">
         <div className="container mx-auto px-4 py-4">
           <div className="mb-8">
             <div className="flex justify-center">
               <Button
                 size="lg"
                 onClick={() => setShowGuidedSetup(true)}
-                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-3xl shadow-lg hover:shadow-xl transition-all duration-200"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold px-12 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 <Compass className="h-8 w-8 mr-3" />
                 Walk me through it
@@ -343,10 +343,10 @@ export default function AccountCredentialsDashboard() {
               <WhichPointInfo />
             </div>
             <p className="text-center text-muted-foreground mb-6 max-w-3xl mx-auto text-2xl leading-relaxed">
-              Middle Drawer is the first brain health-centric financial and account platform, developed with
-              consideration for how everyone can benefit. It acts as your independent safety net, ensuring your accounts
-              and digital footprint remain secure and accessible while monitoring cognitive wellness. It organizes your
-              credentials, tracks payment schedules, and connects trusted delegates who can help when you need it most.
+              Middle Drawer is the first brain health-centric financial and account platform, developed not just for a
+              person, but family, friends and everyone who matters. It acts as your independent safety net, ensuring
+              your accounts and digital footprint remain secure and accessible while optionally monitoring cognitive
+              wellness.
             </p>
 
             <div className="mb-8">
@@ -382,7 +382,7 @@ export default function AccountCredentialsDashboard() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-              <div className="text-center p-6 bg-muted/30 rounded-lg">
+              <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Users className="h-12 w-12 text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-3 text-2xl">For Families</h3>
                 <p className="text-xl text-muted-foreground">
@@ -390,14 +390,14 @@ export default function AccountCredentialsDashboard() {
                   transitions
                 </p>
               </div>
-              <div className="text-center p-6 bg-muted/30 rounded-lg">
+              <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Compass className="h-12 w-12 text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-3 text-2xl">For Travelers</h3>
                 <p className="text-xl text-muted-foreground">
                   Stay protected when you might be unavailable or lose phone/internet access during trips
                 </p>
               </div>
-              <div className="text-center p-6 bg-muted/30 rounded-lg">
+              <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
                 <h3 className="font-semibold mb-3 text-2xl">For Retirement</h3>
                 <p className="text-xl text-muted-foreground">
@@ -407,18 +407,18 @@ export default function AccountCredentialsDashboard() {
             </div>
           </div>
 
-          <div className="bg-card border-2 border-primary/20 rounded-lg p-8 max-w-2xl mx-auto shadow-lg">
+          <div className="max-w-2xl mx-auto">
             <div className="flex flex-col space-y-6">
               <div className="flex justify-center space-x-4">
                 <Button
                   size="lg"
                   variant="ghost"
-                  className="font-bold px-8 py-8 text-3xl hover:bg-primary hover:text-primary-foreground transition-all duration-200 flex-1"
+                  className="font-bold px-8 py-8 text-2xl bg-secondary hover:bg-secondary/20 text-secondary-foreground hover:text-secondary-foreground transition-all duration-200 flex-1 border-2 border-secondary/40 rounded-lg shadow-lg"
                 >
                   <div className="flex items-center justify-center">
-                    <span className="text-primary animate-pulse mr-2">((( </span>
-                    <Bell className="h-6 w-6 text-primary" />
-                    <span className="text-primary animate-pulse ml-2"> )))</span>
+                    <span className="text-secondary-foreground animate-pulse mr-2">((( </span>
+                    <Bell className="h-6 w-6 text-secondary-foreground" />
+                    <span className="text-secondary-foreground animate-pulse ml-2"> )))</span>
                     <span className="ml-3">Inform Delegates Now</span>
                   </div>
                 </Button>
@@ -427,7 +427,7 @@ export default function AccountCredentialsDashboard() {
                   size="lg"
                   variant="ghost"
                   onClick={() => setShowWellnessCheck(true)}
-                  className="font-bold px-6 py-8 text-3xl hover:bg-primary hover:text-primary-foreground transition-all duration-200 flex-1"
+                  className="font-bold px-6 py-8 text-2xl bg-accent hover:bg-accent/20 text-accent-foreground hover:text-accent-foreground transition-all duration-200 flex-1 border-2 border-accent/40 rounded-lg shadow-lg"
                 >
                   <Clock className="h-6 w-6 mr-2" />
                   Preview Wellness Check
