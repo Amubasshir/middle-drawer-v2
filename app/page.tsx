@@ -283,33 +283,33 @@ export default function AccountCredentialsDashboard() {
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/accounts">
-                  <User className="h-8 w-8 mr-3" />
+                  <User className="h-10 w-10 mr-4" />
                   Accounts
                 </a>
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/delegates">
-                  <Users className="h-8 w-8 mr-3" />
+                  <Users className="h-10 w-10 mr-4" />
                   Trusted Delegates
                 </a>
               </Button>
               <Button
                 variant="outline"
                 size="lg"
-                className="justify-start bg-card hover:bg-muted text-2xl py-6 px-8 font-bold"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-3xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
               >
                 <a href="/settings">
-                  <Shield className="h-8 w-8 mr-3" />
+                  <Shield className="h-10 w-10 mr-4" />
                   Settings
                 </a>
               </Button>
@@ -413,7 +413,7 @@ export default function AccountCredentialsDashboard() {
                 <Button
                   size="lg"
                   variant="ghost"
-                  className="font-bold px-8 py-8 text-2xl shadow-lg hover:shadow-xl transition-all duration-200 hover:bg-muted flex-1"
+                  className="font-bold px-8 py-8 text-3xl hover:bg-primary hover:text-primary-foreground transition-all duration-200 flex-1"
                 >
                   <div className="flex items-center justify-center">
                     <span className="text-primary animate-pulse mr-2">((( </span>
@@ -427,7 +427,7 @@ export default function AccountCredentialsDashboard() {
                   size="lg"
                   variant="ghost"
                   onClick={() => setShowWellnessCheck(true)}
-                  className="font-bold px-6 py-8 text-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:bg-muted flex-1"
+                  className="font-bold px-6 py-8 text-3xl hover:bg-primary hover:text-primary-foreground transition-all duration-200 flex-1"
                 >
                   <Clock className="h-6 w-6 mr-2" />
                   Preview Wellness Check

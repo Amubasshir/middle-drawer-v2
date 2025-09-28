@@ -8,12 +8,17 @@ import { useState } from "react"
 import { ArrowLeft, Settings, AlertTriangle, Shield, Smartphone } from "lucide-react"
 import Link from "next/link"
 import { CognitiveWellnessSettings } from "@/components/cognitive-wellness-settings"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function SettingsPage() {
+  const { user } = useAuth()
   const [showDeleteModal, setShowDeleteModal] = useState(false)
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
+
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

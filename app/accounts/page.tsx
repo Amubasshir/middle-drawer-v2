@@ -9,6 +9,8 @@ import { Plus, ArrowLeft, TrendingUp, Menu, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { CategorySelector } from "@/components/category-selector"
 import { CreditCard, Shield, Receipt, Car, Home, Smartphone, Users } from "lucide-react"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 // Mock data for demonstration
 const mockAccounts = [
@@ -73,6 +75,7 @@ const mockAccounts = [
 ]
 
 export default function AccountsPage() {
+  const { user } = useAuth()
   const [accounts, setAccounts] = useState(mockAccounts)
   const [showForm, setShowForm] = useState(false)
   const [editingAccount, setEditingAccount] = useState<any>(null)
@@ -120,6 +123,7 @@ export default function AccountsPage() {
   if (viewingAccount) {
     return (
       <div className="min-h-screen bg-background">
+        {user && <StatusBar />}
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
@@ -215,6 +219,7 @@ export default function AccountsPage() {
   if (showForm || editingAccount) {
     return (
       <div className="min-h-screen bg-background">
+        {user && <StatusBar />}
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
@@ -270,6 +275,7 @@ export default function AccountsPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

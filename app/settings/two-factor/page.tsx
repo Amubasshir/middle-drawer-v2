@@ -7,6 +7,8 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { ArrowLeft, Smartphone, MessageSquare, Mail, Phone, Key, Settings } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 const TWO_FACTOR_METHODS = [
   {
@@ -23,6 +25,7 @@ const TWO_FACTOR_METHODS = [
 ]
 
 export default function TwoFactorPage() {
+  const { user } = useAuth()
   const [selectedMethods, setSelectedMethods] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const supabase = createClient()
@@ -81,53 +84,57 @@ export default function TwoFactorPage() {
   }
 
   return (
-    <div className="container mx-auto p-6 max-w-2xl">
-      <div className="flex items-center gap-4 mb-6">
-        <Link href="/settings">
-          <Button variant="ghost" size="sm">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Settings
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Two-Factor Authentication Methods</CardTitle>
-          <CardDescription>
-            Select the methods you'd like to use for two-factor authentication when logging in
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {TWO_FACTOR_METHODS.map((method) => {
-            const Icon = method.icon
-            return (
-              <div key={method.id} className="flex items-start space-x-3 p-4 border rounded-lg">
-                <Checkbox
-                  id={method.id}
-                  checked={selectedMethods.includes(method.id)}
-                  onCheckedChange={() => handleMethodToggle(method.id)}
-                />
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <Icon className="h-4 w-4" />
-                    <label htmlFor={method.id} className="font-medium cursor-pointer">
-                      {method.label}
-                    </label>
-                  </div>
-                  <p className="text-sm text-muted-foreground">{method.description}</p>
-                </div>
-              </div>
-            )
-          })}
-
-          <div className="pt-4">
-            <Button onClick={saveSettings} disabled={isLoading} className="w-full">
-              {isLoading ? "Saving..." : "Save Settings"}
+      <div className="container mx-auto p-6 max-w-2xl">
+        <div className="flex items-center gap-4 mb-6">
+          <Link href="/settings">
+            <Button variant="ghost" size="sm">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Settings
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </Link>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Two-Factor Authentication Methods</CardTitle>
+            <CardDescription>
+              Select the methods you'd like to use for two-factor authentication when logging in
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {TWO_FACTOR_METHODS.map((method) => {
+              const Icon = method.icon
+              return (
+                <div key={method.id} className="flex items-start space-x-3 p-4 border rounded-lg">
+                  <Checkbox
+                    id={method.id}
+                    checked={selectedMethods.includes(method.id)}
+                    onCheckedChange={() => handleMethodToggle(method.id)}
+                  />
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Icon className="h-4 w-4" />
+                      <label htmlFor={method.id} className="font-medium cursor-pointer">
+                        {method.label}
+                      </label>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{method.description}</p>
+                  </div>
+                </div>
+              )
+            })}
+
+            <div className="pt-4">
+              <Button onClick={saveSettings} disabled={isLoading} className="w-full">
+                {isLoading ? "Saving..." : "Save Settings"}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   )
 }

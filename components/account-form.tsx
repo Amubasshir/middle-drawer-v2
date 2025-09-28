@@ -17,7 +17,6 @@ interface AccountFormProps {
   onSubmit: (account: any) => void
   onCancel: () => void
   initialData?: any
-  selectedCategory?: string
 }
 
 const accountTypes = [
@@ -36,7 +35,7 @@ const accountTypes = [
   { id: "phone", name: "Phone/Internet", category: "utilities", icon: Phone, critical: true },
 ]
 
-export function AccountForm({ onSubmit, onCancel, initialData, selectedCategory }: AccountFormProps) {
+export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProps) {
   const [formData, setFormData] = useState({
     accountName: initialData?.accountName || "",
     accountType: initialData?.accountType || "",

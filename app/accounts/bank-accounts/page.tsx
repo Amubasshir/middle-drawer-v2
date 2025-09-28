@@ -11,8 +11,11 @@ import { useState, useEffect } from "react"
 import { ArrowLeft, CreditCard, Plus, Trash2, Shield, Mail, Calendar, Smartphone } from "lucide-react"
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/client"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 export default function BankAccountsPage() {
+  const { user } = useAuth()
   const [showFreeTextInput, setShowFreeTextInput] = useState(false)
   const [freeText, setFreeText] = useState("")
   const [accounts, setAccounts] = useState([
@@ -121,6 +124,8 @@ export default function BankAccountsPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
+
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center space-x-4">
