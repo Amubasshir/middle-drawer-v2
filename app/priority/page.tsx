@@ -7,6 +7,8 @@ import { DetailViewModal } from "@/components/detail-view-modal"
 import { TrendingUp, ArrowLeft, Filter, ToggleLeft, ToggleRight } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import Link from "next/link"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 // Mock data combining accounts and bills
 const mockPriorityItems = [
@@ -161,6 +163,7 @@ const mockPriorityItems = [
 ]
 
 export default function PriorityPage() {
+  const { user } = useAuth()
   const [items, setItems] = useState(mockPriorityItems)
   const [selectedItem, setSelectedItem] = useState<any>(null)
   const [showDetailModal, setShowDetailModal] = useState(false)
@@ -200,6 +203,8 @@ export default function PriorityPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
+
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

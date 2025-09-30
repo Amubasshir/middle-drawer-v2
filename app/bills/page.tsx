@@ -7,6 +7,8 @@ import { BillList } from "@/components/bill-list"
 import { BillCalendar } from "@/components/bill-calendar"
 import { Plus, ArrowLeft, TrendingUp, Calendar, List } from "lucide-react"
 import Link from "next/link"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 // Mock data for demonstration
 const mockBills = [
@@ -83,6 +85,7 @@ const mockBills = [
 ]
 
 export default function BillsPage() {
+  const { user } = useAuth()
   const [bills, setBills] = useState(mockBills)
   const [showForm, setShowForm] = useState(false)
   const [editingBill, setEditingBill] = useState<any>(null)
@@ -120,6 +123,7 @@ export default function BillsPage() {
   if (showForm || editingBill) {
     return (
       <div className="min-h-screen bg-background">
+        {user && <StatusBar />}
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
@@ -159,6 +163,7 @@ export default function BillsPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

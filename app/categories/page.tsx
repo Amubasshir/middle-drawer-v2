@@ -5,8 +5,10 @@ import { Button } from "@/components/ui/button"
 import { CategoryOverview } from "@/components/category-overview"
 import { CategoryDetail } from "@/components/category-detail"
 import { TrendingUp, ArrowLeft } from "lucide-react"
-import { CreditCard, PiggyBank, Shield, PiggyBankIcon as Investment, Zap } from "lucide-react"
+import { CreditCard, PiggyBank, Shield, Indent as Investment, Zap } from "lucide-react"
 import Link from "next/link"
+import { StatusBar } from "@/components/status-bar"
+import { useAuth } from "@/contexts/auth-context"
 
 // Mock data for demonstration
 const mockCategories = [
@@ -192,6 +194,7 @@ const mockCategories = [
 ]
 
 export default function CategoriesPage() {
+  const { user } = useAuth()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
 
   const handleViewCategory = (categoryId: string) => {
@@ -207,6 +210,8 @@ export default function CategoriesPage() {
   if (selectedCategoryData) {
     return (
       <div className="min-h-screen bg-background">
+        {user && <StatusBar />}
+
         <header className="border-b border-border bg-card">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center space-x-2">
@@ -234,6 +239,8 @@ export default function CategoriesPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      {user && <StatusBar />}
+
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">

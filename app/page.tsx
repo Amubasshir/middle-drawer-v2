@@ -43,16 +43,18 @@ import { SampleReport } from "@/components/sample-report"
 import { AuthForms } from "@/components/auth-forms"
 import { BrainTrackingOptions } from "@/components/brain-tracking-options"
 import { WellnessCheckModal } from "@/components/wellness-check-modal"
+import { StatusBar } from "@/components/status-bar"
 
 export default function AccountCredentialsDashboard() {
-  const { user, logout, setGuestMode, isLoading } = useAuth() // Added setGuestMode from useAuth
+  const { user, logout, setGuestMode, isLoading } = useAuth()
   const [showGuidedSetup, setShowGuidedSetup] = useState(false)
   const [showSampleReport, setShowSampleReport] = useState(false)
   const [showAuthForms, setShowAuthForms] = useState(false)
   const [showCognitiveWellness, setShowCognitiveWellness] = useState(false)
   const [showWellnessCheck, setShowWellnessCheck] = useState(false)
+  const [showInformDelegatesConfirm, setShowInformDelegatesConfirm] = useState(false)
 
-  const presetDays = 14 // This would come from user settings
+  const presetDays = 14
 
   useEffect(() => {
     const savedMode = localStorage.getItem("whichpoint-mode")
@@ -163,6 +165,12 @@ export default function AccountCredentialsDashboard() {
     }
   }
 
+  const handleInformDelegates = async () => {
+    setShowInformDelegatesConfirm(false)
+    console.log("[v0] Informing delegates now - sending emails...")
+    alert("Delegates have been notified via email!")
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -191,11 +199,7 @@ export default function AccountCredentialsDashboard() {
           </div>
 
           <div className="space-y-4">
-            <Button
-              className="w-full text-lg py-6"
-              size="lg"
-              onClick={setGuestMode} // Use setGuestMode function instead of manual localStorage manipulation
-            >
+            <Button className="w-full text-lg py-6" size="lg" onClick={setGuestMode}>
               Continue as Guest
             </Button>
 
@@ -228,25 +232,7 @@ export default function AccountCredentialsDashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {user && (
-        <div className="bg-primary/10 border-b border-primary/20">
-          <div className="container mx-auto px-4 py-2">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="font-medium">Status: Active</span>
-                </div>
-                <div className="text-muted-foreground">Last wellness check: 2 days ago</div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="text-muted-foreground">12 accounts monitored</div>
-                <div className="text-muted-foreground">3 delegates configured</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {user && <StatusBar />}
 
       <header className="border-b border-border bg-card">
         <div className="container mx-auto px-4 py-4">
@@ -384,7 +370,7 @@ export default function AccountCredentialsDashboard() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
               <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Users className="h-12 w-12 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-2xl">For Families</h3>
+                <h3 className="font-semibold mb-3 text-3xl">For Families</h3>
                 <p className="text-xl text-muted-foreground">
                   Keep all accounts accessible when life changes occur - buying a car, starting school, or major
                   transitions
@@ -392,14 +378,14 @@ export default function AccountCredentialsDashboard() {
               </div>
               <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Compass className="h-12 w-12 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-2xl">For Travelers</h3>
+                <h3 className="font-semibold mb-3 text-3xl">For Travelers</h3>
                 <p className="text-xl text-muted-foreground">
                   Stay protected when you might be unavailable or lose phone/internet access during trips
                 </p>
               </div>
               <div className="text-center p-6 bg-muted/30 rounded-lg border-2 border-primary/20 shadow-lg">
                 <Shield className="h-12 w-12 text-primary mx-auto mb-3" />
-                <h3 className="font-semibold mb-3 text-2xl">For Retirement</h3>
+                <h3 className="font-semibold mb-3 text-3xl">For Retirement</h3>
                 <p className="text-xl text-muted-foreground">
                   Manage accounts and passwords safely while ensuring protection from scams and fraud as you age
                 </p>
@@ -413,6 +399,7 @@ export default function AccountCredentialsDashboard() {
                 <Button
                   size="lg"
                   variant="ghost"
+                  onClick={() => setShowInformDelegatesConfirm(true)}
                   className="font-bold px-8 py-8 text-2xl bg-secondary hover:bg-secondary/20 text-secondary-foreground hover:text-secondary-foreground transition-all duration-200 flex-1 border-2 border-secondary/40 rounded-lg shadow-lg"
                 >
                   <div className="flex items-center justify-center">
@@ -447,55 +434,55 @@ export default function AccountCredentialsDashboard() {
                 <div className="space-y-4">
                   {/* Added account types section at the top */}
                   <div className="mb-6">
-                    <h3 className="text-2xl font-semibold mb-4 text-foreground">Account Types</h3>
+                    <h3 className="text-3xl font-semibold mb-4 text-foreground">Account Types</h3>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <Link href="/accounts/bank-accounts">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <CreditCard className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Bank Accounts</p>
-                          <p className="text-sm text-muted-foreground">Checking, savings, credit cards</p>
+                          <p className="text-xl font-medium">Bank Accounts</p>
+                          <p className="text-base text-muted-foreground">Checking, savings, credit cards</p>
                         </div>
                       </Link>
                       <Link href="/accounts/insurance">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Shield className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Insurance</p>
-                          <p className="text-sm text-muted-foreground">Health, auto, home, life</p>
+                          <p className="text-xl font-medium">Insurance</p>
+                          <p className="text-base text-muted-foreground">Health, auto, home, life</p>
                         </div>
                       </Link>
                       <Link href="/accounts/tax-related">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Receipt className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Tax-Related</p>
-                          <p className="text-sm text-muted-foreground">Tax prep, retirement, HSA</p>
+                          <p className="text-xl font-medium">Tax-Related</p>
+                          <p className="text-base text-muted-foreground">Tax prep, retirement, HSA</p>
                         </div>
                       </Link>
                       <Link href="/accounts/housing-utilities">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Home className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Housing & Utilities</p>
-                          <p className="text-sm text-muted-foreground">Mortgage, electricity, internet</p>
+                          <p className="text-xl font-medium">Housing & Utilities</p>
+                          <p className="text-base text-muted-foreground">Mortgage, electricity, internet</p>
                         </div>
                       </Link>
                       <Link href="/accounts/transportation">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Car className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Transportation</p>
-                          <p className="text-sm text-muted-foreground">Car payments, gas cards</p>
+                          <p className="text-xl font-medium">Transportation</p>
+                          <p className="text-base text-muted-foreground">Car payments, gas cards</p>
                         </div>
                       </Link>
                       <Link href="/accounts/subscriptions">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Smartphone className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Subscriptions</p>
-                          <p className="text-sm text-muted-foreground">Phone, streaming, software</p>
+                          <p className="text-xl font-medium">Subscriptions</p>
+                          <p className="text-base text-muted-foreground">Phone, streaming, software</p>
                         </div>
                       </Link>
                       <Link href="/accounts/professionals">
-                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-muted/50 transition-colors cursor-pointer">
+                        <div className="bg-muted/30 p-4 rounded-lg text-center hover:bg-primary hover:text-primary-foreground transition-all duration-200 cursor-pointer">
                           <Users className="h-8 w-8 text-primary mx-auto mb-2" />
-                          <p className="text-lg font-medium">Professionals</p>
-                          <p className="text-sm text-muted-foreground">Doctors, lawyers, advisors</p>
+                          <p className="text-xl font-medium">Professionals</p>
+                          <p className="text-base text-muted-foreground">Doctors, lawyers, advisors</p>
                         </div>
                       </Link>
                     </div>
@@ -691,6 +678,29 @@ export default function AccountCredentialsDashboard() {
           </div>
         </div>
       </main>
+
+      {showInformDelegatesConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-card p-8 rounded-lg shadow-xl max-w-md mx-4">
+            <h2 className="text-2xl font-bold mb-4 text-foreground">Confirm Delegate Notification</h2>
+            <p className="text-lg text-muted-foreground mb-6">
+              Are you sure you want to inform your delegates now? This will send an email notification to all your
+              trusted delegates with your account information, regardless of the scheduled timeframe.
+            </p>
+            <div className="flex space-x-4">
+              <Button
+                onClick={handleInformDelegates}
+                className="flex-1 bg-primary hover:bg-primary/90 text-primary-foreground"
+              >
+                Yes, Inform Delegates
+              </Button>
+              <Button onClick={() => setShowInformDelegatesConfirm(false)} variant="outline" className="flex-1">
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
       <SampleReport isOpen={showSampleReport} onClose={() => setShowSampleReport(false)} />
