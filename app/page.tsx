@@ -27,6 +27,7 @@ import {
   Brain,
   Smartphone,
   Menu,
+  Briefcase,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { EncryptionSettings } from "@/components/encryption-settings"
@@ -286,6 +287,17 @@ export default function AccountCredentialsDashboard() {
                 <a href="/delegates">
                   <Users className="h-10 w-10 mr-4" />
                   Trusted Delegates
+                </a>
+              </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-2xl py-8 px-10 font-bold transition-all duration-200"
+                asChild
+              >
+                <a href="/personal-services">
+                  <Briefcase className="h-10 w-10 mr-4" />
+                  Personal Services
                 </a>
               </Button>
               <Button
