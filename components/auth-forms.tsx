@@ -74,11 +74,11 @@ export function AuthForms() {
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="login" className="text-lg py-3">
+            <TabsList className="grid h-full w-full grid-cols-2">
+              <TabsTrigger value="login" className="text-lg py-1">
                 Login
               </TabsTrigger>
-              <TabsTrigger value="signup" className="text-lg py-3">
+              <TabsTrigger value="signup" className="text-lg py-1">
                 Sign Up
               </TabsTrigger>
             </TabsList>
