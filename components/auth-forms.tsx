@@ -1,151 +1,73 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useAuth } from "@/contexts/auth-context"
-import { Loader2, ArrowLeft } from "lucide-react"
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useAuth } from "@/contexts/auth-context";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export function AuthForms() {
-  const { login, signup, isLoading } = useAuth()
-  const [loginForm, setLoginForm] = useState({ email: "", password: "" })
-  const [signupForm, setSignupForm] = useState({ name: "", email: "", password: "" })
-  const [error, setError] = useState("")
-  const [showTwoFA, setShowTwoFA] = useState(false)
-  const [twoFACode, setTwoFACode] = useState("")
-  const [pendingAuth, setPendingAuth] = useState<{ type: "login" | "signup"; data: any } | null>(null)
-
-  const generateTwoFACode = () => {
-    return Math.floor(100000 + Math.random() * 900000).toString()
-  }
-
-  const sendTwoFACode = (email: string) => {
-    const code = generateTwoFACode()
-    console.log(`[v0] Sending 2FA code ${code} to ${email}`)
-    // In a real app, this would send an email
-    return code
-  }
+  const { login, signup, signInWithGoogle, isLoading } = useAuth();
+  const [loginForm, setLoginForm] = useState({ email: "", password: "" });
+  const [signupForm, setSignupForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
-    const code = sendTwoFACode(loginForm.email)
-    setPendingAuth({ type: "login", data: { ...loginForm, expectedCode: code } })
-    setShowTwoFA(true)
-  }
+    const success = await login(loginForm.email, loginForm.password);
+    if (!success) {
+      setError("Invalid email or password");
+    }
+  };
 
   const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");
 
     if (signupForm.password.length < 6) {
-      setError("Password must be at least 6 characters")
-      return
+      setError("Password must be at least 6 characters");
+      return;
     }
 
-    const code = sendTwoFACode(signupForm.email)
-    setPendingAuth({ type: "signup", data: { ...signupForm, expectedCode: code } })
-    setShowTwoFA(true)
-  }
-
-  const handleTwoFAVerification = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setError("")
-
-    if (!pendingAuth) return
-
-    if (twoFACode !== pendingAuth.data.expectedCode) {
-      setError("Invalid verification code")
-      return
+    const success = await signup(
+      signupForm.name,
+      signupForm.email,
+      signupForm.password
+    );
+    if (!success) {
+      setError("User with this email already exists or signup failed");
     }
+  };
 
-    if (pendingAuth.type === "login") {
-      const success = await login(pendingAuth.data.email, pendingAuth.data.password)
-      if (!success) {
-        setError("Invalid email or password")
-        setShowTwoFA(false)
-        setPendingAuth(null)
-        setTwoFACode("")
-      }
-    } else {
-      const success = await signup(pendingAuth.data.name, pendingAuth.data.email, pendingAuth.data.password)
-      if (!success) {
-        setError("User with this email already exists")
-        setShowTwoFA(false)
-        setPendingAuth(null)
-        setTwoFACode("")
-      }
-    }
-  }
-
-  const handleBackToAuth = () => {
-    setShowTwoFA(false)
-    setPendingAuth(null)
-    setTwoFACode("")
-    setError("")
-  }
-
-  if (showTwoFA) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-50 p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-3xl font-bold text-orange-600">Email Verification</CardTitle>
-            <CardDescription className="text-lg">
-              We've sent a 6-digit code to {pendingAuth?.data.email}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleTwoFAVerification} className="space-y-6">
-              <div className="space-y-3">
-                <Label htmlFor="twofa-code" className="text-lg">
-                  Verification Code
-                </Label>
-                <Input
-                  id="twofa-code"
-                  type="text"
-                  placeholder="Enter 6-digit code"
-                  value={twoFACode}
-                  onChange={(e) => setTwoFACode(e.target.value)}
-                  maxLength={6}
-                  className="text-2xl text-center py-4"
-                  required
-                />
-              </div>
-              {error && <p className="text-base text-red-600">{error}</p>}
-              <div className="space-y-3">
-                <Button type="submit" className="w-full text-lg py-4" disabled={isLoading || twoFACode.length !== 6}>
-                  {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
-                  Verify & Continue
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full text-lg py-4 bg-transparent"
-                  onClick={handleBackToAuth}
-                >
-                  <ArrowLeft className="mr-2 h-5 w-5" />
-                  Back to Login
-                </Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    )
-  }
+  const handleGoogleSignin = async () => {
+    setError("");
+    await signInWithGoogle();
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-amber-50 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-orange-600">Middle Drawer</CardTitle>
+          <CardTitle className="text-3xl font-bold text-orange-600">
+            Middle Drawer
+          </CardTitle>
           <CardDescription className="text-lg">
             Manage your digital footprint and financial responsibilities
           </CardDescription>
@@ -172,7 +94,9 @@ export function AuthForms() {
                     type="email"
                     placeholder="Enter your email"
                     value={loginForm.email}
-                    onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
+                    onChange={(e) =>
+                      setLoginForm({ ...loginForm, email: e.target.value })
+                    }
                     className="text-lg py-3"
                     required
                   />
@@ -186,15 +110,23 @@ export function AuthForms() {
                     type="password"
                     placeholder="Enter your password"
                     value={loginForm.password}
-                    onChange={(e) => setLoginForm({ ...loginForm, password: e.target.value })}
+                    onChange={(e) =>
+                      setLoginForm({ ...loginForm, password: e.target.value })
+                    }
                     className="text-lg py-3"
                     required
                   />
                 </div>
                 {error && <p className="text-base text-red-600">{error}</p>}
-                <Button type="submit" className="w-full text-lg py-4" disabled={isLoading}>
-                  {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
-                  Login with 2FA
+                <Button
+                  type="submit"
+                  className="w-full text-lg py-4"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : null}
+                  Login
                 </Button>
               </form>
             </TabsContent>
@@ -210,7 +142,9 @@ export function AuthForms() {
                     type="text"
                     placeholder="Enter your full name"
                     value={signupForm.name}
-                    onChange={(e) => setSignupForm({ ...signupForm, name: e.target.value })}
+                    onChange={(e) =>
+                      setSignupForm({ ...signupForm, name: e.target.value })
+                    }
                     className="text-lg py-3"
                     required
                   />
@@ -224,7 +158,9 @@ export function AuthForms() {
                     type="email"
                     placeholder="Enter your email"
                     value={signupForm.email}
-                    onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
+                    onChange={(e) =>
+                      setSignupForm({ ...signupForm, email: e.target.value })
+                    }
                     className="text-lg py-3"
                     required
                   />
@@ -238,21 +174,73 @@ export function AuthForms() {
                     type="password"
                     placeholder="Create a password (min 6 characters)"
                     value={signupForm.password}
-                    onChange={(e) => setSignupForm({ ...signupForm, password: e.target.value })}
+                    onChange={(e) =>
+                      setSignupForm({ ...signupForm, password: e.target.value })
+                    }
                     className="text-lg py-3"
                     required
                   />
                 </div>
                 {error && <p className="text-base text-red-600">{error}</p>}
-                <Button type="submit" className="w-full text-lg py-4" disabled={isLoading}>
-                  {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : null}
-                  Sign Up with 2FA
+                <Button
+                  type="submit"
+                  className="w-full text-lg py-4"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  ) : null}
+                  Sign Up
                 </Button>
               </form>
             </TabsContent>
           </Tabs>
+
+          {/* Google Sign In Button */}
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
+            </div>
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-4 text-lg py-4"
+              onClick={handleGoogleSignin}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+              ) : null}
+              <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+                <path
+                  fill="currentColor"
+                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+                />
+                <path
+                  fill="currentColor"
+                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                />
+              </svg>
+              Continue with Google
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

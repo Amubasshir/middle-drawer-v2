@@ -1,162 +1,286 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { createContext, useContext, useState, useEffect } from "react"
+import { createClient } from "@/lib/supabase/client";
+import type React from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
-  id: string
-  name: string
-  email: string
+  id: string;
+  name: string;
+  email: string;
 }
 
 interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string, name?: string) => Promise<boolean>
-  signup: (name: string, email: string, password: string) => Promise<boolean>
-  logout: () => void
-  setGuestMode: () => void // Added setGuestMode function
-  isLoading: boolean
+  user: User | null;
+  login: (email: string, password: string) => Promise<boolean>;
+  signup: (name: string, email: string, password: string) => Promise<boolean>;
+  signInWithGoogle: () => Promise<boolean>;
+  logout: () => void;
+  setGuestMode: () => void;
+  isLoading: boolean;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("[v0] AuthProvider initializing...")
+    console.log("[v0] AuthProvider initializing...");
 
-    try {
-      const isGuest = localStorage.getItem("whichpoint-guest")
-      console.log("[v0] Guest mode flag:", isGuest)
+    const initializeAuth = async () => {
+      try {
+        const supabase = createClient();
 
-      if (isGuest === "true") {
-        console.log("[v0] Setting guest user")
-        setUser({
-          id: "guest",
-          name: "Guest User",
-          email: "guest@middledrawer.com",
-        })
-        setIsLoading(false)
-        return
-      }
+        // Check for guest mode first
+        const isGuest = localStorage.getItem("whichpoint-guest");
+        console.log("[v0] Guest mode flag:", isGuest);
 
-      // Check for stored user session
-      const storedUser = localStorage.getItem("whichpoint-user")
-      console.log("[v0] Stored user:", storedUser)
-
-      if (storedUser) {
-        try {
-          console.log("[v0] Setting stored user")
-          setUser(JSON.parse(storedUser))
-        } catch (error) {
-          console.log("[v0] Error parsing stored user, clearing storage")
-          localStorage.removeItem("whichpoint-user")
+        if (isGuest === "true") {
+          console.log("[v0] Setting guest user");
+          setUser({
+            id: "guest",
+            name: "Guest User",
+            email: "guest@middledrawer.com",
+          });
+          setIsLoading(false);
+          return;
         }
-      } else {
-        console.log("[v0] No user found, showing auth screen")
-      }
-    } catch (error) {
-      console.log("[v0] Error accessing localStorage:", error)
-    }
 
-    setIsLoading(false)
-  }, [])
+        // Get current session from Supabase
+        const {
+          data: { session },
+          error,
+        } = await supabase.auth.getSession();
+
+        if (error) {
+          console.log("[v0] Error getting session:", error);
+          setIsLoading(false);
+          return;
+        }
+
+        if (session?.user) {
+          console.log("[v0] Found active session");
+          const userData = {
+            id: session.user.id,
+            name:
+              session.user.user_metadata?.full_name ||
+              session.user.email?.split("@")[0] ||
+              "User",
+            email: session.user.email || "",
+          };
+          setUser(userData);
+          localStorage.setItem("whichpoint-user", JSON.stringify(userData));
+        } else {
+          console.log("[v0] No active session found");
+          localStorage.removeItem("whichpoint-user");
+        }
+      } catch (error) {
+        console.log("[v0] Error initializing auth:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    // Listen for auth changes
+    const supabase = createClient();
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (event: string, session: any) => {
+      console.log("[v0] Auth state changed:", event, session?.user?.email);
+
+      if (session?.user) {
+        const userData = {
+          id: session.user.id,
+          name:
+            session.user.user_metadata?.full_name ||
+            session.user.email?.split("@")[0] ||
+            "User",
+          email: session.user.email || "",
+        };
+        setUser(userData);
+        localStorage.setItem("whichpoint-user", JSON.stringify(userData));
+        localStorage.removeItem("whichpoint-guest");
+      } else {
+        setUser(null);
+        localStorage.removeItem("whichpoint-user");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const setGuestMode = () => {
-    console.log("[v0] Setting guest mode")
+    console.log("[v0] Setting guest mode");
     try {
-      localStorage.setItem("whichpoint-guest", "true")
-      localStorage.removeItem("whichpoint-user")
+      localStorage.setItem("whichpoint-guest", "true");
+      localStorage.removeItem("whichpoint-user");
       setUser({
         id: "guest",
         name: "Guest User",
         email: "guest@middledrawer.com",
-      })
-      setIsLoading(false)
+      });
+      setIsLoading(false);
     } catch (error) {
-      console.log("[v0] Error setting guest mode:", error)
+      console.log("[v0] Error setting guest mode:", error);
     }
-  }
+  };
 
-  const login = async (email: string, password: string, name?: string): Promise<boolean> => {
-    setIsLoading(true)
+  const login = async (email: string, password: string): Promise<boolean> => {
+    setIsLoading(true);
 
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    // Check if user exists in localStorage
-    const existingUsers = JSON.parse(localStorage.getItem("whichpoint-users") || "[]")
-    const existingUser = existingUsers.find((u: any) => u.email === email)
+      if (error) {
+        console.log("[v0] Login error:", error.message);
+        setIsLoading(false);
+        return false;
+      }
 
-    if (existingUser && existingUser.password === password) {
-      const userData = { id: existingUser.id, name: existingUser.name, email: existingUser.email }
-      setUser(userData)
-      localStorage.setItem("whichpoint-user", JSON.stringify(userData))
-      localStorage.removeItem("whichpoint-guest")
-      setIsLoading(false)
-      return true
+      if (data.user) {
+        const userData = {
+          id: data.user.id,
+          name:
+            data.user.user_metadata?.full_name ||
+            data.user.email?.split("@")[0] ||
+            "User",
+          email: data.user.email || "",
+        };
+        setUser(userData);
+        localStorage.setItem("whichpoint-user", JSON.stringify(userData));
+        localStorage.removeItem("whichpoint-guest");
+        setIsLoading(false);
+        return true;
+      }
+
+      setIsLoading(false);
+      return false;
+    } catch (error) {
+      console.log("[v0] Login error:", error);
+      setIsLoading(false);
+      return false;
+    }
+  };
+
+  const signup = async (
+    name: string,
+    email: string,
+    password: string
+  ): Promise<boolean> => {
+    setIsLoading(true);
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+          },
+        },
+      });
+
+      if (error) {
+        console.log("[v0] Signup error:", error.message);
+        setIsLoading(false);
+        return false;
+      }
+
+      if (data.user) {
+        const userData = {
+          id: data.user.id,
+          name: data.user.user_metadata?.full_name || name,
+          email: data.user.email || email,
+        };
+        setUser(userData);
+        localStorage.setItem("whichpoint-user", JSON.stringify(userData));
+        localStorage.removeItem("whichpoint-guest");
+        setIsLoading(false);
+        return true;
+      }
+
+      setIsLoading(false);
+      return false;
+    } catch (error) {
+      console.log("[v0] Signup error:", error);
+      setIsLoading(false);
+      return false;
+    }
+  };
+
+  const signInWithGoogle = async (): Promise<boolean> => {
+    setIsLoading(true);
+
+    try {
+      const supabase = createClient();
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/`,
+        },
+      });
+
+      if (error) {
+        console.log("[v0] Google signin error:", error.message);
+        setIsLoading(false);
+        return false;
+      }
+
+      // The actual signin will be handled by the auth state change listener
+      return true;
+    } catch (error) {
+      console.log("[v0] Google signin error:", error);
+      setIsLoading(false);
+      return false;
+    }
+  };
+
+  const logout = async () => {
+    console.log("[v0] Logging out user");
+
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.log("[v0] Logout error:", error);
     }
 
-    setIsLoading(false)
-    return false
-  }
-
-  const signup = async (name: string, email: string, password: string): Promise<boolean> => {
-    setIsLoading(true)
-
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Check if user already exists
-    const existingUsers = JSON.parse(localStorage.getItem("whichpoint-users") || "[]")
-    const userExists = existingUsers.some((u: any) => u.email === email)
-
-    if (userExists) {
-      setIsLoading(false)
-      return false
-    }
-
-    // Create new user
-    const newUser = {
-      id: Date.now().toString(),
-      name,
-      email,
-      password,
-    }
-
-    const updatedUsers = [...existingUsers, newUser]
-    localStorage.setItem("whichpoint-users", JSON.stringify(updatedUsers))
-
-    const userData = { id: newUser.id, name: newUser.name, email: newUser.email }
-    setUser(userData)
-    localStorage.setItem("whichpoint-user", JSON.stringify(userData))
-    localStorage.removeItem("whichpoint-guest")
-
-    setIsLoading(false)
-    return true
-  }
-
-  const logout = () => {
-    console.log("[v0] Logging out user")
-    setUser(null)
-    localStorage.removeItem("whichpoint-user")
-    localStorage.removeItem("whichpoint-guest")
-    window.location.href = "/"
-  }
+    setUser(null);
+    localStorage.removeItem("whichpoint-user");
+    localStorage.removeItem("whichpoint-guest");
+    window.location.href = "/";
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, setGuestMode, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        signup,
+        signInWithGoogle,
+        logout,
+        setGuestMode,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
-  )
+  );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context
+  return context;
 }
