@@ -12,6 +12,7 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
+  profiles: any;
   login: (email: string, password: string) => Promise<boolean>;
   signup: (name: string, email: string, password: string) => Promise<boolean>;
   signInWithGoogle: () => Promise<boolean>;
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [profiles, setProfiles] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -71,6 +73,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             email: session.user.email || "",
           };
           setUser(userData);
+
+           if(userData.id) {
+            const {data, error} = await supabase.from('profiles').select('*').eq('id', userData.id).single();
+            console.log({"[v0] Fetched profile data:": data, error});   
+            if(error) {
+                console.log("[v0] Error fetching profile:", error);
+                // return;
+            }
+            setProfiles(data)
+
+        }
           localStorage.setItem("whichpoint-user", JSON.stringify(userData));
         } else {
           console.log("[v0] No active session found");
@@ -102,6 +115,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           email: session.user.email || "",
         };
         setUser(userData);
+        // if(userData.id) {
+        //     const {data, error} = await supabase.from('profiles').select('*').eq('id', userData.id).single();
+        //     console.log({"[v0] Fetched profile data:": data, error});   
+        //     if(error) {
+        //         console.log("[v0] Error fetching profile:", error);
+        //         // return;
+        //     }
+
+        // }
         localStorage.setItem("whichpoint-user", JSON.stringify(userData));
         localStorage.removeItem("whichpoint-guest");
       } else {
@@ -264,6 +286,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     <AuthContext.Provider
       value={{
         user,
+        profiles,
         login,
         signup,
         signInWithGoogle,
