@@ -248,7 +248,7 @@ export default function AccountCredentialsDashboard() {
             </div>
             <div className="flex items-center space-x-2 px-3 py-1 bg-muted rounded-lg">
               {!profiles?.profile_image ? <User className="h-4 w-4 text-primary" /> :
-              <Image height={200} width={200} src={profiles?.profile_image || ""} className="w-10 h-10 rounded-full" alt="" /> }
+              <Image height={200} width={200} src={profiles?.profile_image} className="w-10 h-10 rounded-full" alt="" /> }
               <span className="text-xl font-medium text-foreground">{user?.name || "User"}</span>
               <Button variant="ghost" size="sm" onClick={logout} className="ml-2 h-6 px-2 text-xl">
                 Logout

@@ -223,9 +223,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: data.user.user_metadata?.full_name || name,
           email: data.user.email || email,
         };
-        setUser(userData);
-        localStorage.setItem("whichpoint-user", JSON.stringify(userData));
-        localStorage.removeItem("whichpoint-guest");
+        // setUser(userData);
+        // localStorage.setItem("whichpoint-user", JSON.stringify(userData));
+        // localStorage.removeItem("whichpoint-guest");
         setIsLoading(false);
         return true;
       }
