@@ -46,6 +46,7 @@ import { BrainTrackingOptions } from "@/components/brain-tracking-options"
 import { WellnessCheckModal } from "@/components/wellness-check-modal"
 import { StatusBar } from "@/components/status-bar"
 import Image from "next/image"
+import CognitiveWellnessModal from "@/components/cognitive-wellness-modal"
 
 export default function AccountCredentialsDashboard() {
   const { user, profiles, logout, setGuestMode, isLoading } = useAuth()
@@ -55,6 +56,14 @@ export default function AccountCredentialsDashboard() {
   const [showCognitiveWellness, setShowCognitiveWellness] = useState(false)
   const [showWellnessCheck, setShowWellnessCheck] = useState(false)
   const [showInformDelegatesConfirm, setShowInformDelegatesConfirm] = useState(false)
+  const [showSampleTest, setShowSampleTest] = useState(false);
+
+//   showSampleTest it will be open when user will login 
+  useEffect(() => {
+    if (user) {
+      setShowSampleTest(true)
+    }
+  }, [user])
 
   const presetDays = 14
 
@@ -719,6 +728,8 @@ export default function AccountCredentialsDashboard() {
       <GuidedSetup isOpen={showGuidedSetup} onClose={() => setShowGuidedSetup(false)} />
       <SampleReport isOpen={showSampleReport} onClose={() => setShowSampleReport(false)} />
       <WellnessCheckModal isOpen={showWellnessCheck} onClose={() => setShowWellnessCheck(false)} />
+
+      <CognitiveWellnessModal isOpen={showSampleTest} onClose={() => setShowSampleTest(false)} />
     </div>
   )
 }
