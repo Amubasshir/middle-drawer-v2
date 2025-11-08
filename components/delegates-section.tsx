@@ -75,6 +75,8 @@ export function DelegatesSection() {
     phones: [{ number: "", verified: false }],
   });
 
+
+
   const [verificationCode, setVerificationCode] = useState("");
   const [pendingVerification, setPendingVerification] = useState<{
     delegateId: string;
@@ -309,6 +311,8 @@ export function DelegatesSection() {
           notes: newDelegate.notes.trim() || null,
           notification_message: newDelegate.notificationMessage.trim() || null,
           is_active: true,
+          emails: newDelegate.emails,
+          phones: newDelegate.phones,
         });
 
         if (delegateResult.error || !delegateResult.data) {
@@ -629,6 +633,7 @@ export function DelegatesSection() {
                     <div key={index} className="flex gap-2 mt-2">
                       <Input
                         value={email.address}
+                        type="email"
                         onChange={(e) =>
                           updateEmailField(index, e.target.value)
                         }
@@ -682,6 +687,7 @@ export function DelegatesSection() {
                     <div key={index} className="flex gap-2 mt-2">
                       <Input
                         value={phone.number}
+                        type="number"
                         onChange={(e) =>
                           updatePhoneField(index, e.target.value)
                         }
