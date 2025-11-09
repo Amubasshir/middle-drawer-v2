@@ -60,9 +60,12 @@ export default function AccountCredentialsDashboard() {
 
 //   showSampleTest it will be open when user will login 
   useEffect(() => {
-    if (user) {
-      setShowSampleTest(true)
-    }
+      const isSubmitTwice = JSON.parse(localStorage.getItem("isSubmitTwice") || "false");
+
+  if (user || !isSubmitTwice) {
+    setShowSampleTest(true);
+    localStorage.setItem("isSubmitTwice", JSON.stringify(true));
+  }
   }, [user])
 
   const presetDays = 14

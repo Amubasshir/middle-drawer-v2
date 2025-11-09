@@ -7,9 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { useAuth } from "@/contexts/auth-context";
 import { saveWellnessCheck } from "@/lib/actions/wellness-actions";
+import { getDelegateContactsByDelegate, getDelegatesByUser, withBrowserClient } from "@/lib/db";
 import { createClient } from "@/lib/supabase/client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface CognitiveWellnessModalProps {
   isOpen: boolean;
@@ -34,13 +36,25 @@ const DISTRACTOR_WORDS = [
   "shadow",
 ];
 
+interface DelegateUI {
+  id: string;
+  name: string;
+  relationship: string;
+  permissions: string[];
+  notes: string;
+  emails: { id?: string; address: string; verified: boolean }[];
+  phones: { id?: string; number: string; verified: boolean }[];
+}
+
+
 export default function CognitiveWellnessModal({
   isOpen,
   onClose,
 }: CognitiveWellnessModalProps) {
-  const [stage, setStage] = useState<
+    const [stage, setStage] = useState<
     "instructions" | "showing" | "countdown" | "testing" | "result"
-  >("instructions");
+    >("instructions");
+  const supabase = createClient();
   const [currentWords, setCurrentWords] = useState<string[]>([]);
   const [testWords, setTestWords] = useState<string[]>([]);
   const [correctAnswer, setCorrectAnswer] = useState<string>("");
@@ -50,8 +64,67 @@ export default function CognitiveWellnessModal({
   const [responseTime, setResponseTime] = useState<number>(0);
   const [failureCount, setFailureCount] = useState(0);
   const [lastFailureTime, setLastFailureTime] = useState<number | null>(null);
+  const { user } = useAuth();
+    const [delegates, setDelegates] = useState<DelegateUI[]>([]);
 
-  const supabase = createClient()
+
+
+    
+  // Load delegates from database
+  const loadDelegates = useCallback(async () => {
+    if (!user || user.id === "guest") {
+    //   setIsLoading(false);
+      return;
+    }
+
+    try {
+    //   setIsLoading(true);
+      const result = await withBrowserClient(async (client) => {
+        const delegatesResult = await getDelegatesByUser(client, user.id);
+        if (delegatesResult.error || !delegatesResult.data) {
+          console.error("Error loading delegates:", delegatesResult.error);
+          return [];
+        }
+
+        // Load contacts for each delegate
+        const delegatesWithContacts = await Promise.all(
+          delegatesResult.data.map(async (delegate) => {
+            const contactsResult = await getDelegateContactsByDelegate(
+              client,
+              delegate.id
+            );
+            const contacts = contactsResult.data || [];
+
+            const emailContacts = contacts
+            .filter(contact => contact.contact_type === "email")
+            .map(contact => ({
+                address: contact.contact_value,
+                verified: contact.is_verified
+            }));
+            // return transformDelegateToUI(delegate, contacts);
+            return emailContacts;
+        })
+    );
+    
+    return delegatesWithContacts;
+});
+
+// console.log({result})
+      setDelegates(result[0]);
+    } catch (error) {
+      console.error("Error loading delegates:", error);
+    } finally {
+    //   setIsLoading(false);
+    }
+  }, [user]);
+
+  // Load delegates on mount and when user changes
+  useEffect(() => {
+    loadDelegates();
+  }, [loadDelegates]);
+
+
+
 
   const startTest = () => {
     const wordSet =
@@ -120,11 +193,8 @@ const handleAnswer = async (selectedWord: string) => {
                 responseTime: timeTaken,
               },
               delegates: {
-  emails: [
-    { address: "mexoni5225@wacold.com", verified: false },
-    { address: "weyese3903@wacold.com", verified: false }
-  ]
-},
+                    emails: delegates,
+              },
               userId: '6fedd312-d6dc-4482-ad12-731bfa42d4ec'
             }
           })
@@ -132,6 +202,8 @@ const handleAnswer = async (selectedWord: string) => {
           if (fnError) {
             console.error('Failed to notify delegates:', fnError)
           }
+
+          localStorage.setItem('isSubmitTwice', JSON.stringify(true))
         } catch (error) {
           console.error('Error calling notify function:', error)
         }
