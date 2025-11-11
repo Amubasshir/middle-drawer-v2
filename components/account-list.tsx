@@ -88,8 +88,8 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
 
   const filteredAccounts = accounts.filter((account) => {
     const matchesSearch =
-      account.accountName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      account.institutionName.toLowerCase().includes(searchTerm.toLowerCase())
+      account.accountName?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      account.institutionName?.toLowerCase().includes(searchTerm?.toLowerCase())
 
     const matchesCategory =
       filterCategory === "all" ||

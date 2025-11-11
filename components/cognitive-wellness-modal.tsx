@@ -203,7 +203,7 @@ const handleAnswer = async (selectedWord: string) => {
             console.error('Failed to notify delegates:', fnError)
           }
 
-          localStorage.setItem('isSubmitTwice', JSON.stringify(true))
+          localStorage.setItem('isSubmitTwice', JSON.stringify(false))
         } catch (error) {
           console.error('Error calling notify function:', error)
         }

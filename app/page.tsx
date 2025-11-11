@@ -62,7 +62,7 @@ export default function AccountCredentialsDashboard() {
   useEffect(() => {
       const isSubmitTwice = JSON.parse(localStorage.getItem("isSubmitTwice") || "false");
 
-  if (user || !isSubmitTwice) {
+  if (user && !isSubmitTwice) {
     setShowSampleTest(true);
     localStorage.setItem("isSubmitTwice", JSON.stringify(true));
   }
@@ -319,15 +319,19 @@ export default function AccountCredentialsDashboard() {
                 size="lg"
                 className="justify-start bg-card hover:bg-primary hover:text-primary-foreground text-2xl py-8 px-10 font-bold transition-all duration-200"
                 asChild
-              >
+                >
                 <a href="/settings">
                   <Shield className="h-10 w-10 mr-4" />
                   Settings
                 </a>
               </Button>
-              <Button size="lg" className="justify-start text-2xl py-6 px-8 font-bold">
+              <Button size="lg" className="justify-start text-2xl py-6 px-8 font-bold"
+                  asChild
+              >
+                <a href="/accounts">
                 <Plus className="h-8 w-8 mr-3" />
                 Add Account
+                </a>
               </Button>
             </div>
           </div>
