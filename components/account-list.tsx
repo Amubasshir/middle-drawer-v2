@@ -27,17 +27,17 @@ import {
 
 interface Account {
   id: string
-  accountName: string
-  accountType: string
-  institutionName: string
-  accountNumber: string
+  account_name: string
+  account_name: string
+  institution_name: string
+  account_number: string
   username: string
   email: string
   phone: string
-  currentBalance: number
-  creditLimit?: number
-  priorityLevel: number
-  isActive: boolean
+  current_balance: number
+  credit_limit?: number
+  priority_level: number
+  is_active: boolean
   notes: string
 }
 
@@ -48,7 +48,7 @@ interface AccountListProps {
   onViewDetails: (account: Account) => void
 }
 
-const accountTypeIcons: Record<string, any> = {
+const account_nameIcons: Record<string, any> = {
   checking: CreditCard,
   savings: PiggyBank,
   credit: CreditCard,
@@ -64,7 +64,7 @@ const accountTypeIcons: Record<string, any> = {
   phone: Phone,
 }
 
-const accountTypeNames: Record<string, string> = {
+const account_nameNames: Record<string, string> = {
   checking: "Checking Account",
   savings: "Savings Account",
   credit: "Credit Card",
@@ -88,21 +88,22 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
 
   const filteredAccounts = accounts.filter((account) => {
     const matchesSearch =
-      account.accountName?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-      account.institutionName?.toLowerCase().includes(searchTerm?.toLowerCase())
+      account.account_name?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+      account.institution_name?.toLowerCase().includes(searchTerm?.toLowerCase())
 
     const matchesCategory =
       filterCategory === "all" ||
-      (filterCategory === "banking" && ["checking", "savings"].includes(account.accountType)) ||
+      (filterCategory === "banking" && ["checking", "savings"].includes(account.account_type)) ||
       (filterCategory === "credit" &&
-        ["credit", "mortgage", "auto-loan", "personal-loan"].includes(account.accountType)) ||
-      (filterCategory === "insurance" && account.accountType.includes("insurance")) ||
-      (filterCategory === "investment" && ["investment", "retirement"].includes(account.accountType)) ||
-      (filterCategory === "utilities" && ["utilities", "phone"].includes(account.accountType))
+        ["credit", "mortgage", "auto-loan", "personal-loan"].includes(account.account_type)) ||
+      (filterCategory === "insurance" && account.account_type.includes("insurance")) ||
+      (filterCategory === "investment" && ["investment", "retirement"].includes(account.account_type)) ||
+      (filterCategory === "utilities" && ["utilities", "phone"].includes(account.account_type))
 
-    const matchesPriority = filterPriority === "all" || account.priorityLevel.toString() === filterPriority
+    const matchesPriority = filterPriority === "all" || account.priority_level.toString() === filterPriority
 
-    const matchesActive = showInactive || account.isActive
+    
+    const matchesActive = showInactive || account.is_active
 
     return matchesSearch && matchesCategory && matchesPriority && matchesActive
   })
@@ -192,14 +193,16 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {console.log("i am accouint", {accounts})}
+        {/* {accounts.map((account) => { */}
         {filteredAccounts.map((account) => {
-          const IconComponent = accountTypeIcons[account.accountType] || CreditCard
-          const typeName = accountTypeNames[account.accountType] || account.accountType
+          const IconComponent = account_nameIcons[account.account_type] || CreditCard
+          const typeName = account_nameNames[account.account_type] || account.account_type
 
           return (
             <Card
               key={account.id}
-              className={`hover:shadow-md transition-shadow ${!account.isActive ? "opacity-60" : ""}`}
+              className={`hover:shadow-md transition-shadow ${!account.is_active ? "opacity-60" : ""}`}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
@@ -208,12 +211,12 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
                       <IconComponent className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle className="text-base">{account.accountName}</CardTitle>
+                      <CardTitle className="text-base">{account.account_name}</CardTitle>
                       <p className="text-sm text-muted-foreground">{typeName}</p>
                     </div>
                   </div>
-                  <Badge className={getPriorityColor(account.priorityLevel)}>
-                    {getPriorityLabel(account.priorityLevel)}
+                  <Badge className={getPriorityColor(account.priority_level)}>
+                    {getPriorityLabel(account.priority_level)}
                   </Badge>
                 </div>
               </CardHeader>
@@ -222,34 +225,34 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Institution:</span>
-                    <span className="text-sm font-medium">{account.institutionName || "N/A"}</span>
+                    <span className="text-sm font-medium">{account.institution_name || "N/A"}</span>
                   </div>
 
-                  {account.accountNumber && (
+                  {account.account_number && (
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Account:</span>
-                      <span className="text-sm font-mono">****{account.accountNumber}</span>
+                      <span className="text-sm font-mono">****{account.account_number}</span>
                     </div>
                   )}
 
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-muted-foreground">Balance:</span>
                     <span
-                      className={`text-sm font-medium ${account.currentBalance >= 0 ? "text-primary" : "text-destructive"}`}
+                      className={`text-sm font-medium ${account.current_balance >= 0 ? "text-primary" : "text-destructive"}`}
                     >
-                      {formatBalance(account.currentBalance)}
+                      {formatBalance(account.current_balance)}
                     </span>
                   </div>
 
-                  {account.creditLimit && (
+                  {account.credit_limit && (
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-muted-foreground">Limit:</span>
-                      <span className="text-sm font-medium">{formatBalance(account.creditLimit)}</span>
+                      <span className="text-sm font-medium">{formatBalance(account.credit_limit)}</span>
                     </div>
                   )}
                 </div>
 
-                <div className="flex gap-2 pt-2">
+                {/* <div className="flex gap-2 pt-2">
                   <Button variant="outline" size="sm" onClick={() => onViewDetails(account)} className="flex-1">
                     <Eye className="h-3 w-3 mr-1" />
                     View
@@ -261,7 +264,7 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
                   <Button variant="outline" size="sm" onClick={() => onDelete(account.id)}>
                     <Trash2 className="h-3 w-3" />
                   </Button>
-                </div>
+                </div> */}
               </CardContent>
             </Card>
           )
@@ -275,6 +278,13 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
           </CardContent>
         </Card>
       )}
+      {/* {accounts.length === 0 && (
+        <Card>
+          <CardContent className="text-center py-8">
+            <p className="text-muted-foreground">No accounts found matching your criteria.</p>
+          </CardContent>
+        </Card>
+      )} */}
     </div>
   )
 }

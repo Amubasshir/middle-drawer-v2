@@ -7,7 +7,7 @@ import { StatusBar } from "@/components/status-bar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/auth-context";
-import { createAccountClient } from "@/lib/db";
+import { createAccountClient, getAccountsByUserClient } from "@/lib/db";
 import {
   ArrowLeft,
   Car,
@@ -23,78 +23,40 @@ import {
   Users,
 } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// Mock data for demonstration
-const mockAccounts = [
-  {
-    id: "1",
-    accountName: "Chase Checking",
-    accountType: "checking",
-    institutionName: "Chase Bank",
-    accountNumber: "1234",
-    username: "john.doe",
-    email: "john@email.com",
-    phone: "(555) 123-4567",
-    currentBalance: 2450.0,
-    priorityLevel: 1,
-    isActive: true,
-    notes: "Primary checking account for daily expenses",
-  },
-  {
-    id: "2",
-    accountName: "Mortgage - Wells Fargo",
-    accountType: "mortgage",
-    institutionName: "Wells Fargo",
-    accountNumber: "5678",
-    username: "john.doe.wf",
-    email: "john@email.com",
-    phone: "(555) 123-4567",
-    currentBalance: -245000.0,
-    creditLimit: 250000.0,
-    priorityLevel: 1,
-    isActive: true,
-    notes: "30-year fixed mortgage",
-  },
-  {
-    id: "3",
-    accountName: "Emergency Savings",
-    accountType: "savings",
-    institutionName: "Ally Bank",
-    accountNumber: "9012",
-    username: "john.ally",
-    email: "john@email.com",
-    phone: "(555) 123-4567",
-    currentBalance: 15000.0,
-    priorityLevel: 2,
-    isActive: true,
-    notes: "6-month emergency fund",
-  },
-  {
-    id: "4",
-    accountName: "Capital One Venture",
-    accountType: "credit",
-    institutionName: "Capital One",
-    accountNumber: "3456",
-    username: "john.cap1",
-    email: "john@email.com",
-    phone: "(555) 123-4567",
-    currentBalance: -1250.0,
-    creditLimit: 10000.0,
-    priorityLevel: 1,
-    isActive: true,
-    notes: "Travel rewards credit card",
-  },
-];
 
 export default function AccountsPage() {
   const { user } = useAuth();
-  const [accounts, setAccounts] = useState(mockAccounts);
+  const [accounts, setAccounts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [editingAccount, setEditingAccount] = useState<any>(null);
   const [viewingAccount, setViewingAccount] = useState<any>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showAccountTypes, setShowAccountTypes] = useState(false);
+
+
+  useEffect(() => {
+    if(user?.id) {
+        const handleGetAccountsByUser = async () => {
+
+            try {
+                const res = await getAccountsByUserClient(user.id);
+                if (res && res.data) {
+                    console.log({data:res.data})
+                // Use server-returned row (may include server-generated id)
+                setAccounts(res.data);
+            } else {
+                console.log("Failed to create account in DB:", res?.error);
+            }
+            } catch (error) {
+                console.error("Error creating account:", error);
+            }
+        }
+
+        handleGetAccountsByUser();
+    }
+  }, [user])
 
   const handleAddAccount = async (accountData: any) => {
     const newAccount = {
