@@ -170,7 +170,7 @@ export default function AccountsPage() {
                     </div>
                     <div>
                       <span className="font-medium">Balance:</span> $
-                      {viewingAccount?.currentBalance?.toLocaleString()}
+                      {viewingAccount?.current_balance?.toLocaleString()}
                     </div>
                     {viewingAccount?.credit_limit && (
                       <div>

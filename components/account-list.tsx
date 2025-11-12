@@ -80,6 +80,22 @@ const account_nameNames: Record<string, string> = {
   phone: "Phone/Internet",
 }
 
+const accountTypes = [
+  { id: "checking", name: "Checking Account", category: "banking",  critical: true },
+  { id: "savings", name: "Savings Account", category: "banking",  critical: false },
+  { id: "credit", name: "Credit Card", category: "credit",  critical: true },
+  { id: "mortgage", name: "Mortgage", category: "credit",  critical: true },
+  { id: "auto-loan", name: "Auto Loan", category: "credit",  critical: true },
+  { id: "personal-loan", name: "Personal Loan", category: "credit",  critical: false },
+  { id: "health-insurance", name: "Health Insurance", category: "insurance",  critical: true },
+  { id: "auto-insurance", name: "Auto Insurance", category: "insurance",  critical: true },
+  { id: "life-insurance", name: "Life Insurance", category: "insurance",  critical: false },
+  { id: "investment", name: "Investment Account", category: "investment",  critical: false },
+  { id: "retirement", name: "Retirement Account", category: "investment",  critical: false },
+  { id: "utilities", name: "Utility Account", category: "utilities",  critical: true },
+  { id: "phone", name: "Phone/Internet", category: "utilities",  critical: true },
+]
+
 export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: AccountListProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [filterCategory, setFilterCategory] = useState("all")
@@ -165,11 +181,11 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="banking">Banking</SelectItem>
-            <SelectItem value="credit">Credit & Loans</SelectItem>
+            {accountTypes.map((acc)=><SelectItem key={acc.id} value={acc.id}>{acc.name}</SelectItem>)}
+            {/* <SelectItem value="credit">Credit & Loans</SelectItem>
             <SelectItem value="insurance">Insurance</SelectItem>
             <SelectItem value="investment">Investment</SelectItem>
-            <SelectItem value="utilities">Utilities</SelectItem>
+            <SelectItem value="utilities">Utilities</SelectItem> */}
           </SelectContent>
         </Select>
 
