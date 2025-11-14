@@ -44,13 +44,27 @@ const accountTypes = [
   { id: "phone", name: "Phone/Internet", category: "utilities", icon: Phone, critical: true },
 ]
 
+
 const additionalFieldTypes = [
   { value: "accountNumber", label: "Account Number", type: "text" },
   { value: "secondaryPerson", label: "Account Holder", type: "text" },
-  { value: "phoneNumber", label: "Phone Number", type: "tel" },
+  { 
+    value: "phoneNumber", 
+    label: "Phone Number", 
+    type: "tel",
+    subtype: "select",
+    options: ["Home", "Cell", "Other"]
+  },
   { value: "additionalPassword", label: "Password", type: "password" },
-  { value: "additionalBalance", label: "2FA", type: "number" },
+  { 
+    value: "2fa", 
+    label: "2FA", 
+    type: "text",
+    subtype: "select",
+    options: ["Cell Phone", "App"]
+  },
 ]
+
 
 // Convert camelCase to snake_case for database
 const toSnakeCase = (obj: any) => {
@@ -120,26 +134,48 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
     onSubmit(submitData)
   }
 
-  const addAdditionalField = () => {
-    if (!selectedFieldType) return
+//   const addAdditionalField = () => {
+//     if (!selectedFieldType) return
     
-    const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
-    if (!fieldType) return
+//     const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
+//     if (!fieldType) return
 
-    const newField: AdditionalField = {
-      id: Date.now().toString(),
-      type: selectedFieldType,
-      value: ""
-    }
+//     const newField: AdditionalField = {
+//       id: Date.now().toString(),
+//       type: selectedFieldType,
+//       value: ""
+//     }
     
-    const updatedFields = [...additionalFields, newField]
-    setAdditionalFields(updatedFields)
-    setFormData(prev => ({
-      ...prev,
-      additionalFields: updatedFields
-    }))
-    setSelectedFieldType("")
+//     const updatedFields = [...additionalFields, newField]
+//     setAdditionalFields(updatedFields)
+//     setFormData(prev => ({
+//       ...prev,
+//       additionalFields: updatedFields
+//     }))
+//     setSelectedFieldType("")
+//   }
+
+const addAdditionalField = () => {
+  if (!selectedFieldType) return
+  
+  const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
+  if (!fieldType) return
+  
+  const newField: AdditionalField = {
+    id: Date.now().toString(),
+    type: selectedFieldType,
+    value: "",
+    ...(fieldType.subtype === "select" && { subValue: fieldType.options?.[0] || "" })
   }
+  
+  const updatedFields = [...additionalFields, newField]
+  setAdditionalFields(updatedFields)
+  setFormData(prev => ({
+    ...prev,
+    additionalFields: updatedFields
+  }))
+  setSelectedFieldType("")
+}
 
   const removeAdditionalField = (id: string) => {
     const updatedFields = additionalFields.filter(field => field.id !== id)
@@ -447,7 +483,7 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
               </Button>
             </div>
             
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
               {additionalFields.map((field) => (
                 <div key={field.id} className="flex items-start gap-2 p-3 border rounded-lg">
                   <div className="flex-1 space-y-2">
@@ -484,7 +520,70 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
                   </Button>
                 </div>
               ))}
+            </div> */}
+          
+          <div className="space-y-3">
+  {additionalFields.map((field) => {
+    const fieldConfig = additionalFieldTypes.find(f => f.value === field.type)
+    
+    return (
+      <div key={field.id} className="flex items-start gap-2 p-3 border rounded-lg">
+        <div className="flex-1 space-y-2">
+          <Label htmlFor={`field-${field.id}`}>
+            {getFieldLabel(field.type)}
+          </Label>
+          
+          {fieldConfig?.subtype === "select" ? (
+            <div className="space-y-2">
+              <Input
+                id={`field-${field.id}`}
+                type={getFieldType(field.type)}
+                value={field.value}
+                onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+                placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+              />
+              <select
+                value={field.subValue || fieldConfig.options?.[0]}
+                onChange={(e) => handleAdditionalFieldChange(field.id, field.value, e.target.value)}
+                className="w-full px-3 py-2 border rounded-md"
+              >
+                {fieldConfig.options?.map(option => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
             </div>
+          ) : getFieldType(field.type) === "textarea" ? (
+            <Textarea
+              id={`field-${field.id}`}
+              value={field.value}
+              onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+              placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+              rows={2}
+            />
+          ) : (
+            <Input
+              id={`field-${field.id}`}
+              type={getFieldType(field.type)}
+              value={field.value}
+              onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+              placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+              step={getFieldType(field.type) === "number" ? "0.01" : undefined}
+            />
+          )}
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={() => removeAdditionalField(field.id)}
+          className="text-destructive hover:text-destructive hover:bg-destructive/10 mt-6"
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      </div>
+    )
+  })}
+</div>
           </div>
 
           <div className="flex gap-4 pt-4">
