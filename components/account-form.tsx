@@ -22,10 +22,17 @@ interface AccountFormProps {
   initialData?: any
 }
 
-interface AdditionalField {
+// interface AdditionalField {
+//   id: string
+//   type: string
+//   value: string
+// }
+
+type AdditionalField = {
   id: string
   type: string
   value: string
+  subValue?: string
 }
 
 const accountTypes = [
@@ -155,6 +162,28 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
 //     setSelectedFieldType("")
 //   }
 
+// const addAdditionalField = () => {
+//   if (!selectedFieldType) return
+  
+//   const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
+//   if (!fieldType) return
+  
+//   const newField: AdditionalField = {
+//     id: Date.now().toString(),
+//     type: selectedFieldType,
+//     value: "",
+//     ...(fieldType.subtype === "select" && { subValue: fieldType.options?.[0] || "" })
+//   }
+  
+//   const updatedFields = [...additionalFields, newField]
+//   setAdditionalFields(updatedFields)
+//   setFormData(prev => ({
+//     ...prev,
+//     additionalFields: updatedFields
+//   }))
+//   setSelectedFieldType("")
+// }
+
 const addAdditionalField = () => {
   if (!selectedFieldType) return
   
@@ -165,7 +194,7 @@ const addAdditionalField = () => {
     id: Date.now().toString(),
     type: selectedFieldType,
     value: "",
-    ...(fieldType.subtype === "select" && { subValue: fieldType.options?.[0] || "" })
+    subValue: fieldType.subtype === "select" ? (fieldType.options?.[0] || "") : undefined
   }
   
   const updatedFields = [...additionalFields, newField]
@@ -177,6 +206,7 @@ const addAdditionalField = () => {
   setSelectedFieldType("")
 }
 
+
   const removeAdditionalField = (id: string) => {
     const updatedFields = additionalFields.filter(field => field.id !== id)
     setAdditionalFields(updatedFields)
@@ -186,16 +216,34 @@ const addAdditionalField = () => {
     }))
   }
 
-  const handleAdditionalFieldChange = (id: string, value: string) => {
-    const updatedFields = additionalFields.map(field => 
-      field.id === id ? { ...field, value } : field
-    )
-    setAdditionalFields(updatedFields)
-    setFormData(prev => ({
-      ...prev,
-      additionalFields: updatedFields
-    }))
-  }
+//   const handleAdditionalFieldChange = (id: string, value: string) => {
+//     const updatedFields = additionalFields.map(field => 
+//       field.id === id ? { ...field, value } : field
+//     )
+//     setAdditionalFields(updatedFields)
+//     setFormData(prev => ({
+//       ...prev,
+//       additionalFields: updatedFields
+//     }))
+//   }
+
+const handleAdditionalFieldChange = (id: string, value: string, subValue?: string) => {
+  const updatedFields = additionalFields.map(field => {
+    if (field.id === id) {
+      if (subValue !== undefined) {
+        return { ...field, value, subValue }
+      }
+      return { ...field, value }
+    }
+    return field
+  })
+  
+  setAdditionalFields(updatedFields)
+  setFormData(prev => ({
+    ...prev,
+    additionalFields: updatedFields
+  }))
+}
 
   const getFieldLabel = (fieldType: string) => {
     const field = additionalFieldTypes.find(f => f.value === fieldType)
@@ -522,7 +570,70 @@ const addAdditionalField = () => {
               ))}
             </div> */}
           
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
+            {additionalFields.map((field) => {
+                const fieldConfig = additionalFieldTypes.find(f => f.value === field.type)
+                
+                return (
+                <div key={field.id} className="flex items-start gap-2 p-3 border rounded-lg">
+                    <div className="flex-1 space-y-2">
+                    <Label htmlFor={`field-${field.id}`}>
+                        {getFieldLabel(field.type)}
+                    </Label>
+                    
+                    {fieldConfig?.subtype === "select" ? (
+                        <div className="space-y-2">
+                        <select
+                            value={field.subValue || fieldConfig.options?.[0]}
+                            onChange={(e) => handleAdditionalFieldChange(field.id, field.value, e.target.value)}
+                            className="w-full px-3 py-2 border rounded-md"
+                        >
+                            {fieldConfig.options?.map(option => (
+                                <option key={option} value={option}>{option}</option>
+                            ))}
+                        </select>
+                            <Input
+                            id={`field-${field.id}`}
+                            type={getFieldType(field.type)}
+                            value={field.value}
+                            onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+                            placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+                            />
+                        </div>
+                    ) : getFieldType(field.type) === "textarea" ? (
+                        <Textarea
+                        id={`field-${field.id}`}
+                        value={field.value}
+                        onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+                        placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+                        rows={2}
+                        />
+                    ) : (
+                        <Input
+                        id={`field-${field.id}`}
+                        type={getFieldType(field.type)}
+                        value={field.value}
+                        onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+                        placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
+                        step={getFieldType(field.type) === "number" ? "0.01" : undefined}
+                        />
+                    )}
+                    </div>
+                    <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeAdditionalField(field.id)}
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10 mt-6"
+                    >
+                    <X className="h-4 w-4" />
+                    </Button>
+                </div>
+                )
+            })}
+            </div> */}
+
+            <div className="space-y-3">
   {additionalFields.map((field) => {
     const fieldConfig = additionalFieldTypes.find(f => f.value === field.type)
     
@@ -535,22 +646,28 @@ const addAdditionalField = () => {
           
           {fieldConfig?.subtype === "select" ? (
             <div className="space-y-2">
+              <div className="flex gap-4">
+                {fieldConfig.options?.map(option => (
+                  <label key={option} className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name={`${field.id}-type`}
+                      value={option}
+                      checked={field.subValue === option}
+                      onChange={(e) => handleAdditionalFieldChange(field.id, field.value, e.target.value)}
+                      className="w-4 h-4 cursor-pointer"
+                    />
+                    <span className="text-sm">{option}</span>
+                  </label>
+                ))}
+              </div>
               <Input
                 id={`field-${field.id}`}
                 type={getFieldType(field.type)}
                 value={field.value}
-                onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value)}
+                onChange={(e) => handleAdditionalFieldChange(field.id, e.target.value, field.subValue)}
                 placeholder={`Enter ${getFieldLabel(field.type)?.toLowerCase()}`}
               />
-              <select
-                value={field.subValue || fieldConfig.options?.[0]}
-                onChange={(e) => handleAdditionalFieldChange(field.id, field.value, e.target.value)}
-                className="w-full px-3 py-2 border rounded-md"
-              >
-                {fieldConfig.options?.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
             </div>
           ) : getFieldType(field.type) === "textarea" ? (
             <Textarea
@@ -584,6 +701,7 @@ const addAdditionalField = () => {
     )
   })}
 </div>
+
           </div>
 
           <div className="flex gap-4 pt-4">
