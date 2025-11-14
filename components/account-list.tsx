@@ -108,13 +108,13 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
       account.institution_name?.toLowerCase().includes(searchTerm?.toLowerCase())
 
     const matchesCategory =
-      filterCategory === "all" ||
-      (filterCategory === "banking" && ["checking", "savings"].includes(account.account_type)) ||
-      (filterCategory === "credit" &&
-        ["credit", "mortgage", "auto-loan", "personal-loan"].includes(account.account_type)) ||
-      (filterCategory === "insurance" && account.account_type.includes("insurance")) ||
-      (filterCategory === "investment" && ["investment", "retirement"].includes(account.account_type)) ||
-      (filterCategory === "utilities" && ["utilities", "phone"].includes(account.account_type))
+      filterCategory === "all" || filterCategory === account?.account_type;
+    //   (filterCategory === "banking" && ["checking", "savings"].includes(account.account_type)) ||
+    //   (filterCategory === "credit" &&
+    //     ["credit", "mortgage", "auto-loan", "personal-loan"].includes(account.account_type)) ||
+    //   (filterCategory === "insurance" && account.account_type.includes("insurance")) ||
+    //   (filterCategory === "investment" && ["investment", "retirement"].includes(account.account_type)) ||
+    //   (filterCategory === "utilities" && ["utilities", "phone"].includes(account.account_type))
 
     const matchesPriority = filterPriority === "all" || account?.priority_level?.toString() === filterPriority
 
