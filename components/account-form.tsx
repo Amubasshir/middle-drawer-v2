@@ -58,7 +58,7 @@ const additionalFieldTypes = [
   { 
     value: "phoneNumber", 
     label: "Phone Number", 
-    type: "tel",
+    type: "number",
     subtype: "select",
     options: ["Home", "Cell", "Other"]
   },

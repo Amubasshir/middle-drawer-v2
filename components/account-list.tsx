@@ -116,7 +116,7 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
       (filterCategory === "investment" && ["investment", "retirement"].includes(account.account_type)) ||
       (filterCategory === "utilities" && ["utilities", "phone"].includes(account.account_type))
 
-    const matchesPriority = filterPriority === "all" || account.priority_level.toString() === filterPriority
+    const matchesPriority = filterPriority === "all" || account?.priority_level?.toString() === filterPriority
 
     
     const matchesActive = showInactive || account.is_active
