@@ -182,10 +182,6 @@ export function AccountList({ accounts, onEdit, onDelete, onViewDetails }: Accou
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
             {accountTypes.map((acc)=><SelectItem key={acc.id} value={acc.id}>{acc.name}</SelectItem>)}
-            {/* <SelectItem value="credit">Credit & Loans</SelectItem>
-            <SelectItem value="insurance">Insurance</SelectItem>
-            <SelectItem value="investment">Investment</SelectItem>
-            <SelectItem value="utilities">Utilities</SelectItem> */}
           </SelectContent>
         </Select>
 

@@ -73,6 +73,14 @@ const additionalFieldTypes = [
 ]
 
 
+const frequenciesDueDates = [
+  "Weekly",
+  "Bi-weekly",
+  "Monthly",
+  "Quarterly"
+];
+
+
 // Convert camelCase to snake_case for database
 const toSnakeCase = (obj: any) => {
   const snakeCaseObj: any = {}
@@ -113,6 +121,7 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
     isActive: camelCaseInitialData?.isActive ?? true,
     notes: camelCaseInitialData?.notes || "",
     additionalFields: camelCaseInitialData?.additionalFields || [],
+    dueDate: camelCaseInitialData?.dueDate || "",
   })
 
   console.log({formData})
@@ -427,7 +436,31 @@ const handleAdditionalFieldChange = (id: string, value: string, subValue?: strin
                 </div>
               </>
             )}
+
+            {(formData.accountType !== 'savings') && (<div className="space-y-2">
+              <Label htmlFor="dueDate">Payment Due Date *</Label>
+              <Select
+                value={formData.dueDate}
+                onValueChange={(value) => setFormData({ ...formData, dueDate: value })}
+               
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a payment due date" />
+                </SelectTrigger>
+                <SelectContent>                  
+                  {frequenciesDueDates.map((type) => (
+                    <SelectItem key={type} value={type}>
+                      <div className="flex items-center gap-2">
+                        {type}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>)}
           </div>
+
+
 
           <div className="space-y-2">
             <Label htmlFor="address">Address</Label>
@@ -439,6 +472,8 @@ const handleAdditionalFieldChange = (id: string, value: string, subValue?: strin
               rows={2}
             />
           </div>
+
+        
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
