@@ -367,7 +367,8 @@ const handleAnswer = async (selectedWord: string) => {
                 isCorrect ? "text-green-600" : "text-red-600"
               }`}
             >
-              {isCorrect ? "Correct!" : "Incorrect"}
+              {isCorrect ? "Correct!" : "Thank you for participating in the Cognitive Wellness Quick Check!"}
+              {/* <p>Thank you for participating in the Cognitive Wellness Quick Check!</p> */}
             </div>
             <p className="text-sm text-muted-foreground">
               Response time: {(responseTime / 1000).toFixed(1)} seconds
