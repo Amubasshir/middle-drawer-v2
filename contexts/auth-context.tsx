@@ -267,7 +267,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const logout = async () => {
-    console.log("[v0] Logging out user");
 
     try {
       const supabase = createClient();
@@ -277,6 +276,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     setUser(null);
+    localStorage.removeItem("isSubmitTwice");
     localStorage.removeItem("whichpoint-user");
     localStorage.removeItem("whichpoint-guest");
     window.location.href = "/";

@@ -22,12 +22,6 @@ interface AccountFormProps {
   initialData?: any
 }
 
-// interface AdditionalField {
-//   id: string
-//   type: string
-//   value: string
-// }
-
 type AdditionalField = {
   id: string
   type: string
@@ -124,7 +118,6 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
     dueDate: camelCaseInitialData?.dueDate || "",
   })
 
-  console.log({formData})
 
   const [selectedFieldType, setSelectedFieldType] = useState("")
   const [additionalFields, setAdditionalFields] = useState<AdditionalField[]>(
@@ -149,49 +142,6 @@ export function AccountForm({ onSubmit, onCancel, initialData }: AccountFormProp
 
     onSubmit(submitData)
   }
-
-//   const addAdditionalField = () => {
-//     if (!selectedFieldType) return
-    
-//     const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
-//     if (!fieldType) return
-
-//     const newField: AdditionalField = {
-//       id: Date.now().toString(),
-//       type: selectedFieldType,
-//       value: ""
-//     }
-    
-//     const updatedFields = [...additionalFields, newField]
-//     setAdditionalFields(updatedFields)
-//     setFormData(prev => ({
-//       ...prev,
-//       additionalFields: updatedFields
-//     }))
-//     setSelectedFieldType("")
-//   }
-
-// const addAdditionalField = () => {
-//   if (!selectedFieldType) return
-  
-//   const fieldType = additionalFieldTypes.find(field => field.value === selectedFieldType)
-//   if (!fieldType) return
-  
-//   const newField: AdditionalField = {
-//     id: Date.now().toString(),
-//     type: selectedFieldType,
-//     value: "",
-//     ...(fieldType.subtype === "select" && { subValue: fieldType.options?.[0] || "" })
-//   }
-  
-//   const updatedFields = [...additionalFields, newField]
-//   setAdditionalFields(updatedFields)
-//   setFormData(prev => ({
-//     ...prev,
-//     additionalFields: updatedFields
-//   }))
-//   setSelectedFieldType("")
-// }
 
 const addAdditionalField = () => {
   if (!selectedFieldType) return
