@@ -16,15 +16,13 @@ interface SignupForm {
 
 const SignupWithOTP: React.FC = () => {
   const supabase = createClient();
-  
-  // UI states
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showOTP, setShowOTP] = useState(false);
   const [otp, setOtp] = useState('');
   const [verifying, setVerifying] = useState(false);
   const [signupEmail, setSignupEmail] = useState('');
-    const { login, signup, signInWithGoogle, isLoading } = useAuth();
+    const { signup, isLoading } = useAuth();
     const [loginForm, setLoginForm] = useState({ email: "", password: "" });
     const [signupForm, setSignupForm] = useState({
       name: "",
