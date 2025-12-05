@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAuth } from "@/contexts/auth-context";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import SignupWithOTP from "./signup-with-otp";
 
 export function AuthForms() {
   const { login, signup, signInWithGoogle, isLoading } = useAuth();
@@ -132,7 +133,7 @@ export function AuthForms() {
             </TabsContent>
 
             <TabsContent value="signup">
-              <form onSubmit={handleSignup} className="space-y-6">
+              {/* <form onSubmit={handleSignup} className="space-y-6">
                 <div className="space-y-3">
                   <Label htmlFor="signup-name" className="text-lg">
                     Full Name
@@ -192,7 +193,9 @@ export function AuthForms() {
                   ) : null}
                   Sign Up
                 </Button>
-              </form>
+              </form> */}
+
+              <SignupWithOTP />
             </TabsContent>
           </Tabs>
 
