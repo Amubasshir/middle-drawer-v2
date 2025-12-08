@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -17,6 +14,11 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: false,
+    turbopack: {
+      resolveAlias: {
+        'lightningcss': false,
+      },
+    },
   }
 }
 

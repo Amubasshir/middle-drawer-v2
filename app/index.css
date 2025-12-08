@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -17,7 +16,9 @@
   --secondary: oklch(0.62 0.16 45); /* Orange-400 secondary (#f97316) */
   --secondary-foreground: oklch(1 0 0); /* White text on secondary */
   --muted: oklch(0.96 0.01 260); /* Light gray muted background (#f1f5f9) */
-  --muted-foreground: oklch(0.45 0.02 260); /* Medium gray muted text (#6b7280) */
+  --muted-foreground: oklch(
+    0.45 0.02 260
+  ); /* Medium gray muted text (#6b7280) */
   --accent: oklch(0.62 0.16 45); /* Orange-400 accent (#f97316) */
   --accent-foreground: oklch(1 0 0); /* White text on accent */
   --destructive: oklch(0.45 0.22 15); /* Rose destructive (#be123c) */
@@ -70,9 +71,13 @@
   --sidebar: oklch(0.15 0.01 260); /* Dark sidebar */
   --sidebar-foreground: oklch(0.95 0.01 70); /* Light sidebar text */
   --sidebar-primary: oklch(0.65 0.16 45); /* Orange sidebar primary */
-  --sidebar-primary-foreground: oklch(0.08 0.01 260); /* Dark sidebar primary text */
+  --sidebar-primary-foreground: oklch(
+    0.08 0.01 260
+  ); /* Dark sidebar primary text */
   --sidebar-accent: oklch(0.25 0.02 260); /* Dark sidebar accent */
-  --sidebar-accent-foreground: oklch(0.95 0.01 70); /* Light sidebar accent text */
+  --sidebar-accent-foreground: oklch(
+    0.95 0.01 70
+  ); /* Light sidebar accent text */
   --sidebar-border: oklch(0.2 0.01 260); /* Dark sidebar border */
   --sidebar-ring: oklch(0.65 0.16 45 / 0.5); /* Orange sidebar focus ring */
 }
@@ -81,7 +86,8 @@
   /* Updated font configuration for modern typography */
   --font-sans: var(--font-source-sans);
   --font-serif: var(--font-playfair);
-  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -200,11 +206,11 @@
 
   .hover-lift:hover {
     transform: scale(1.02);
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
 }
 
-
-button{
-    cursor: pointer;
+button {
+  cursor: pointer;
 }
