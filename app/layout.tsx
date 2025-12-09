@@ -2,7 +2,7 @@ import { AuthProvider } from "@/contexts/auth-context";
 import type { Metadata } from "next";
 import { Playfair_Display, Source_Sans_3 } from "next/font/google";
 import type React from "react";
-import '@/app/index.css'
+import './index.css'
 import { Toaster } from "react-hot-toast";
 
 const playfair = Playfair_Display({

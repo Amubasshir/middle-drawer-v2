@@ -14,12 +14,7 @@ const nextConfig = {
   },
   experimental: {
     optimizeCss: false,
-    turbopack: {
-      resolveAlias: {
-        'lightningcss': false,
-      },
-    },
-  }
+  },
 }
 
 export default nextConfig;
