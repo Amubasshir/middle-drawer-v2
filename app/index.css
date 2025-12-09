@@ -1,4 +1,4 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -58,4 +58,216 @@
 
 button {
   cursor: pointer;
+} */
+
+
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* Updated to modern orange color palette with calming warm tones */
+  --background: oklch(1 0 0); /* Pure white background */
+  --foreground: oklch(0.35 0.02 260); /* Dark gray text (#4b5563) */
+  --card: oklch(0.98 0.02 70); /* Light beige card background (#fffbeb) */
+  --card-foreground: oklch(0.35 0.02 260); /* Dark gray card text */
+  --popover: oklch(1 0 0); /* White popover background */
+  --popover-foreground: oklch(0.35 0.02 260); /* Dark gray popover text */
+  --primary: oklch(0.55 0.18 45); /* Orange-600 primary (#ea580c) */
+  --primary-foreground: oklch(1 0 0); /* White text on primary */
+  --secondary: oklch(0.62 0.16 45); /* Orange-400 secondary (#f97316) */
+  --secondary-foreground: oklch(1 0 0); /* White text on secondary */
+  --muted: oklch(0.96 0.01 260); /* Light gray muted background (#f1f5f9) */
+  --muted-foreground: oklch(0.45 0.02 260); /* Medium gray muted text (#6b7280) */
+  --accent: oklch(0.62 0.16 45); /* Orange-400 accent (#f97316) */
+  --accent-foreground: oklch(1 0 0); /* White text on accent */
+  --destructive: oklch(0.45 0.22 15); /* Rose destructive (#be123c) */
+  --destructive-foreground: oklch(1 0 0); /* White text on destructive */
+  --border: oklch(0.9 0.01 260); /* Light border (#e5e7eb) */
+  --input: oklch(1 0 0); /* White input background */
+  --ring: oklch(0.55 0.18 45 / 0.5); /* Orange focus ring with transparency */
+  --chart-1: oklch(0.55 0.18 45); /* Primary orange chart color */
+  --chart-2: oklch(0.62 0.16 45); /* Secondary orange chart color */
+  --chart-3: oklch(0.35 0.02 260); /* Dark gray chart color */
+  --chart-4: oklch(0.98 0.02 70); /* Light beige chart color */
+  --chart-5: oklch(1 0 0); /* White chart color */
+  --radius: 0.75rem; /* Increased border radius for modern feel */
+  --sidebar: oklch(1 0 0); /* White sidebar */
+  --sidebar-foreground: oklch(0.35 0.02 260); /* Dark gray sidebar text */
+  --sidebar-primary: oklch(0.55 0.18 45); /* Orange sidebar primary */
+  --sidebar-primary-foreground: oklch(1 0 0); /* White sidebar primary text */
+  --sidebar-accent: oklch(0.62 0.16 45); /* Orange sidebar accent */
+  --sidebar-accent-foreground: oklch(1 0 0); /* White sidebar accent text */
+  --sidebar-border: oklch(0.9 0.01 260); /* Light sidebar border */
+  --sidebar-ring: oklch(0.55 0.18 45 / 0.5); /* Orange sidebar focus ring */
+}
+
+.dark {
+  /* Updated dark mode with warmer orange tones */
+  --background: oklch(0.08 0.01 260); /* Very dark background */
+  --foreground: oklch(0.95 0.01 70); /* Light warm text */
+  --card: oklch(0.12 0.01 260); /* Dark card background */
+  --card-foreground: oklch(0.95 0.01 70); /* Light card text */
+  --popover: oklch(0.08 0.01 260); /* Dark popover background */
+  --popover-foreground: oklch(0.95 0.01 70); /* Light popover text */
+  --primary: oklch(0.65 0.16 45); /* Brighter orange in dark mode */
+  --primary-foreground: oklch(0.08 0.01 260); /* Dark text on primary */
+  --secondary: oklch(0.25 0.02 260); /* Dark secondary */
+  --secondary-foreground: oklch(0.95 0.01 70); /* Light secondary text */
+  --muted: oklch(0.2 0.01 260); /* Dark muted background */
+  --muted-foreground: oklch(0.7 0.01 70); /* Medium light muted text */
+  --accent: oklch(0.25 0.02 260); /* Dark accent background */
+  --accent-foreground: oklch(0.95 0.01 70); /* Light accent text */
+  --destructive: oklch(0.4 0.18 15); /* Darker destructive */
+  --destructive-foreground: oklch(0.65 0.22 15); /* Light destructive text */
+  --border: oklch(0.2 0.01 260); /* Dark border */
+  --input: oklch(0.2 0.01 260); /* Dark input background */
+  --ring: oklch(0.65 0.16 45 / 0.5); /* Orange focus ring in dark mode */
+  --chart-1: oklch(0.65 0.16 45); /* Bright orange chart in dark */
+  --chart-2: oklch(0.7 0.14 45); /* Lighter orange chart */
+  --chart-3: oklch(0.75 0.12 70); /* Warm accent chart */
+  --chart-4: oklch(0.6 0.18 15); /* Rose chart color */
+  --chart-5: oklch(0.8 0.1 45); /* Light orange chart */
+  --sidebar: oklch(0.15 0.01 260); /* Dark sidebar */
+  --sidebar-foreground: oklch(0.95 0.01 70); /* Light sidebar text */
+  --sidebar-primary: oklch(0.65 0.16 45); /* Orange sidebar primary */
+  --sidebar-primary-foreground: oklch(0.08 0.01 260); /* Dark sidebar primary text */
+  --sidebar-accent: oklch(0.25 0.02 260); /* Dark sidebar accent */
+  --sidebar-accent-foreground: oklch(0.95 0.01 70); /* Light sidebar accent text */
+  --sidebar-border: oklch(0.2 0.01 260); /* Dark sidebar border */
+  --sidebar-ring: oklch(0.65 0.16 45 / 0.5); /* Orange sidebar focus ring */
+}
+
+@theme inline {
+  /* Updated font configuration for modern typography */
+  --font-sans: var(--font-source-sans);
+  --font-serif: var(--font-playfair);
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    /* Increased base font size for better readability */
+    font-size: 1.125rem; /* 18px base instead of 16px */
+    line-height: 1.6;
+  }
+  /* Enhanced typography hierarchy with larger sizes */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-serif font-semibold;
+  }
+  h1 {
+    @apply text-4xl lg:text-5xl;
+  }
+  h2 {
+    @apply text-3xl lg:text-4xl;
+  }
+  h3 {
+    @apply text-2xl lg:text-3xl;
+  }
+  h4 {
+    @apply text-xl lg:text-2xl;
+  }
+  h5 {
+    @apply text-lg lg:text-xl;
+  }
+  h6 {
+    @apply text-base lg:text-lg;
+  }
+  /* Increased button and input sizes globally */
+  .btn,
+  button {
+    font-size: 1.125rem; /* 18px */
+    padding: 0.75rem 1.5rem;
+  }
+  input,
+  textarea,
+  select {
+    font-size: 1.125rem; /* 18px */
+    padding: 0.75rem 1rem;
+  }
+  /* Enhanced spacing and modern styling */
+  .card {
+    @apply shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors duration-200;
+  }
+  /* Increased spacing throughout the interface */
+  .container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  /* Enhanced focus states for better accessibility */
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+@layer utilities {
+  /* Handle the malformed class scale-[1.02]shadow-lg as separate properties */
+  .hover-lift {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  }
+
+  .hover-lift:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  }
+}
+
+
+button{
+    cursor: pointer;
 }
