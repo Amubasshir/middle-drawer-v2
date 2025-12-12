@@ -129,7 +129,7 @@ export function DelegatesSection() {
         const delegatesResult = await getDelegatesByUser(client, user.id);
         if (delegatesResult.error || !delegatesResult.data) {
           console.error("Error loading delegates:", delegatesResult.error);
-          return [];
+          return;
         }
 
         // Load contacts for each delegate

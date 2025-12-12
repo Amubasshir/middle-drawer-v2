@@ -61,6 +61,37 @@ export default function AccountCredentialsDashboard() {
     const supabase = createClient()
     const [totalAccounts, setTotalAccounts] = useState(0);
 
+      
+useEffect(() => {
+      if (!user) {
+      console.warn("No user found — cannot load accounts.");
+    }else{
+        loadAccounts();
+    }
+}, [user])
+    
+
+const loadAccounts = async () => {
+  try {
+  
+
+        const { count, error } = await supabase
+        .from("accounts")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id);
+
+        if (error) {
+        console.error("Error loading account count:", error);
+        return 0;
+        }
+
+        setTotalAccounts(count);
+
+  } catch (err) {
+    console.error("Unexpected error loading accounts:", err);
+  }
+};
+
 //   showSampleTest it will be open when user will login 
   useEffect(() => {
       const isSubmitTwice = JSON.parse(localStorage.getItem("isSubmitTwice") || "false");
@@ -73,12 +104,6 @@ export default function AccountCredentialsDashboard() {
 
   const presetDays = 14
 
-  useEffect(() => {
-    const savedMode = localStorage.getItem("whichpoint-mode")
-    if (savedMode) {
-      // setShowAdvancedMode(savedMode === "advanced")
-    }
-  }, [])
 
   const criticalAccounts = [
     {
@@ -199,6 +224,18 @@ export default function AccountCredentialsDashboard() {
 //     )
 //   }
 
+  
+// useEffect(() => {
+//       if (!user) {
+//       console.warn("No user found — cannot load accounts.");
+//       return [];
+//     }else{
+//         loadAccounts();
+//     }
+// }, [user])
+
+
+
   if (!user) {
     console.log("[v0] No user found, showing auth screen")
 
@@ -248,34 +285,8 @@ export default function AccountCredentialsDashboard() {
   }
 
 
-const loadAccounts = async () => {
-  try {
-    if (!user) {
-      console.warn("No user found — cannot load accounts.");
-      return [];
-    }
 
-        const { count, error } = await supabase
-        .from("accounts")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", user.id);
 
-        if (error) {
-        console.error("Error loading account count:", error);
-        return 0;
-        }
-
-        setTotalAccounts(count);
-
-  } catch (err) {
-    console.error("Unexpected error loading accounts:", err);
-    return [];
-  }
-};
-
-useEffect(() => {
-    loadAccounts();
-}, [])
 
 
   return (
