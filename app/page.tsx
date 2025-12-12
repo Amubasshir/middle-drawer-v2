@@ -47,6 +47,7 @@ import { WellnessCheckModal } from "@/components/wellness-check-modal"
 import { StatusBar } from "@/components/status-bar"
 import Image from "next/image"
 import CognitiveWellnessModal from "@/components/cognitive-wellness-modal"
+import { createClient } from "@/lib/supabase/client"
 
 export default function AccountCredentialsDashboard() {
   const { user, profiles, logout, setGuestMode, isLoading } = useAuth()
@@ -57,6 +58,8 @@ export default function AccountCredentialsDashboard() {
   const [showWellnessCheck, setShowWellnessCheck] = useState(false)
   const [showInformDelegatesConfirm, setShowInformDelegatesConfirm] = useState(false)
   const [showSampleTest, setShowSampleTest] = useState(false);
+    const supabase = createClient()
+    const [totalAccounts, setTotalAccounts] = useState(0);
 
 //   showSampleTest it will be open when user will login 
   useEffect(() => {
@@ -243,6 +246,37 @@ export default function AccountCredentialsDashboard() {
       </div>
     )
   }
+
+
+const loadAccounts = async () => {
+  try {
+    if (!user) {
+      console.warn("No user found — cannot load accounts.");
+      return [];
+    }
+
+        const { count, error } = await supabase
+        .from("accounts")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", user.id);
+
+        if (error) {
+        console.error("Error loading account count:", error);
+        return 0;
+        }
+
+        setTotalAccounts(count);
+
+  } catch (err) {
+    console.error("Unexpected error loading accounts:", err);
+    return [];
+  }
+};
+
+useEffect(() => {
+    loadAccounts();
+}, [])
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -524,7 +558,7 @@ export default function AccountCredentialsDashboard() {
                         <CardTitle className="text-lg font-medium text-muted-foreground">Total Accounts</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="text-4xl font-bold text-primary">12</div>
+                        <div className="text-4xl font-bold text-primary">{totalAccounts}</div>
                         <p className="text-base text-muted-foreground">Active accounts tracked</p>
                       </CardContent>
                     </Card>

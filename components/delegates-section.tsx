@@ -298,10 +298,11 @@ export function DelegatesSection() {
       setIsSaving(true);
       await withBrowserClient(async (client) => {
         // Create delegate
-        const permissions = newDelegate.permissions
-          .split(",")
-          .map((p) => p.trim())
-          .filter((p) => p !== "");
+        // const permissions = newDelegate.permissions
+        //   .split(",")
+        //   .map((p) => p.trim())
+        //   .filter((p) => p !== "");
+        const permissions = newDelegate.permissions; 
 
         const delegateResult = await createDelegate(client, {
           user_id: user.id,
@@ -419,11 +420,15 @@ export function DelegatesSection() {
       setIsSaving(true);
       await withBrowserClient(async (client) => {
         // Update delegate
-        const permissions = newDelegate.permissions
-          .split(",")
-          .map((p) => p.trim())
-          .filter((p) => p !== "");
+        // const permissions = newDelegate.permissions
+        //   .split(",")
+        //   .map((p) => p.trim())
+        //   .filter((p) => p !== "");
+        const permissions = newDelegate.permissions;
 
+          
+
+          
         await updateDelegate(client, editingDelegate.id, {
           name: newDelegate.name.trim(),
           relationship: newDelegate.relationship.trim() || null,
@@ -733,7 +738,7 @@ export function DelegatesSection() {
                     Add Phone
                   </Button>
                 </div>
-                <div>
+                {/* <div>
                   <Label htmlFor="permissions" className="text-lg">
                     Permissions (comma separated)
                   </Label>
@@ -749,7 +754,37 @@ export function DelegatesSection() {
                     placeholder="Financial, Medical, Emergency Only, Full Access"
                     className="text-lg py-3"
                   />
+                </div> */}
+                <div>
+                    <Label className="text-lg">Permissions</Label>
+
+                    {["Financial", "Medical", "Emergency Only", "Full Access"].map((perm) => {
+                        const isChecked = newDelegate.permissions.includes(perm);
+
+                        return (
+                        <div key={perm} className="flex items-center gap-2 my-1">
+                            <input
+                            type="checkbox"
+                            id={perm}
+                            checked={isChecked}
+                            onChange={(e) => {
+                                setNewDelegate({
+                                ...newDelegate,
+                                permissions: e.target.checked
+                                    ? [...newDelegate.permissions, perm]       // add
+                                    : newDelegate.permissions.filter(p => p !== perm) // remove
+                                });
+                            }}
+                            className="cursor-pointer"
+                            />
+                            <Label htmlFor={perm} className="text-lg">
+                            {perm}
+                            </Label>
+                        </div>
+                        );
+                    })}
                 </div>
+
                 <div>
                   <Label htmlFor="notes" className="text-lg">
                     Notes

@@ -90,6 +90,24 @@ export async function selectAll<T = any>(
   return { data: data || null, error };
 }
 
+export async function selectCount(
+  client: SupabaseClient,
+  table: string,
+  eq?: Record<string, any>
+) {
+  let q = client.from(table).select("*", { count: "exact", head: true });
+
+  if (eq) {
+    Object.entries(eq).forEach(([k, v]) => {
+      q = q.eq(k, v);
+    });
+  }
+
+  const { count, error } = await q;
+  return { count: count ?? 0, error };
+}
+
+
 export async function selectById<T = any>(
   client: SupabaseClient,
   table: string,
@@ -370,6 +388,30 @@ export async function getDelegateContactsByDelegate(
   return selectAll<DelegateContact>(client, "delegate_contacts", {
     delegate_id,
   });
+}
+
+export async function getDelegateContactsCountsByDelegate(
+  client: SupabaseClient,
+  delegate_id: string
+) {
+  // Total count
+  const { count: totalCount, error: totalError } = await client
+    .from("delegate_contacts")
+    .select("*", { count: "exact", head: true })
+    .eq("delegate_id", delegate_id);
+
+  // Verified count
+  const { count: verifiedCount, error: verifiedError } = await client
+    .from("delegate_contacts")
+    .select("*", { count: "exact", head: true })
+    .eq("delegate_id", delegate_id)
+    .eq("is_verified", true);
+
+  return {
+    totalCount: totalCount ?? 0,
+    verifiedCount: verifiedCount ?? 0,
+    error: totalError || verifiedError,
+  };
 }
 
 export async function getDelegateContactById(

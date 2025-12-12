@@ -363,21 +363,13 @@ const handleAnswer = async (selectedWord: string) => {
         {stage === "result" && (
           <div className="space-y-4 text-center">
             <div
-              className={`text-lg font-bold ${
-                isCorrect ? "text-green-600" : "text-red-600"
-              }`}
+              className={`text-lg font-bold text-green-600`}
             >
-              {isCorrect ? "Correct!" : "Thank you for participating in the Cognitive Wellness Quick Check!"}
-              {/* <p>Thank you for participating in the Cognitive Wellness Quick Check!</p> */}
+              Thank you for participating in the Cognitive Wellness Quick Check!
             </div>
-            <p className="text-sm text-muted-foreground">
+            {/* <p className="text-sm text-muted-foreground">
               Response time: {(responseTime / 1000).toFixed(1)} seconds
-            </p>
-            {!isCorrect && (
-              <p className="text-sm text-muted-foreground">
-                The correct answer was: <strong>{correctAnswer}</strong>
-              </p>
-            )}
+            </p> */}
             <div className="flex gap-2">
               <Button onClick={resetTest} className="flex-1">
                 Do it again?
