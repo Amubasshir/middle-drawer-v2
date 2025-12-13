@@ -42,32 +42,32 @@ const taxIcons = {
 
 export function TaxSection() {
   const [accounts, setAccounts] = useState<TaxAccount[]>([
-    {
-      id: 1,
-      accountType: "cpa",
-      entityName: "Johnson & Associates CPA",
-      accountNumber: "CLIENT-2024-789",
-      contactPerson: "Michael Johnson, CPA",
-      contactEmail: "mjohnson@johnsoncpa.com",
-      contactPhone: "+1-555-0167",
-      taxYear: 2024,
-      importantDates: "Tax filing: April 15th, Quarterly estimates: Jan 15, Apr 15, Jun 15, Sep 15",
-      priority: 1,
-      status: "active",
-    },
-    {
-      id: 2,
-      accountType: "tax_software",
-      entityName: "TurboTax",
-      accountNumber: "",
-      contactPerson: "Customer Support",
-      contactEmail: "support@turbotax.com",
-      contactPhone: "+1-800-446-8848",
-      taxYear: 2024,
-      importantDates: "Filing deadline: April 15th, Extension deadline: October 15th",
-      priority: 2,
-      status: "active",
-    },
+    // {
+    //   id: 1,
+    //   accountType: "cpa",
+    //   entityName: "Johnson & Associates CPA",
+    //   accountNumber: "CLIENT-2024-789",
+    //   contactPerson: "Michael Johnson, CPA",
+    //   contactEmail: "mjohnson@johnsoncpa.com",
+    //   contactPhone: "+1-555-0167",
+    //   taxYear: 2024,
+    //   importantDates: "Tax filing: April 15th, Quarterly estimates: Jan 15, Apr 15, Jun 15, Sep 15",
+    //   priority: 1,
+    //   status: "active",
+    // },
+    // {
+    //   id: 2,
+    //   accountType: "tax_software",
+    //   entityName: "TurboTax",
+    //   accountNumber: "",
+    //   contactPerson: "Customer Support",
+    //   contactEmail: "support@turbotax.com",
+    //   contactPhone: "+1-800-446-8848",
+    //   taxYear: 2024,
+    //   importantDates: "Filing deadline: April 15th, Extension deadline: October 15th",
+    //   priority: 2,
+    //   status: "active",
+    // },
   ])
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)

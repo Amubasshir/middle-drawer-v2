@@ -44,28 +44,28 @@ const platformIcons = {
 
 export function SocialMediaSection() {
   const [accounts, setAccounts] = useState<SocialMediaAccount[]>([
-    {
-      id: 1,
-      platform: "Facebook",
-      username: "john.doe",
-      email: "john@email.com",
-      phone: "+1-555-0123",
-      recoveryEmail: "backup@email.com",
-      twoFactorEnabled: true,
-      priority: 2,
-      status: "active",
-    },
-    {
-      id: 2,
-      platform: "Instagram",
-      username: "@johndoe",
-      email: "john@email.com",
-      phone: "+1-555-0123",
-      recoveryEmail: "",
-      twoFactorEnabled: false,
-      priority: 3,
-      status: "active",
-    },
+    // {
+    //   id: 1,
+    //   platform: "Facebook",
+    //   username: "john.doe",
+    //   email: "john@email.com",
+    //   phone: "+1-555-0123",
+    //   recoveryEmail: "backup@email.com",
+    //   twoFactorEnabled: true,
+    //   priority: 2,
+    //   status: "active",
+    // },
+    // {
+    //   id: 2,
+    //   platform: "Instagram",
+    //   username: "@johndoe",
+    //   email: "john@email.com",
+    //   phone: "+1-555-0123",
+    //   recoveryEmail: "",
+    //   twoFactorEnabled: false,
+    //   priority: 3,
+    //   status: "active",
+    // },
   ])
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)

@@ -8,8 +8,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Bell, Mail, MessageSquare } from "lucide-react"
+import { useAuth } from "@/contexts/auth-context"
 
 export function NotificationSettings() {
+  const {profiles} = useAuth();
   const [settings, setSettings] = useState({
     emailPassphrase: { enabled: false, frequency: "daily", passphrase: "" },
     emailReminder: { enabled: true, frequency: "weekly" },

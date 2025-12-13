@@ -203,6 +203,34 @@ const handleAnswer = async (selectedWord: string) => {
             console.error('Failed to notify delegates:', fnError)
           }
 
+
+                    
+            // const { data, error } = await supabase
+            // .from('wellness_checks')
+            // .insert([
+            //     { 
+            // check_type: '',
+            // is_correct: correctAnswer === selectedWord,
+            // response_time: timeTaken,
+            // response_data: {
+            //     test_time: new Date().toISOString(),
+            //     words: currentWords,
+            //     selected_answer: selectedWord,
+            //     correct_answer: correctAnswer,
+            //     delegates: {
+            //         emails: delegates,
+            //     },
+            // },
+            //   user_id: '6fedd312-d6dc-4482-ad12-731bfa42d4ec'
+            //      },
+            // ])
+            // .select()
+
+            // console.log({data})
+
+          
+
+
           localStorage.setItem('isSubmitTwice', JSON.stringify(false))
         } catch (error) {
           console.error('Error calling notify function:', error)
@@ -220,11 +248,22 @@ const handleAnswer = async (selectedWord: string) => {
   }
 
   try {
+    // const result = await saveWellnessCheck({
+    // })
+    
     const result = await saveWellnessCheck({
-      question: `Which word wasn't in the original list? Words shown: ${currentWords.join(", ")}`,
-      answer: `Selected: ${selectedWord}, Correct: ${correctAnswer}`,
-      score: correct ? 1 : 0,
+        check_type: "memory-test",          // or whatever type you're running
+        correctAnswer: correctAnswer,
+        selectedWord: selectedWord,
+        timeTaken: timeTaken,               // you must have this value available
+        currentWords: currentWords,
+        delegates: delegates || [],         // if you have them
+        question: `Which word wasn't in the original list? Words shown: ${currentWords.join(", ")}`,
+        answer: `Selected: ${selectedWord}, Correct: ${correctAnswer}`,
+        score: correct ? 1 : 0,
+        userId: user?.id,
     })
+
 
     if (!result.success) {
       console.error("Error saving wellness check:", result.error)

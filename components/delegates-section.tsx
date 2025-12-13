@@ -427,8 +427,6 @@ export function DelegatesSection() {
         const permissions = newDelegate.permissions;
 
           
-
-          
         await updateDelegate(client, editingDelegate.id, {
           name: newDelegate.name.trim(),
           relationship: newDelegate.relationship.trim() || null,

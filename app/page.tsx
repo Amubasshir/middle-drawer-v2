@@ -3,7 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import {
   Plus,
@@ -48,6 +48,8 @@ import { StatusBar } from "@/components/status-bar"
 import Image from "next/image"
 import CognitiveWellnessModal from "@/components/cognitive-wellness-modal"
 import { createClient } from "@/lib/supabase/client"
+import { getDelegatesByUser, withBrowserClient } from "@/lib/db"
+import dayjs from "dayjs"
 
 export default function AccountCredentialsDashboard() {
   const { user, profiles, logout, setGuestMode, isLoading } = useAuth()
@@ -59,14 +61,15 @@ export default function AccountCredentialsDashboard() {
   const [showInformDelegatesConfirm, setShowInformDelegatesConfirm] = useState(false)
   const [showSampleTest, setShowSampleTest] = useState(false);
     const supabase = createClient()
-    const [totalAccounts, setTotalAccounts] = useState(0);
-
+    const [totalAccounts, setTotalAccounts] = useState([]);
+    const [allContacts, setAllContacts] = useState([]);
       
 useEffect(() => {
       if (!user) {
       console.warn("No user found — cannot load accounts.");
     }else{
         loadAccounts();
+        loadDelegates();
     }
 }, [user])
     
@@ -75,9 +78,10 @@ const loadAccounts = async () => {
   try {
   
 
-        const { count, error } = await supabase
+        const { data, error } = await supabase
         .from("accounts")
-        .select("*", { count: "exact", head: true })
+        // .select("*", { count: "exact", head: true })
+        .select("*")
         .eq("user_id", user.id);
 
         if (error) {
@@ -85,12 +89,65 @@ const loadAccounts = async () => {
         return 0;
         }
 
-        setTotalAccounts(count);
+        setTotalAccounts(data);
 
   } catch (err) {
     console.error("Unexpected error loading accounts:", err);
   }
 };
+
+
+  const loadDelegates = useCallback(async () => {
+    if (!user || user.id === "guest") {
+      return;
+    }
+
+    try {
+
+        
+      const result = await withBrowserClient(async (client) => {
+        const delegatesResult = await getDelegatesByUser(client, user.id);
+        if (delegatesResult.error || !delegatesResult.data) {
+          console.error("Error loading delegates:", delegatesResult.error);
+          return;
+        }
+
+                    const delegatesWithContacts = await Promise.all(
+            delegatesResult.data.map(async (delegate) => {
+                const { data, error } = await supabase
+                .from("delegate_contacts")
+                .select("*")
+                .eq("delegate_id", delegate.id);
+
+                if (error) {
+                console.error("Error loading delegate contacts:", error);
+                return { ...delegate, contacts: [] };
+                }
+
+                return {
+                ...delegate,
+                contacts: data,
+                };
+            })
+            );
+
+
+
+            setAllContacts(delegatesWithContacts[0]?.contacts);
+
+      });
+      
+
+    //   console.log({result})
+    //   setDelegates(result);
+    } catch (error) {
+      console.error("Error loading delegates:", error);
+    } finally {
+        
+    }
+  }, [user]);
+
+console.log({allContacts})
 
 //   showSampleTest it will be open when user will login 
   useEffect(() => {
@@ -285,6 +342,30 @@ const loadAccounts = async () => {
   }
 
 
+
+  const criticalAccountsData = totalAccounts.filter(
+  acc => acc.priority_level === "3"
+).length;
+
+const paymentsDueSoonData = totalAccounts.filter(
+  acc => acc.is_active && acc.due_date === "Weekly"
+).length;
+
+
+const stats = [
+  {
+    title: "Payments Due Soon",
+    value: paymentsDueSoonData,
+    subtitle: "Next 7 days",
+    color: "text-secondary"
+  },
+  {
+    title: "Critical Accounts",
+    value: criticalAccountsData,
+    subtitle: "Essential for daily life",
+    color: "text-foreground"
+  }
+];
 
 
 
@@ -569,12 +650,12 @@ const loadAccounts = async () => {
                         <CardTitle className="text-lg font-medium text-muted-foreground">Total Accounts</CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="text-4xl font-bold text-primary">{totalAccounts}</div>
+                        <div className="text-4xl font-bold text-primary">{totalAccounts?.length}</div>
                         <p className="text-base text-muted-foreground">Active accounts tracked</p>
                       </CardContent>
                     </Card>
-
-                    <Card>
+                                                                                                       
+                    {/* <Card>
                       <CardHeader className="pb-2">
                         <CardTitle className="text-lg font-medium text-muted-foreground">Payments Due Soon</CardTitle>
                       </CardHeader>
@@ -592,7 +673,25 @@ const loadAccounts = async () => {
                         <div className="text-4xl font-bold text-foreground">5</div>
                         <p className="text-base text-muted-foreground">Essential for daily life</p>
                       </CardContent>
-                    </Card>
+                    </Card> */}
+                    {stats.map(stat => (
+  <Card key={stat.title}>
+    <CardHeader className="pb-2">
+      <CardTitle className="text-lg font-medium text-muted-foreground">
+        {stat.title}
+      </CardTitle>
+    </CardHeader>
+    <CardContent>
+      <div className={`text-4xl font-bold ${stat.color}`}>
+        {stat.value}
+      </div>
+      <p className="text-base text-muted-foreground">
+        {stat.subtitle}
+      </p>
+    </CardContent>
+  </Card>
+))}
+
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -643,12 +742,20 @@ const loadAccounts = async () => {
 
                   <div className="space-y-2">
                     <p className="text-xl font-medium">Emergency Contacts</p>
-                    {contactSettings.emergencyContacts.map((contact, index) => (
+                    {/* {contactSettings.emergencyContacts.map((contact, index) => (
                       <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
                         <span>
                           {contact.name} ({contact.relationship})
                         </span>
                         <Badge variant="outline">{contact.daysToContact} days</Badge>
+                      </div>
+                    ))} */}
+                    {allContacts.map((contact, index) => (
+                      <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
+                        <span>
+                          {contact.contact_value} 
+                        </span>
+                        <Badge variant="outline">{dayjs(contact?.created_at).fromNow()}</Badge>
                       </div>
                     ))}
                   </div>
@@ -673,11 +780,11 @@ const loadAccounts = async () => {
                       </div>
                       <div>
                         <p className="text-muted-foreground">Email</p>
-                        <p className="font-medium">{contactSettings.userEmail}</p>
+                        <p className="font-medium">{profiles?.email}</p>
                       </div>
                       <div>
                         <p className="text-muted-foreground">Phone</p>
-                        <p className="font-medium">{contactSettings.userPhone}</p>
+                        <p className="font-medium">{profiles?.phone}</p>
                       </div>
                     </div>
                     <Button variant="outline" className="w-full bg-transparent text-xl py-4" asChild>
