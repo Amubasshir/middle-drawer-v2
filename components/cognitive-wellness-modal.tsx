@@ -64,7 +64,7 @@ export default function CognitiveWellnessModal({
   const [responseTime, setResponseTime] = useState<number>(0);
   const [failureCount, setFailureCount] = useState(0);
   const [lastFailureTime, setLastFailureTime] = useState<number | null>(null);
-  const { user } = useAuth();
+  const { user, profiles } = useAuth();
     const [delegates, setDelegates] = useState<DelegateUI[]>([]);
 
 
@@ -251,7 +251,7 @@ const handleAnswer = async (selectedWord: string) => {
     // const result = await saveWellnessCheck({
     // })
 
-      const { data, error } = await supabase
+      const { data: result, error } = await supabase
             .from('wellness_checks')
             .insert([
                 { 
@@ -267,11 +267,11 @@ const handleAnswer = async (selectedWord: string) => {
                     emails: delegates,
                 },
             },
-              user_id: '6fedd312-d6dc-4482-ad12-731bfa42d4ec'
+              user_id: profiles.id,
                  },
             ])
             .select()
-            
+
     // const result = await saveWellnessCheck({
     //     check_type: "memory-test",          
     //     correctAnswer: correctAnswer,
@@ -286,9 +286,7 @@ const handleAnswer = async (selectedWord: string) => {
     // })
 
 
-    if (!result.success) {
-      console.error("Error saving wellness check:", result.error)
-    }
+   
   } catch (error) {
     console.error("Error saving wellness check:", error)
   }

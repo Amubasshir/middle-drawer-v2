@@ -60,7 +60,7 @@ const loadWellnessCheck = async () => {
     const { data, error } = await supabase
       .from("wellness_checks")
       .select("created_at")
-      .eq("user_id", user.id)
+      .eq("user_id", profiles.id)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
@@ -96,8 +96,7 @@ const loadWellnessCheck = async () => {
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               <span className="font-medium">Status: {profiles?.is_active ? "Active" : "Inactive"}</span>
             </div>
-            {/* <div className="text-muted-foreground">Last wellness check: {dayjs(currentCheck?.created_at).fromNow()}</div> */}
-            <div className="text-muted-foreground">Last wellness check: {dayjs("2025-12-05T03:25:27.562517+00:00").fromNow()}</div>
+            <div className="text-muted-foreground">Last wellness check: {dayjs(currentCheck?.created_at).fromNow()}</div>
           </div>
           <div className="flex items-center space-x-4">
             <div className="text-muted-foreground">{contactCount.totalCount} accounts monitored</div>
