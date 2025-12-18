@@ -674,7 +674,7 @@ const stats = [
                         <p className="text-base text-muted-foreground">Essential for daily life</p>
                       </CardContent>
                     </Card> */}
-                    {stats.map(stat => (
+                    {stats?.map(stat => (
   <Card key={stat.title}>
     <CardHeader className="pb-2">
       <CardTitle className="text-lg font-medium text-muted-foreground">
@@ -695,7 +695,7 @@ const stats = [
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {criticalAccounts.map((account) => {
+                    {criticalAccounts?.map((account) => {
                       const IconComponent = account.icon
                       const StatusIcon = getStatusIcon(account.status)
 
@@ -750,7 +750,7 @@ const stats = [
                         <Badge variant="outline">{contact.daysToContact} days</Badge>
                       </div>
                     ))} */}
-                    {allContacts.map((contact, index) => (
+                    {allContacts?.map((contact, index) => (
                       <div key={index} className="flex justify-between items-center text-xl p-2 bg-muted/50 rounded">
                         <span>
                           {contact.contact_value} 
