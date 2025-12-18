@@ -99,8 +99,8 @@ const loadWellnessCheck = async () => {
             <div className="text-muted-foreground">Last wellness check: {dayjs(currentCheck?.created_at).fromNow()}</div>
           </div>
           <div className="flex items-center space-x-4">
-            <div className="text-muted-foreground">{contactCount.totalCount} accounts monitored</div>
-            <div className="text-muted-foreground">{contactCount.verifiedCount} delegates configured</div>
+            <div className="text-muted-foreground">{contactCount?.totalCount} accounts monitored</div>
+            <div className="text-muted-foreground">{contactCount?.verifiedCount} delegates configured</div>
           </div>
         </div>
       </div>
